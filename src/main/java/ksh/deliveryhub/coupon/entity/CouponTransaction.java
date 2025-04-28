@@ -1,6 +1,7 @@
 package ksh.deliveryhub.coupon.entity;
 
 import jakarta.persistence.*;
+import ksh.deliveryhub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CouponTransaction {
+public class CouponTransaction extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

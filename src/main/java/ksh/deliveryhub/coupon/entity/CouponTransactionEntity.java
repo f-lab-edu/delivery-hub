@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "coupon_transaction")
 public class CouponTransactionEntity extends BaseEntity {
 
     @Id

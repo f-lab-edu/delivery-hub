@@ -2,6 +2,7 @@ package ksh.deliveryhub.coupon.entity;
 
 import jakarta.persistence.*;
 import ksh.deliveryhub.common.entity.BaseEntity;
+import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,27 +26,31 @@ public class CouponEntity extends BaseEntity {
 
     private Integer discountAmount;
 
-    private LocalDateTime expireDate;
+    private Integer validDays;
 
     @Enumerated(EnumType.STRING)
-    private CouponStatus couponStatus;
+    private FoodCategory foodCategory;
 
-    private Long userId;
+    private Integer issueNumberLimit;
+
+    private Integer minimumSpend;
 
     @Builder
     private CouponEntity(
         String code,
         String description,
         Integer discountAmount,
-        LocalDateTime expireDate,
-        CouponStatus couponStatus,
-        Long userId
+        Integer validDays,
+        FoodCategory foodCategory,
+        Integer issueNumberLimit,
+        Integer minimumSpend
     ) {
         this.code = code;
         this.description = description;
         this.discountAmount = discountAmount;
-        this.expireDate = expireDate;
-        this.couponStatus = couponStatus;
-        this.userId = userId;
+        this.validDays = validDays;
+        this.foodCategory = foodCategory;
+        this.issueNumberLimit = issueNumberLimit;
+        this.minimumSpend = minimumSpend;
     }
 }

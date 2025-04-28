@@ -1,4 +1,4 @@
-package ksh.deliveryhub.order.entity;
+package ksh.deliveryhub.menu.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,26 +13,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItem extends BaseEntity {
+public class MenuOptionEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer quantity;
+    private String name;
 
-    private Long orderId;
+    private Integer price;
 
     private Long menuId;
 
     @Builder
-    private OrderItem(
-        Integer quantity,
-        Long orderId,
+    private MenuOptionEntity(
+        String name,
+        Integer price,
         Long menuId
     ) {
-        this.quantity = quantity;
-        this.orderId = orderId;
+        this.name = name;
+        this.price = price;
         this.menuId = menuId;
     }
 }

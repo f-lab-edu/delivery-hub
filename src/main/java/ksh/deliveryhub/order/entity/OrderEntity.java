@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
-public class Order extends BaseEntity {
+public class OrderEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Order extends BaseEntity {
     private Long riderId;
 
     @Builder
-    private Order(
+    private OrderEntity(
         Integer totalPrice,
         OrderStatus orderStatus,
         Long userId,

@@ -1,4 +1,4 @@
-package ksh.deliveryhub.menu.entity;
+package ksh.deliveryhub.review.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,34 +13,34 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Menu extends BaseEntity {
+public class ReviewEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private Integer score;
 
     private String description;
 
-    private Integer price;
+    private String imageUrl;
 
-    private String image;
+    private Long userId;
 
-    private Long storeId;
+    private Long menuId;
 
     @Builder
-    private Menu(
-        String name,
+    private ReviewEntity(
+        Integer score,
         String description,
-        Integer price,
-        String image,
-        Long storeId
+        String imageUrl,
+        Long userId,
+        Long menuId
     ) {
-        this.name = name;
+        this.score = score;
         this.description = description;
-        this.price = price;
-        this.image = image;
-        this.storeId = storeId;
+        this.imageUrl = imageUrl;
+        this.userId = userId;
+        this.menuId = menuId;
     }
 }

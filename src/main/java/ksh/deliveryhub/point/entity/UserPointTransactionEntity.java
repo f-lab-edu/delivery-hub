@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserPointTransaction extends BaseEntity {
+public class UserPointTransactionEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class UserPointTransaction extends BaseEntity {
     private Long userPointId;
 
     @Builder
-    private UserPointTransaction(
+    private UserPointTransactionEntity(
         PointEventType pointEventType,
         Integer initialBalance,
         Integer remainingBalance,

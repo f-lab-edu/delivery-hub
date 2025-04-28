@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MenuOption extends BaseEntity {
+public class MenuEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,18 +21,26 @@ public class MenuOption extends BaseEntity {
 
     private String name;
 
+    private String description;
+
     private Integer price;
 
-    private Long menuId;
+    private String image;
+
+    private Long storeId;
 
     @Builder
-    private MenuOption(
+    private MenuEntity(
         String name,
+        String description,
         Integer price,
-        Long menuId
+        String image,
+        Long storeId
     ) {
         this.name = name;
+        this.description = description;
         this.price = price;
-        this.menuId = menuId;
+        this.image = image;
+        this.storeId = storeId;
     }
 }

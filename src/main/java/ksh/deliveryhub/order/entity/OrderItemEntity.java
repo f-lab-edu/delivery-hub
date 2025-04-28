@@ -1,4 +1,4 @@
-package ksh.deliveryhub.point.entity;
+package ksh.deliveryhub.order.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,22 +13,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserPoint extends BaseEntity {
+public class OrderItemEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer balance;
+    private Integer quantity;
 
-    private Long userId;
+    private Long orderId;
+
+    private Long menuId;
 
     @Builder
-    private UserPoint(
-        Integer balance,
-        Long userId
+    private OrderItemEntity(
+        Integer quantity,
+        Long orderId,
+        Long menuId
     ) {
-        this.balance = balance;
-        this.userId = userId;
+        this.quantity = quantity;
+        this.orderId = orderId;
+        this.menuId = menuId;
     }
 }

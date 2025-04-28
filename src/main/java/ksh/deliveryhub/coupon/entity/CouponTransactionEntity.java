@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CouponTransaction extends BaseEntity {
+public class CouponTransactionEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class CouponTransaction extends BaseEntity {
 
     private Long orderId;
 
-    private CouponTransaction(
+    private CouponTransactionEntity(
         CouponEventType couponEventType,
         LocalDateTime eventTime,
         Long couponId,

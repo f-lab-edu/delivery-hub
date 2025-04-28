@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon extends BaseEntity {
+public class CouponEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Coupon extends BaseEntity {
     private Long userId;
 
     @Builder
-    private Coupon(
+    private CouponEntity(
         String code,
         String description,
         Integer discountAmount,

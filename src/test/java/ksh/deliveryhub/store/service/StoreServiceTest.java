@@ -7,6 +7,7 @@ import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.repository.StoreRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,11 @@ class StoreServiceTest {
 
     @Autowired
     StoreRepository storeRepository;
+
+    @AfterEach
+    void tearDown() {
+        storeRepository.deleteAllInBatch();
+    }
 
     @Test
     public void 요청한_가게_정보로_가게를_등록한다() throws Exception{

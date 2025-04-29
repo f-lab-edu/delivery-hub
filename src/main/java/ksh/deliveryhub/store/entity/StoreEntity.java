@@ -34,6 +34,7 @@ public class StoreEntity extends BaseEntity {
 
     @Builder
     private StoreEntity(
+        Long id,
         String name,
         String description,
         String address,
@@ -42,6 +43,7 @@ public class StoreEntity extends BaseEntity {
         boolean isOpen,
         Long ownerId
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.address = address;

@@ -27,8 +27,9 @@ public class StoreController {
         @Valid StoreRequestDto storeRequestDto,
         @Valid PageRequestDto pageRequestDto
     ) {
-        PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto, pageRequestDto);
-        SuccessResponseDto<PageResult<Store>> response = SuccessResponseDto.of(storePage);
+        PageResult<StoreResponseDto> storePage = storeService.findOpenStores(storeRequestDto, pageRequestDto)
+            .map(StoreResponseDto::from);
+        SuccessResponseDto<PageResult<StoreResponseDto>> response = SuccessResponseDto.of(storePage);
 
         return ResponseEntity
             .status(HttpStatus.OK)

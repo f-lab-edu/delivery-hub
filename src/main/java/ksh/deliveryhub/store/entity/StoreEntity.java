@@ -36,14 +36,12 @@ public class StoreEntity extends BaseEntity {
         String name,
         String description,
         String address,
-        String phone,
-        FoodCategory foodCategory
+        String phone
     ) {
         this.name = name;
         this.description = description;
         this.address = address;
         this.phone = phone;
-        this.foodCategory = foodCategory;
     }
 
     @Builder

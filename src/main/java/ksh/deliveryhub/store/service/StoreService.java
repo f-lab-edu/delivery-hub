@@ -47,8 +47,7 @@ public class StoreService {
             store.getName(),
             store.getDescription(),
             store.getAddress(),
-            store.getPhone(),
-            store.getFoodCategory()
+            store.getPhone()
         );
 
         return Store.from(storeEntity);

@@ -1,0 +1,45 @@
+package ksh.deliveryhub.store.model;
+
+import ksh.deliveryhub.store.entity.FoodCategory;
+import ksh.deliveryhub.store.entity.StoreEntity;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class Store {
+
+    private Long id;
+    private String name;
+    private String description;
+    private String address;
+    private String phone;
+    private FoodCategory foodCategory;
+    private boolean isOpen;
+    private Long ownerId;
+
+    public static Store from(StoreEntity storeEntity) {
+        return Store.builder()
+            .id(storeEntity.getId())
+            .name(storeEntity.getName())
+            .description(storeEntity.getDescription())
+            .address(storeEntity.getAddress())
+            .phone(storeEntity.getPhone())
+            .foodCategory(storeEntity.getFoodCategory())
+            .isOpen(storeEntity.isOpen())
+            .ownerId(storeEntity.getOwnerId())
+            .build();
+    }
+
+    public StoreEntity toEntity() {
+        return StoreEntity.builder()
+            .id(getId())
+            .name(getName())
+            .description(getDescription())
+            .address(getAddress())
+            .phone(getPhone())
+            .foodCategory(getFoodCategory())
+            .isOpen(isOpen())
+            .build();
+    }
+}

@@ -2,6 +2,8 @@ package ksh.deliveryhub.store.service;
 
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 @SpringBootTest
 class StoreServiceTest {
@@ -31,7 +34,7 @@ class StoreServiceTest {
     }
 
     @Test
-    public void 요청한_가게_정보로_가게를_등록한다() throws Exception{
+    public void 요청한_가게_정보로_가게를_등록한다() throws Exception {
         //given
         Store store = Store.builder()
             .name("음식점")
@@ -48,7 +51,7 @@ class StoreServiceTest {
     }
 
     @Test
-    public void 가게_주소가_주문자의_주소와_일치하고_요청한_카테고리의_음식을_파는_영업_중인_가게를_조회한다() throws Exception{
+    public void 가게_주소가_주문자의_주소와_일치하고_요청한_카테고리의_음식을_파는_영업_중인_가게를_조회한다() throws Exception {
         //given
         StoreEntity targetStore1 = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, true);
         StoreEntity targetStore2 = createStoreEntity("가게2", "서울시 강서구", FoodCategory.PIZZA, true);
@@ -79,6 +82,55 @@ class StoreServiceTest {
                 targetStore2.getName(),
                 targetStore3.getName()
             );
+    }
+
+    @Test
+    public void 요청한_가게_정보로_가게_정보를_업데이트한다() throws Exception {
+        //given
+        StoreEntity storeEntity = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, true);
+        storeRepository.save(storeEntity);
+
+        Store storeUpdateInfo = Store.builder()
+            .id(storeEntity.getId())
+            .name("피자집")
+            .description("맛있는 피자집")
+            .address("서울시 양천구")
+            .phone("010-9876-5432")
+            .foodCategory(FoodCategory.PIZZA)
+            .isOpen(true)
+            .ownerId(1L)
+            .build();
+
+        //when
+        Store store = storeService.updateStore(storeUpdateInfo);
+
+        //then
+        assertThat(storeUpdateInfo)
+            .usingRecursiveComparison()
+            .isEqualTo(store);
+    }
+
+    @Test
+    public void 잘못된_가게_id를_요청하면_가게_정보_업데이트_시_예외가_발생한다() throws Exception {
+        //given
+        StoreEntity storeEntity = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, true);
+        storeRepository.save(storeEntity);
+
+        Store storeUpdateInfo = Store.builder()
+            .id(15557L)
+            .name("피자집")
+            .description("맛있는 피자집")
+            .address("서울시 양천구")
+            .phone("010-9876-5432")
+            .foodCategory(FoodCategory.PIZZA)
+            .isOpen(true)
+            .ownerId(1L)
+            .build();
+
+        //when //then
+        assertThatExceptionOfType(CustomException.class)
+            .isThrownBy(() -> storeService.updateStore(storeUpdateInfo))
+            .returns(ErrorCode.STORE_NOT_FOUND, CustomException::getErrorCode);
     }
 
     private static StoreEntity createStoreEntity(String name, String address, FoodCategory foodCategory, boolean isOpen) {

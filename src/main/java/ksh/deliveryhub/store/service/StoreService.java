@@ -2,6 +2,8 @@ package ksh.deliveryhub.store.service;
 
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.model.Store;
@@ -35,5 +37,20 @@ public class StoreService {
             .map(Store::from);
 
         return PageResult.of(storesPage.hasNext(), storesPage.getContent());
+    }
+
+    public Store updateStore(Store store) {
+        StoreEntity storeEntity = storeRepository.findById(store.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+        storeEntity.update(
+            store.getName(),
+            store.getDescription(),
+            store.getAddress(),
+            store.getPhone(),
+            store.getFoodCategory()
+        );
+
+        return Store.from(storeEntity);
     }
 }

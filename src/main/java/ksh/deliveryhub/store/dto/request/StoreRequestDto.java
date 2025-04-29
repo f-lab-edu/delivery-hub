@@ -1,4 +1,4 @@
-package ksh.deliveryhub.store.dto;
+package ksh.deliveryhub.store.dto.request;
 
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.Builder;

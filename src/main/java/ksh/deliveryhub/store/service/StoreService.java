@@ -1,7 +1,7 @@
 package ksh.deliveryhub.store.service;
 
 import ksh.deliveryhub.common.dto.response.PageResult;
-import ksh.deliveryhub.store.dto.StoreRequestDto;
+import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;

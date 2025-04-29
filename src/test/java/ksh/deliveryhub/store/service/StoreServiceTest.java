@@ -25,6 +25,23 @@ class StoreServiceTest {
     StoreRepository storeRepository;
 
     @Test
+    public void 요청한_가게_정보로_가게를_등록한다() throws Exception{
+        //given
+        Store store = Store.builder()
+            .name("음식점")
+            .address("서울시")
+            .foodCategory(FoodCategory.PIZZA)
+            .build();
+
+        //when
+        Store savedStore = storeService.registerStore(store);
+        assertThat(savedStore.getId()).isNotNull();
+        assertThat(savedStore).usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(store);
+    }
+
+    @Test
     public void 가게_주소가_주문자의_주소와_일치하고_요청한_카테고리의_음식을_파는_영업_중인_가게를_조회한다() throws Exception{
         //given
         StoreEntity targetStore1 = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, true);

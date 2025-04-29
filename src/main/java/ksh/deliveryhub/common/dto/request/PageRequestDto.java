@@ -16,7 +16,7 @@ public class PageRequestDto {
     Integer page;
 
     @NotNull(message = "페이지 크기는 필수입니다.")
-    @Max(value = 10L, message = "페이지 크기는 50이하입니다.")
+    @Max(value = 10L, message = "페이지 크기는 10이하입니다.")
     @Positive(message = "페이지 크기는 양수입니다.")
     Integer size;
 }

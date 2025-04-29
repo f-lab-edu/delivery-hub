@@ -1,5 +1,6 @@
 package ksh.deliveryhub.store.service;
 
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.entity.FoodCategory;
@@ -9,7 +10,6 @@ import ksh.deliveryhub.store.repository.StoreRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ class StoreServiceTest {
             .address("서울시 강서구")
             .build();
 
-        PageRequest pageRequest = PageRequest.of(0, 3);
+        PageRequestDto pageRequest = new PageRequestDto(0, 3);
 
         //when
         PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto, pageRequest);

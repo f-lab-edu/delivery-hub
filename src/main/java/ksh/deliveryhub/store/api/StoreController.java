@@ -65,9 +65,9 @@ public class StoreController {
     @PostMapping("/stores/{storeId}/status")
     public ResponseEntity<SuccessResponseDto> updateStoreStatus(
         @PathVariable("storeId") Long storeId,
-        @RequestParam("isOpen") boolean status
+        @RequestParam("isOpen") boolean isOpen
     ) {
-        Store store = storeService.updateStoreStatus(storeId, status);
+        Store store = storeService.updateStoreStatus(storeId, isOpen);
         StoreResponseDto storeResponseDto = StoreResponseDto.from(store);
         SuccessResponseDto<StoreResponseDto> response = SuccessResponseDto.of(storeResponseDto);
 

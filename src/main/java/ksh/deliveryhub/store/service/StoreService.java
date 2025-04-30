@@ -58,11 +58,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Store updateStoreStatus(long storeId, boolean status) {
+    public Store updateStoreStatus(long storeId, boolean isOpen) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
             .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-        storeEntity.updateIsOpen(status);
+        storeEntity.updateIsOpen(isOpen);
 
         return Store.from(storeEntity);
     }

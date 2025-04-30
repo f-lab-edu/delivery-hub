@@ -1,7 +1,6 @@
 package ksh.deliveryhub.store.api;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
@@ -66,7 +65,7 @@ public class StoreController {
     @PostMapping("/stores/{storeId}/status")
     public ResponseEntity<SuccessResponseDto> updateStoreStatus(
         @PathVariable("storeId") Long storeId,
-        @RequestParam("isOpen") @NotNull(message = "가게 오픈 여부는 필수입니다.") boolean status
+        @RequestParam("isOpen") boolean status
     ) {
         Store store = storeService.updateStoreStatus(storeId, status);
         StoreResponseDto storeResponseDto = StoreResponseDto.from(store);

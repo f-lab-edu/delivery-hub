@@ -23,14 +23,18 @@ public class OrderItemEntity extends BaseEntity {
 
     private Long menuId;
 
+    private Long optionId;
+
     @Builder
     private OrderItemEntity(
         Integer quantity,
         Long orderId,
-        Long menuId
+        Long menuId,
+        Long optionId
     ) {
         this.quantity = quantity;
         this.orderId = orderId;
         this.menuId = menuId;
+        this.optionId = optionId;
     }
 }

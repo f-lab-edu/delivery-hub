@@ -13,10 +13,7 @@ import ksh.deliveryhub.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class StoreController {
 
     @PostMapping("/stores")
     public ResponseEntity<SuccessResponseDto> registerStore(
-        @Valid StoreCreateRequestDto request
+        @Valid @RequestBody StoreCreateRequestDto request
     ) {
         Store store = storeService.registerStore(request.toModel());
         StoreResponseDto storeResponseDto = StoreResponseDto.from(store);
@@ -54,7 +51,7 @@ public class StoreController {
     @PostMapping("/stores/{storeId}")
     public ResponseEntity<SuccessResponseDto> updateStore(
         @PathVariable("storeId") Long storeId,
-        @Valid StoreUpdateRequestDto request
+        @Valid @RequestBody StoreUpdateRequestDto request
     ) {
         Store store = storeService.updateStore(request.toModel(storeId));
         StoreResponseDto storeResponseDto = StoreResponseDto.from(store);

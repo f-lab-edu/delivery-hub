@@ -73,7 +73,7 @@ class StoreServiceTest {
         PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto, pageRequest);
 
         //then
-        assertThat(storePage.isHasNext()).isFalse();
+        assertThat(storePage.hasNext()).isFalse();
         assertThat(storePage.getContent())
             .hasSize(3)
             .extracting("name")

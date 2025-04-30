@@ -1,12 +1,11 @@
 package ksh.deliveryhub.common.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.List;
 import java.util.function.Function;
 
-@Getter
 @AllArgsConstructor
 public class PageResult<T> {
 
@@ -23,5 +22,14 @@ public class PageResult<T> {
             .toList();
 
         return new PageResult<>(hasNext, mappedContent);
+    }
+
+    @JsonProperty("hasNext")
+    public boolean hasNext() {
+        return hasNext;
+    }
+
+    public List<T> getContent() {
+        return content;
     }
 }

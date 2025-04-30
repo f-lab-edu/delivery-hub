@@ -3,6 +3,7 @@ package ksh.deliveryhub.coupon.entity;
 import jakarta.persistence.*;
 import ksh.deliveryhub.common.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,7 @@ public class CouponTransactionEntity extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private CouponEventType couponEventType;
+    private CouponEventType eventType;
 
     private LocalDateTime eventTime;
 
@@ -27,15 +28,20 @@ public class CouponTransactionEntity extends BaseEntity {
 
     private Long orderId;
 
+    private Long userId;
+
+    @Builder
     private CouponTransactionEntity(
-        CouponEventType couponEventType,
+        CouponEventType eventType,
         LocalDateTime eventTime,
         Long couponId,
-        Long orderId
+        Long orderId,
+        Long userId
     ) {
-        this.couponEventType = couponEventType;
+        this.eventType = eventType;
         this.eventTime = eventTime;
         this.couponId = couponId;
         this.orderId = orderId;
+        this.userId = userId;
     }
 }

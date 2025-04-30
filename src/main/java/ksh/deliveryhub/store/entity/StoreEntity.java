@@ -44,6 +44,10 @@ public class StoreEntity extends BaseEntity {
         this.phone = phone;
     }
 
+    public void updateIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
     @Builder
     private StoreEntity(
         Long id,

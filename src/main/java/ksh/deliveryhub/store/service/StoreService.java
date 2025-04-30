@@ -52,4 +52,13 @@ public class StoreService {
 
         return Store.from(storeEntity);
     }
+
+    public Store updateStoreStatus(long storeId, boolean status) {
+        StoreEntity storeEntity = storeRepository.findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+        storeEntity.updateIsOpen(status);
+
+        return Store.from(storeEntity);
+    }
 }

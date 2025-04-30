@@ -70,7 +70,7 @@ class StoreServiceTest {
         PageRequestDto pageRequest = new PageRequestDto(0, 3);
 
         //when
-        PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto, pageRequest);
+        PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto.toModel(), pageRequest);
 
         //then
         assertThat(storePage.hasNext()).isFalse();

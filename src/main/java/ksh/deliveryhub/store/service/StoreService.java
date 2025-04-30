@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +21,14 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
+    @Transactional
     public Store registerStore(Store store) {
         StoreEntity storeEntity = storeRepository.save(store.toEntity());
 
         return Store.from(storeEntity);
     }
 
+    @Transactional(readOnly = true)
     public PageResult<Store> findOpenStores(StoreRequestDto storeRequest, PageRequestDto pageRequest) {
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
 
@@ -39,6 +42,7 @@ public class StoreService {
         return PageResult.of(storesPage.hasNext(), storesPage.getContent());
     }
 
+    @Transactional
     public Store updateStore(Store store) {
         StoreEntity storeEntity = storeRepository.findById(store.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
@@ -53,6 +57,7 @@ public class StoreService {
         return Store.from(storeEntity);
     }
 
+    @Transactional
     public Store updateStoreStatus(long storeId, boolean status) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
             .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));

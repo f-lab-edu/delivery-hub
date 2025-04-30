@@ -1,6 +1,7 @@
 package ksh.deliveryhub.store.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class StoreUpdateRequestDto {
+
+    @NotNull(message = "가게 id는 필수입니다.")
+    private Long id;
 
     @NotBlank(message = "가게 이름은 필수입니다.")
     private String name;

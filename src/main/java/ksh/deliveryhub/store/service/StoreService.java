@@ -4,7 +4,6 @@ import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
-import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.repository.StoreRepository;
@@ -29,12 +28,12 @@ public class StoreService {
     }
 
     @Transactional(readOnly = true)
-    public PageResult<Store> findOpenStores(StoreRequestDto storeRequest, PageRequestDto pageRequest) {
+    public PageResult<Store> findOpenStores(Store store, PageRequestDto pageRequest) {
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
 
         Page<Store> storesPage = storeRepository.findOpenStores(
-                storeRequest.getAddress(),
-                storeRequest.getFoodCategory(),
+                store.getAddress(),
+                store.getFoodCategory(),
                 pageable
             )
             .map(Store::from);

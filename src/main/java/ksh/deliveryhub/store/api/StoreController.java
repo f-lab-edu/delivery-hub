@@ -26,7 +26,10 @@ public class StoreController {
         @Valid StoreRequestDto storeRequestDto,
         @Valid PageRequestDto pageRequestDto
     ) {
-        PageResult<StoreResponseDto> storePage = storeService.findOpenStores(storeRequestDto, pageRequestDto)
+        PageResult<StoreResponseDto> storePage = storeService.findOpenStores(
+                storeRequestDto.toModel(),
+                pageRequestDto
+            )
             .map(StoreResponseDto::from);
         SuccessResponseDto<PageResult<StoreResponseDto>> response = SuccessResponseDto.of(storePage);
 

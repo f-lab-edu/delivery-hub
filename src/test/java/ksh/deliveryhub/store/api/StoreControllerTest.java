@@ -70,7 +70,7 @@ class StoreControllerTest {
     }
 
     @Test
-    public void 새로운_가게를_등록하고_성공하면_201_응답을_받는다() throws Exception{
+    public void 새로운_가게를_등록하고_성공하면_201_응답을_받는다() throws Exception {
         //given
         StoreCreateRequestDto request = StoreCreateRequestDto.builder()
             .name("음식점")
@@ -83,10 +83,10 @@ class StoreControllerTest {
 
         //when //then
         mockMvc.perform(
-            post("/stores")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(print())
+                post("/stores")
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(print())
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data.name").value(request.getName()))
             .andExpect(jsonPath("$.data.address").value(request.getAddress()))
@@ -94,7 +94,7 @@ class StoreControllerTest {
     }
 
     @Test
-    public void 가게_정보를_업데이트_하고_성공하면_200_응답을_받는다() throws Exception{
+    public void 가게_정보를_업데이트_하고_성공하면_200_응답을_받는다() throws Exception {
         //given
         StoreEntity storeEntity = createStoreEntity("변경 전 이름", "변경 전 주소", FoodCategory.PIZZA, true);
         storeRepository.save(storeEntity);
@@ -121,7 +121,7 @@ class StoreControllerTest {
     }
 
     @Test
-    public void 존재하지_않는_가게_정보를_업데이트_하면_404_응답을_받는다() throws Exception{
+    public void 존재하지_않는_가게_정보를_업데이트_하면_404_응답을_받는다() throws Exception {
         //given
         StoreUpdateRequestDto request = StoreUpdateRequestDto.builder()
             .id(4685415L)
@@ -140,6 +140,43 @@ class StoreControllerTest {
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.status").value(404))
             .andExpect(jsonPath("$.code").value(ErrorCode.STORE_NOT_FOUND.name()));
+    }
+
+    @Test
+    public void 가게_오픈_상태를_업데이트_하고_성공하면_200_응답을_받는다() throws Exception {
+        //given
+        StoreEntity storeEntity = createStoreEntity("음식점", "서울시 강서구", FoodCategory.PIZZA, true);
+        storeRepository.save(storeEntity);
+
+        //when //then
+        mockMvc.perform(
+                post("/stores/{storeId}/status", storeEntity.getId())
+                    .param("isOpen", "false")
+            ).andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.open").value(false));
+    }
+
+    @Test
+    public void 가게_오픈_상태를_업데이트_할_때_오픈_상태를_누락하면_400_응답을_받는다() throws Exception {
+        //given
+        StoreEntity storeEntity = createStoreEntity("음식점", "서울시 강서구", FoodCategory.PIZZA, true);
+        storeRepository.save(storeEntity);
+
+        //when //then
+        mockMvc.perform(
+                post("/stores/{storeId}/status", storeEntity.getId())
+            ).andDo(print())
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void 존재하지_않는_가게의_오픈_상태를_업데이트_하려_하면_404_응답을_받는다() throws Exception {
+        //when //then
+        mockMvc.perform(
+                post("/stores/{storeId}/status", 116515L)
+            ).andDo(print())
+            .andExpect(status().isBadRequest());
     }
 
     private static StoreEntity createStoreEntity(String name, String address, FoodCategory foodCategory, boolean isOpen) {

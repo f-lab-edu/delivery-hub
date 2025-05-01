@@ -37,11 +37,10 @@ public class MenuController {
 
     @PostMapping("/stores/{storeId}/menus/{menuId}")
     public ResponseEntity<SuccessResponseDto> updateMenu(
-        @PathVariable("storeId") Long storeId,
         @PathVariable("menuId") Long menuId,
         @Valid @RequestBody MenuUpdateRequestDto request
     ) {
-        Menu menu = menuFacade.updateMenu(request.toModel(storeId, menuId));
+        Menu menu = menuFacade.updateMenu(request.toModel(menuId));
         MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
         SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
 

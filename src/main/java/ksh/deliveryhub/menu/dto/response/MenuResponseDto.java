@@ -42,18 +42,4 @@ public class MenuResponseDto {
             .options(menuOptionResponseDtos)
             .build();
     }
-
-    //컴파일 통과를 위한 오버로드 메소드
-    public static MenuResponseDto from(Menu menu) {
-        return MenuResponseDto.builder()
-            .id(menu.getId())
-            .name(menu.getName())
-            .description(menu.getDescription())
-            .status(menu.getMenuStatus())
-            .price(menu.getPrice())
-            .image(menu.getImage())
-            .storeId(menu.getStoreId())
-            .createdAt(menu.getCreatedAt())
-            .build();
-    }
 }

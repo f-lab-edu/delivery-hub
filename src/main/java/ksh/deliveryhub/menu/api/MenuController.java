@@ -5,6 +5,7 @@ import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.menu.dto.request.MenuCreateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuOptionCreateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuUpdateRequestDto;
+import ksh.deliveryhub.menu.dto.response.DeletedMenuResponseDto;
 import ksh.deliveryhub.menu.dto.response.MenuResponseDto;
 import ksh.deliveryhub.menu.facade.MenuFacade;
 import ksh.deliveryhub.menu.model.Menu;
@@ -67,9 +68,10 @@ public class MenuController {
         @PathVariable("storeId") Long storeId,
         @PathVariable("menuId") Long menuId
     ) {
-        Menu menu = menuFacade.deleteMenu(menuId, storeId);
-        MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
-        SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
+        MenuWithOptions menuWithOptions = menuFacade.deleteMenu(menuId, storeId);
+
+        DeletedMenuResponseDto deletedMenuResponseDto = DeletedMenuResponseDto.from(menuWithOptions);
+        SuccessResponseDto<DeletedMenuResponseDto> response = SuccessResponseDto.of(deletedMenuResponseDto);
 
         return ResponseEntity
             .status(HttpStatus.OK)

@@ -28,8 +28,11 @@ public class MenuFacade {
         return MenuWithOptions.of(registeredMenu, registeredMenuOptions);
     }
 
-    public Menu updateMenu(Menu menu) {
-        return menuService.updateMenu(menu);
+    public MenuWithOptions updateMenu(Menu menu, List<MenuOption> menuOptions) {
+        Menu updatedMenu = menuService.updateMenu(menu);
+        List<MenuOption> updatedMenuOptions = menuOptionService.updateOptions(menuOptions);
+
+        return MenuWithOptions.of(updatedMenu, updatedMenuOptions);
     }
 
     public Menu deleteMenu(long id, long storeId) {

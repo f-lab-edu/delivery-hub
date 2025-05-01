@@ -23,6 +23,9 @@ public class MenuEntity extends BaseEntity {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private MenuStatus menuStatus;
+
     private Integer price;
 
     private String image;
@@ -32,11 +35,13 @@ public class MenuEntity extends BaseEntity {
     public void update(
         String name,
         String description,
+        MenuStatus menuStatus,
         Integer price,
         String image
     ) {
         this.name = name;
         this.description = description;
+        this.menuStatus = menuStatus;
         this.price = price;
         this.image = image;
     }
@@ -46,6 +51,7 @@ public class MenuEntity extends BaseEntity {
         Long id,
         String name,
         String description,
+        MenuStatus menuStatus,
         Integer price,
         String image,
         Long storeId,
@@ -55,6 +61,7 @@ public class MenuEntity extends BaseEntity {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.menuStatus = menuStatus;
         this.price = price;
         this.image = image;
         this.storeId = storeId;

@@ -1,5 +1,6 @@
 package ksh.deliveryhub.menu.dto.response;
 
+import ksh.deliveryhub.menu.entity.MenuStatus;
 import ksh.deliveryhub.menu.model.Menu;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class MenuResponseDto {
     private Long id;
     private String name;
     private String description;
+    private MenuStatus menuStatus;
     private Integer price;
     private String image;
     private Long storeId;

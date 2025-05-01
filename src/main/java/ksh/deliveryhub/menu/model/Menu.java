@@ -1,6 +1,7 @@
 package ksh.deliveryhub.menu.model;
 
 import ksh.deliveryhub.menu.entity.MenuEntity;
+import ksh.deliveryhub.menu.entity.MenuStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,6 +14,7 @@ public class Menu {
     private Long id;
     private String name;
     private String description;
+    private MenuStatus menuStatus;
     private Integer price;
     private String image;
     private Long storeId;
@@ -24,6 +26,7 @@ public class Menu {
             .id(menuEntity.getId())
             .name(menuEntity.getName())
             .description(menuEntity.getDescription())
+            .menuStatus(menuEntity.getMenuStatus())
             .price(menuEntity.getPrice())
             .image(menuEntity.getImage())
             .storeId(menuEntity.getStoreId())
@@ -35,6 +38,7 @@ public class Menu {
             .id(getId())
             .name(getName())
             .description(getDescription())
+            .menuStatus(getMenuStatus())
             .price(getPrice())
             .image(getImage())
             .storeId(getStoreId())

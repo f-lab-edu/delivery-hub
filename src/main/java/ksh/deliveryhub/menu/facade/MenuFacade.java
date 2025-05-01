@@ -35,7 +35,10 @@ public class MenuFacade {
         return MenuWithOptions.of(updatedMenu, updatedMenuOptions);
     }
 
-    public Menu deleteMenu(long id, long storeId) {
-        return menuService.deleteMenu(id, storeId);
+    public MenuWithOptions deleteMenu(long id, long storeId) {
+        List<MenuOption> menuOptions = menuOptionService.deleteMenuOptionsOfMenu(id);
+        Menu menu = menuService.deleteMenu(id, storeId);
+
+        return MenuWithOptions.of(menu, menuOptions);
     }
 }

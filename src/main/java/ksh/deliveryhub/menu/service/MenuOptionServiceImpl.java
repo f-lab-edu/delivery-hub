@@ -55,4 +55,15 @@ public class MenuOptionServiceImpl implements MenuOptionService {
             .map(MenuOption::from)
             .toList();
     }
+
+    @Transactional
+    @Override
+    public List<MenuOption> deleteMenuOptionsOfMenu(long menuId) {
+        List<MenuOptionEntity> menuOptionEntities = menuOptionRepository.findByMenuId(menuId);
+        menuOptionRepository.deleteAll(menuOptionEntities);
+
+        return menuOptionEntities.stream()
+            .map(MenuOption::from)
+            .toList();
+    }
 }

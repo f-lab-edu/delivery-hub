@@ -48,8 +48,13 @@ public class MenuController {
         @PathVariable("menuId") Long menuId,
         @Valid @RequestBody MenuUpdateRequestDto request
     ) {
-        Menu menu = menuFacade.updateMenu(request.toModel(menuId, storeId));
-        MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
+        List<MenuOption> menuOptions = request.getMenuOptions().stream()
+            .map(MenuOptionCreateRequestDto::toModel)
+            .toList();
+
+        MenuWithOptions menuWithOptions = menuFacade.updateMenu(request.toModel(menuId, storeId), menuOptions);
+
+        MenuResponseDto menuResponseDto = MenuResponseDto.from(menuWithOptions);
         SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
 
         return ResponseEntity

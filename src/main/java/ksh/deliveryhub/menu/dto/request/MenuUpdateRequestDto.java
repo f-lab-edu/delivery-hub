@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import ksh.deliveryhub.menu.entity.MenuStatus;
 import ksh.deliveryhub.menu.model.Menu;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,9 @@ public class MenuUpdateRequestDto {
     @Size(max = 50, message = "메뉴 설명은 최대 50자입니다.")
     private String description;
 
+    @NotNull(message = "메뉴 상태는 필수입니다.")
+    private MenuStatus menuStatus;
+
     @NotNull(message = "메뉴 가격은 필수입니다.")
     @Positive(message = "메뉴 가격은 양수입니다.")
     private Integer price;
@@ -33,6 +37,7 @@ public class MenuUpdateRequestDto {
             .id(id)
             .name(getName())
             .description(getDescription())
+            .menuStatus(getMenuStatus())
             .price(getPrice())
             .image(getImage())
             .storeId(storeId)

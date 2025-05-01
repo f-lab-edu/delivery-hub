@@ -29,6 +29,7 @@ public class MenuServiceImpl implements MenuService {
         menuEntity.update(
             menu.getName(),
             menu.getDescription(),
+            menu.getMenuStatus(),
             menu.getPrice(),
             menu.getImage()
         );

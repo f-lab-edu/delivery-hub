@@ -29,12 +29,14 @@ public class MenuEntity extends BaseEntity {
 
     @Builder
     private MenuEntity(
+        Long id,
         String name,
         String description,
         Integer price,
         String image,
         Long storeId
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;

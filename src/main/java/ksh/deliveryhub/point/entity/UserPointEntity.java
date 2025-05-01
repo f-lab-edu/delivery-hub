@@ -23,9 +23,11 @@ public class UserPointEntity extends BaseEntity {
 
     @Builder
     private UserPointEntity(
+        Long id,
         Integer balance,
         Long userId
     ) {
+        this.id = id;
         this.balance = balance;
         this.userId = userId;
     }

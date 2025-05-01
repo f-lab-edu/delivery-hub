@@ -30,12 +30,14 @@ public class OrderEntity extends BaseEntity {
 
     @Builder
     private OrderEntity(
+        Long id,
         Integer totalPrice,
         OrderStatus orderStatus,
         Long userId,
         Long storeId,
         Long riderId
     ) {
+        this.id = id;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
         this.userId = userId;

@@ -32,12 +32,14 @@ public class CouponTransactionEntity extends BaseEntity {
 
     @Builder
     private CouponTransactionEntity(
+        Long id,
         CouponEventType eventType,
         LocalDateTime eventTime,
         Long couponId,
         Long orderId,
         Long userId
     ) {
+        this.id = id;
         this.eventType = eventType;
         this.eventTime = eventTime;
         this.couponId = couponId;

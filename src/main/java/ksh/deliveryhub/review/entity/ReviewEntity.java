@@ -29,12 +29,14 @@ public class ReviewEntity extends BaseEntity {
 
     @Builder
     private ReviewEntity(
+        Long id,
         Integer score,
         String description,
         String imageUrl,
         Long userId,
         Long menuId
     ) {
+        this.id = id;
         this.score = score;
         this.description = description;
         this.imageUrl = imageUrl;

@@ -27,12 +27,14 @@ public class UserEntity extends BaseEntity {
 
     @Builder
     private UserEntity(
+        Long id,
         String email,
         String password,
         String name,
         String phone,
         UserType userType
     ) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;

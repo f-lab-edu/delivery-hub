@@ -29,11 +29,13 @@ public class PaymentEntity extends BaseEntity {
 
     @Builder
     private PaymentEntity(
+        Long id,
         PaymentMethod paymentMethod,
         PaymentStatus paymentStatus,
         Integer amount,
         Long orderId
     ) {
+        this.id = id;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.amount = amount;

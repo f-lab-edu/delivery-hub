@@ -25,10 +25,12 @@ public class MenuOptionEntity extends BaseEntity {
 
     @Builder
     private MenuOptionEntity(
+        Long id,
         String name,
         Integer price,
         Long menuId
     ) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.menuId = menuId;

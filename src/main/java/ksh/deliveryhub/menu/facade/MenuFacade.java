@@ -1,21 +1,31 @@
 package ksh.deliveryhub.menu.facade;
 
 import ksh.deliveryhub.menu.model.Menu;
+import ksh.deliveryhub.menu.model.MenuOption;
+import ksh.deliveryhub.menu.model.MenuWithOptions;
+import ksh.deliveryhub.menu.service.MenuOptionService;
 import ksh.deliveryhub.menu.service.MenuService;
 import ksh.deliveryhub.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class MenuFacade {
 
     private final MenuService menuService;
+    private final MenuOptionService menuOptionService;
     private final StoreService storeService;
 
-    public Menu registerMenu(Menu menu) {
+    public MenuWithOptions registerMenu(Menu menu, List<MenuOption> menuOptions) {
         storeService.exists(menu.getStoreId());
-        return menuService.registerMenu(menu);
+        Menu registeredMenu = menuService.registerMenu(menu);
+
+        List<MenuOption> registeredMenuOptions = menuOptionService.registerMenuOptions(registeredMenu.getId(), menuOptions);
+
+        return MenuWithOptions.of(registeredMenu, registeredMenuOptions);
     }
 
     public Menu updateMenu(Menu menu) {

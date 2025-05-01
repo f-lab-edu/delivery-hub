@@ -25,6 +25,7 @@ public class MenuResponseDto {
             .id(menu.getId())
             .name(menu.getName())
             .description(menu.getDescription())
+            .menuStatus(menu.getMenuStatus())
             .price(menu.getPrice())
             .image(menu.getImage())
             .storeId(menu.getStoreId())

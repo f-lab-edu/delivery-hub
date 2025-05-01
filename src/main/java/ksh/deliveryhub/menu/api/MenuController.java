@@ -46,4 +46,18 @@ public class MenuController {
             .status(HttpStatus.OK)
             .body(response);
     }
+
+    @DeleteMapping("/stores/{storeId}/menus/{menuId}")
+    public ResponseEntity<SuccessResponseDto> deleteMenu(
+        @PathVariable("storeId") Long storeId,
+        @PathVariable("menuId") Long menuId
+    ) {
+        Menu menu = menuFacade.deleteMenu(menuId, storeId);
+        MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
+        SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
 }

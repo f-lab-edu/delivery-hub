@@ -7,4 +7,6 @@ import java.util.List;
 public interface MenuOptionService {
 
     List<MenuOption> registerMenuOptions(long menuId, List<MenuOption> menuOptions);
+
+    List<MenuOption> updateOptions(List<MenuOption> menuOptions);
 }

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,7 +48,9 @@ public class MenuEntity extends BaseEntity {
         String description,
         Integer price,
         String image,
-        Long storeId
+        Long storeId,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt
     ) {
         this.id = id;
         this.name = name;
@@ -54,5 +58,7 @@ public class MenuEntity extends BaseEntity {
         this.price = price;
         this.image = image;
         this.storeId = storeId;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 }

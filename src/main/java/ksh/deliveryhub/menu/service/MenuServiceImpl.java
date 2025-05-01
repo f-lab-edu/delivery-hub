@@ -30,7 +30,7 @@ public class MenuServiceImpl implements MenuService {
             .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
         if(menuEntity.getStoreId() != menu.getStoreId()) {
-            throw new CustomException(ErrorCode.MENU_NOT_OWNED_BY_USER);
+            throw new CustomException(ErrorCode.MENU_STORE_ID_MISMATCH);
         }
 
         menuEntity.update(
@@ -40,6 +40,21 @@ public class MenuServiceImpl implements MenuService {
             menu.getPrice(),
             menu.getImage()
         );
+
+        return Menu.from(menuEntity);
+    }
+
+    @Transactional
+    @Override
+    public Menu deleteMenu(long id, long storeId) {
+        MenuEntity menuEntity = menuRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+        if(menuEntity.getStoreId() != storeId) {
+            throw new CustomException(ErrorCode.MENU_STORE_ID_MISMATCH);
+        }
+
+        menuRepository.deleteById(id);
 
         return Menu.from(menuEntity);
     }

@@ -21,4 +21,8 @@ public class MenuFacade {
     public Menu updateMenu(Menu menu) {
         return menuService.updateMenu(menu);
     }
+
+    public Menu deleteMenu(long id, long storeId) {
+        return menuService.deleteMenu(id, storeId);
+    }
 }

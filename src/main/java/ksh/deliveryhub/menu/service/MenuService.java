@@ -7,4 +7,6 @@ public interface MenuService {
     Menu registerMenu(Menu menu);
 
     Menu updateMenu(Menu menu);
+
+    Menu deleteMenu(long id, long storeId);
 }

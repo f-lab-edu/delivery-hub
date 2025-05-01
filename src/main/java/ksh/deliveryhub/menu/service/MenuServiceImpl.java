@@ -29,6 +29,10 @@ public class MenuServiceImpl implements MenuService {
         MenuEntity menuEntity = menuRepository.findById(menu.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
+        if(menuEntity.getStoreId() != menu.getStoreId()) {
+            throw new CustomException(ErrorCode.MENU_NOT_OWNED_BY_USER);
+        }
+
         menuEntity.update(
             menu.getName(),
             menu.getDescription(),

@@ -10,10 +10,7 @@ import ksh.deliveryhub.menu.model.Menu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,10 +34,11 @@ public class MenuController {
 
     @PostMapping("/stores/{storeId}/menus/{menuId}")
     public ResponseEntity<SuccessResponseDto> updateMenu(
+        @PathVariable("storeId") Long storeId,
         @PathVariable("menuId") Long menuId,
         @Valid @RequestBody MenuUpdateRequestDto request
     ) {
-        Menu menu = menuFacade.updateMenu(request.toModel(menuId));
+        Menu menu = menuFacade.updateMenu(request.toModel(menuId, storeId));
         MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
         SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
 

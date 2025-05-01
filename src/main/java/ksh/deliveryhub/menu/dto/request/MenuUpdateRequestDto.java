@@ -32,7 +32,7 @@ public class MenuUpdateRequestDto {
     @NotBlank(message = "메뉴 예시 이미지 url은 필수입니다.")
     private String image;
 
-    public Menu toModel(long id) {
+    public Menu toModel(long id, long storeId) {
         return Menu.builder()
             .id(id)
             .name(getName())
@@ -40,6 +40,7 @@ public class MenuUpdateRequestDto {
             .menuStatus(getMenuStatus())
             .price(getPrice())
             .image(getImage())
+            .storeId(storeId)
             .build();
     }
 }

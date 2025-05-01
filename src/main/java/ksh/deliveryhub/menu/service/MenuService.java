@@ -5,4 +5,6 @@ import ksh.deliveryhub.menu.model.Menu;
 public interface MenuService {
 
     Menu registerMenu(Menu menu);
+
+    Menu updateMenu(Menu menu);
 }

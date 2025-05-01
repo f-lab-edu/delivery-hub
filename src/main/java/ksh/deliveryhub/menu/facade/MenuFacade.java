@@ -17,4 +17,8 @@ public class MenuFacade {
         storeService.exists(menu.getStoreId());
         return menuService.registerMenu(menu);
     }
+
+    public Menu updateMenu(Menu menu) {
+        return menuService.updateMenu(menu);
+    }
 }

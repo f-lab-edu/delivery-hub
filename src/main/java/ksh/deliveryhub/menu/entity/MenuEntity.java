@@ -27,6 +27,18 @@ public class MenuEntity extends BaseEntity {
 
     private Long storeId;
 
+    public void update(
+        String name,
+        String description,
+        Integer price,
+        String image
+    ) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+    }
+
     @Builder
     private MenuEntity(
         Long id,

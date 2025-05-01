@@ -29,6 +29,7 @@ public class Menu {
             .menuStatus(menuEntity.getMenuStatus())
             .price(menuEntity.getPrice())
             .image(menuEntity.getImage())
+            .menuStatus(menuEntity.getMenuStatus())
             .storeId(menuEntity.getStoreId())
             .build();
     }

@@ -129,6 +129,41 @@ class MenuControllerTest {
     }
 
     @Test
+    public void 메뉴가_속한_가게_정보가_일치하지_않으면_403응답을_받는다() throws Exception {
+        //given
+        StoreEntity storeEntity = StoreEntity.builder().build();
+        storeRepository.save(storeEntity);
+
+        MenuEntity menuEntity = MenuEntity.builder()
+            .name("변경 전 이름")
+            .description("변경 전 설명")
+            .menuStatus(MenuStatus.UNAVAILABLE)
+            .price(1522)
+            .image("변경 전 이미지 url")
+            .storeId(12651L)
+            .build();
+        menuRepository.save(menuEntity);
+
+        MenuUpdateRequestDto request = MenuUpdateRequestDto.builder()
+            .name("변경 후 이름")
+            .description("변경 후 설명")
+            .menuStatus(MenuStatus.AVAILABLE)
+            .price(1000)
+            .image("변경 후 이미지 url")
+            .build();
+
+        //when //then
+        mockMvc.perform(
+                post("/stores/{storeId}/menus/{menuId}", storeEntity.getId(), menuEntity.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDo(print())
+            .andExpect(status().isForbidden())
+            .andExpect(jsonPath("$.status").value(403))
+            .andExpect(jsonPath("$.code").value("MENU_STORE_ID_MISMATCH"));
+    }
+
+    @Test
     public void 없는_메뉴의_정보_업데이트를_하면_404응답을_받는다() throws Exception {
         //given
         StoreEntity storeEntity = StoreEntity.builder().build();

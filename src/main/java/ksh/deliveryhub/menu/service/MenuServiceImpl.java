@@ -7,6 +7,7 @@ import ksh.deliveryhub.menu.model.Menu;
 import ksh.deliveryhub.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
 
+    @Transactional
     @Override
     public Menu registerMenu(Menu menu) {
         MenuEntity menuEntity = menuRepository.save(menu.toEntity());
@@ -21,6 +23,7 @@ public class MenuServiceImpl implements MenuService {
         return Menu.from(menuEntity);
     }
 
+    @Transactional
     @Override
     public Menu updateMenu(Menu menu) {
         MenuEntity menuEntity = menuRepository.findById(menu.getId())

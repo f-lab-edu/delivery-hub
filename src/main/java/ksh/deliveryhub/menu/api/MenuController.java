@@ -3,6 +3,7 @@ package ksh.deliveryhub.menu.api;
 import jakarta.validation.Valid;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.menu.dto.request.MenuCreateRequestDto;
+import ksh.deliveryhub.menu.dto.request.MenuUpdateRequestDto;
 import ksh.deliveryhub.menu.dto.response.MenuResponseDto;
 import ksh.deliveryhub.menu.facade.MenuFacade;
 import ksh.deliveryhub.menu.model.Menu;
@@ -31,6 +32,21 @@ public class MenuController {
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
+            .body(response);
+    }
+
+    @PostMapping("/stores/{storeId}/menus/{menuId}")
+    public ResponseEntity<SuccessResponseDto> updateMenu(
+        @PathVariable("storeId") Long storeId,
+        @PathVariable("menuId") Long menuId,
+        @Valid @RequestBody MenuUpdateRequestDto request
+    ) {
+        Menu menu = menuFacade.updateMenu(request.toModel(storeId, menuId));
+        MenuResponseDto menuResponseDto = MenuResponseDto.from(menu);
+        SuccessResponseDto<MenuResponseDto> response = SuccessResponseDto.of(menuResponseDto);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
             .body(response);
     }
 }

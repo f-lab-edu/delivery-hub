@@ -14,6 +14,7 @@ public class StoreCreateRequestDto {
     @NotBlank(message = "가게 이름은 필수입니다.")
     private String name;
 
+    @NotBlank(message = "가게 설명은 필수입니다.")
     private String description;
 
     @NotBlank(message = "가게 주소는 필수입니다.")

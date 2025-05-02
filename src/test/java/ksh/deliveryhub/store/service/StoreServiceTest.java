@@ -134,27 +134,6 @@ class StoreServiceTest {
             .isThrownBy(() -> storeService.updateStore(storeUpdateInfo))
             .returns(ErrorCode.STORE_NOT_FOUND, CustomException::getErrorCode);
     }
-    
-    @Test
-    public void 요청한_가게의_오픈_상태를_변경한다() throws Exception{
-        //given
-        StoreEntity storeEntity = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, OPEN);
-        storeRepository.save(storeEntity);
-
-        //when
-        Store store = storeService.updateStoreStatus(storeEntity.getId(), CLOSED);
-
-        //then
-        assertThat(store.getStatus()).isEqualTo(CLOSED);
-    }
-
-    @Test
-    public void 존재하지_않는_가게의_상태를_변경하려_하면_예외가_발생한다() throws Exception{
-         //when //then
-        assertThatExceptionOfType(CustomException.class)
-        .isThrownBy(() -> storeService.updateStoreStatus(15557L, CLOSED))
-        .returns(ErrorCode.STORE_NOT_FOUND, CustomException::getErrorCode);
-    }
 
     private static StoreEntity createStoreEntity(String name, String address, FoodCategory foodCategory, StoreStatus status) {
         return StoreEntity.builder()

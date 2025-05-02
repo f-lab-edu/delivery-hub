@@ -25,7 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 class StoreServiceTest {
 
     @Autowired
-    StoreService storeService;
+    StoreServiceImpl storeService;
 
     @Autowired
     StoreRepository storeRepository;

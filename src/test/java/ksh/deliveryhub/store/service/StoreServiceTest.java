@@ -4,7 +4,7 @@ import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
-import ksh.deliveryhub.store.dto.request.StoreRequestDto;
+import ksh.deliveryhub.store.dto.request.StoreQueryRequestDto;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.entity.StoreStatus;
@@ -64,7 +64,7 @@ class StoreServiceTest {
         StoreEntity closedStore = createStoreEntity("가게6", "서울시 강서구", FoodCategory.PIZZA, CLOSED);
         storeRepository.saveAll(List.of(targetStore1, targetStore2, targetStore3, wrongAddressStore, wrongCategoryStore, closedStore));
 
-        StoreRequestDto storeRequestDto = StoreRequestDto.builder()
+        StoreQueryRequestDto storeRequestDto = StoreQueryRequestDto.builder()
             .foodCategory(FoodCategory.PIZZA)
             .address("서울시 강서구")
             .build();

@@ -28,26 +28,47 @@ public class StoreEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private FoodCategory foodCategory;
 
-    private boolean isOpen;
+    @Enumerated(EnumType.STRING)
+    private StoreStatus status;
 
     private Long ownerId;
 
+    public void update(
+        String name,
+        String description,
+        StoreStatus status,
+        String address,
+        String phone
+    ) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    public void updateStatus(StoreStatus status) {
+        this.status = status;
+    }
+
     @Builder
     private StoreEntity(
+        Long id,
         String name,
         String description,
         String address,
         String phone,
         FoodCategory foodCategory,
-        boolean isOpen,
+        StoreStatus status,
         Long ownerId
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.address = address;
         this.phone = phone;
         this.foodCategory = foodCategory;
-        this.isOpen = isOpen;
+        this.status = status;
         this.ownerId = ownerId;
     }
 }

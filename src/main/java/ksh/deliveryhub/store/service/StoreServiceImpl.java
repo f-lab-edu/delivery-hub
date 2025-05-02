@@ -5,7 +5,6 @@ import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.store.entity.StoreEntity;
-import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,17 +55,6 @@ public class StoreServiceImpl implements StoreService{
             store.getAddress(),
             store.getPhone()
         );
-
-        return Store.from(storeEntity);
-    }
-
-    @Transactional
-    @Override
-    public Store updateStoreStatus(long storeId, StoreStatus status) {
-        StoreEntity storeEntity = storeRepository.findById(storeId)
-            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
-
-        storeEntity.updateStatus(status);
 
         return Store.from(storeEntity);
     }

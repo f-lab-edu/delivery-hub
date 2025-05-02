@@ -2,7 +2,6 @@ package ksh.deliveryhub.store.service;
 
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
-import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 
 public interface StoreService {
@@ -12,6 +11,4 @@ public interface StoreService {
     PageResult<Store> findOpenStores(Store store, PageRequestDto pageRequest);
 
     Store updateStore(Store store);
-
-    Store updateStoreStatus(long storeId, StoreStatus status);
 }

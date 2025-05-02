@@ -65,18 +65,4 @@ public class StoreController {
             .status(HttpStatus.OK)
             .body(response);
     }
-
-    @PostMapping("/stores/{storeId}/status")
-    public ResponseEntity<SuccessResponseDto> updateStoreStatus(
-        @PathVariable("storeId") Long storeId,
-        @RequestParam("status") StoreStatus status
-    ) {
-        Store store = storeService.updateStoreStatus(storeId, status);
-        StoreResponseDto storeResponseDto = StoreResponseDto.from(store);
-        SuccessResponseDto<StoreResponseDto> response = SuccessResponseDto.of(storeResponseDto);
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(response);
-    }
 }

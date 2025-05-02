@@ -5,10 +5,9 @@ import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.store.dto.request.StoreCreateRequestDto;
-import ksh.deliveryhub.store.dto.request.StoreRequestDto;
+import ksh.deliveryhub.store.dto.request.StoreQueryRequestDto;
 import ksh.deliveryhub.store.dto.request.StoreUpdateRequestDto;
 import ksh.deliveryhub.store.dto.response.StoreResponseDto;
-import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class StoreController {
 
     @GetMapping("/stores")
     public ResponseEntity<SuccessResponseDto> findOpenStores(
-        @Valid StoreRequestDto storeRequestDto,
+        @Valid StoreQueryRequestDto storeRequestDto,
         @Valid PageRequestDto pageRequestDto
     ) {
         PageResult<StoreResponseDto> storePage = storeService.findOpenStores(

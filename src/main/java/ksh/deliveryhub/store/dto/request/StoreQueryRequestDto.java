@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class StoreRequestDto {
+public class StoreQueryRequestDto {
 
     @NotNull(message = "음식 카테고리는 필수입니다.")
     private FoodCategory foodCategory;

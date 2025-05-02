@@ -42,6 +42,7 @@ class StoreServiceTest {
             .name("음식점")
             .address("서울시")
             .foodCategory(FoodCategory.PIZZA)
+            .phone("010-1234-5678")
             .build();
 
         //when
@@ -53,7 +54,7 @@ class StoreServiceTest {
     }
 
     @Test
-    public void 가게_주소가_주문자의_주소와_일치하고_요청한_카테고리의_음식을_파는_영업_중인_가게를_조회한다() throws Exception {
+    public void 영업_중인_가게를_조회하면_가게_주소가_주문자의_주소와_일치하고_요청한_카테고리의_음식을_파는_가게를_조회한다() throws Exception {
         //given
         StoreEntity targetStore1 = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, OPEN);
         StoreEntity targetStore2 = createStoreEntity("가게2", "서울시 강서구", FoodCategory.PIZZA, OPEN);
@@ -83,6 +84,37 @@ class StoreServiceTest {
                 targetStore1.getName(),
                 targetStore2.getName(),
                 targetStore3.getName()
+            );
+    }
+
+    @Test
+    public void 영업_중인_가게를_조회할_때_페이지_사이즈_보다_남은_데이터가_많으면_haxNext가_true이다() throws Exception {
+        //given
+        StoreEntity storeEntity1 = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        StoreEntity storeEntity2 = createStoreEntity("가게2", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        StoreEntity storeEntity3 = createStoreEntity("가게3", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        StoreEntity storeEntity4 = createStoreEntity("가게4", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        storeRepository.saveAll(List.of(storeEntity1, storeEntity2, storeEntity3, storeEntity4));
+
+        StoreQueryRequestDto storeRequestDto = StoreQueryRequestDto.builder()
+            .foodCategory(FoodCategory.PIZZA)
+            .address("서울시 강서구")
+            .build();
+
+        PageRequestDto pageRequest = new PageRequestDto(0, 3);
+
+        //when
+        PageResult<Store> storePage = storeService.findOpenStores(storeRequestDto.toModel(), pageRequest);
+
+        //then
+        assertThat(storePage.hasNext()).isTrue();
+        assertThat(storePage.getContent())
+            .hasSize(3)
+            .extracting("name")
+            .containsExactly(
+                storeEntity1.getName(),
+                storeEntity2.getName(),
+                storeEntity3.getName()
             );
     }
 

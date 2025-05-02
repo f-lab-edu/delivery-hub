@@ -2,6 +2,7 @@ package ksh.deliveryhub.store.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import ksh.deliveryhub.store.entity.FoodCategory;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class StoreRequestDto {
         return Store.builder()
             .address(getAddress())
             .foodCategory(getFoodCategory())
-            .isOpen(false)
+            .status(StoreStatus.OPEN)
             .build();
     }
 }

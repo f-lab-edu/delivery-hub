@@ -5,6 +5,7 @@ import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.store.entity.StoreEntity;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,11 +58,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Store updateStoreStatus(long storeId, boolean isOpen) {
+    public Store updateStoreStatus(long storeId, StoreStatus status) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
             .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-        storeEntity.updateIsOpen(isOpen);
+        storeEntity.updateStatus(status);
 
         return Store.from(storeEntity);
     }

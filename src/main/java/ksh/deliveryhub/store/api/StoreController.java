@@ -8,6 +8,7 @@ import ksh.deliveryhub.store.dto.request.StoreCreateRequestDto;
 import ksh.deliveryhub.store.dto.request.StoreRequestDto;
 import ksh.deliveryhub.store.dto.request.StoreUpdateRequestDto;
 import ksh.deliveryhub.store.dto.response.StoreResponseDto;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import ksh.deliveryhub.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -68,9 +69,9 @@ public class StoreController {
     @PostMapping("/stores/{storeId}/status")
     public ResponseEntity<SuccessResponseDto> updateStoreStatus(
         @PathVariable("storeId") Long storeId,
-        @RequestParam("isOpen") boolean isOpen
+        @RequestParam("status") StoreStatus status
     ) {
-        Store store = storeService.updateStoreStatus(storeId, isOpen);
+        Store store = storeService.updateStoreStatus(storeId, status);
         StoreResponseDto storeResponseDto = StoreResponseDto.from(store);
         SuccessResponseDto<StoreResponseDto> response = SuccessResponseDto.of(storeResponseDto);
 

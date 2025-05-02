@@ -28,7 +28,8 @@ public class StoreEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private FoodCategory foodCategory;
 
-    private boolean isOpen;
+    @Enumerated(EnumType.STRING)
+    private StoreStatus status;
 
     private Long ownerId;
 
@@ -44,8 +45,8 @@ public class StoreEntity extends BaseEntity {
         this.phone = phone;
     }
 
-    public void updateIsOpen(boolean isOpen) {
-        this.isOpen = isOpen;
+    public void updateStatus(StoreStatus status) {
+        this.status = status;
     }
 
     @Builder
@@ -56,7 +57,7 @@ public class StoreEntity extends BaseEntity {
         String address,
         String phone,
         FoodCategory foodCategory,
-        boolean isOpen,
+        StoreStatus status,
         Long ownerId
     ) {
         this.id = id;
@@ -65,7 +66,7 @@ public class StoreEntity extends BaseEntity {
         this.address = address;
         this.phone = phone;
         this.foodCategory = foodCategory;
-        this.isOpen = isOpen;
+        this.status = status;
         this.ownerId = ownerId;
     }
 }

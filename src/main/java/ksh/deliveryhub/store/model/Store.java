@@ -2,6 +2,7 @@ package ksh.deliveryhub.store.model;
 
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,7 +16,7 @@ public class Store {
     private String address;
     private String phone;
     private FoodCategory foodCategory;
-    private boolean isOpen;
+    private StoreStatus status;
     private Long ownerId;
 
     public static Store from(StoreEntity storeEntity) {
@@ -26,7 +27,7 @@ public class Store {
             .address(storeEntity.getAddress())
             .phone(storeEntity.getPhone())
             .foodCategory(storeEntity.getFoodCategory())
-            .isOpen(storeEntity.isOpen())
+            .status(storeEntity.getStatus())
             .ownerId(storeEntity.getOwnerId())
             .build();
     }
@@ -39,7 +40,7 @@ public class Store {
             .address(getAddress())
             .phone(getPhone())
             .foodCategory(getFoodCategory())
-            .isOpen(isOpen())
+            .status(getStatus())
             .build();
     }
 }

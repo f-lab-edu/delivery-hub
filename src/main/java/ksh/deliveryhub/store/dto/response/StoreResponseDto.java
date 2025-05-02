@@ -1,6 +1,7 @@
 package ksh.deliveryhub.store.dto.response;
 
 import ksh.deliveryhub.store.entity.FoodCategory;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class StoreResponseDto {
     private String address;
     private String phone;
     private FoodCategory foodCategory;
-    private boolean isOpen;
+    private StoreStatus status;
 
     public static StoreResponseDto from(Store store) {
         return StoreResponseDto.builder()
@@ -25,7 +26,7 @@ public class StoreResponseDto {
             .address(store.getAddress())
             .phone(store.getPhone())
             .foodCategory(store.getFoodCategory())
-            .isOpen(store.isOpen())
+            .status(store.getStatus())
             .build();
     }
 }

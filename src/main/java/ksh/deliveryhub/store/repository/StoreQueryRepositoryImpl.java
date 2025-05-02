@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,7 +23,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepository {
     public Page<StoreEntity> findOpenStores(String address, FoodCategory foodCategory, Pageable pageable) {
         BooleanExpression predicate = storeEntity.address.eq(address)
             .and(storeEntity.foodCategory.eq(foodCategory))
-            .and(storeEntity.isOpen.isTrue());
+            .and(storeEntity.status.eq(StoreStatus.OPEN));
 
         List<StoreEntity> storeEntities = queryFactory
             .select(storeEntity)

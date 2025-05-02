@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ksh.deliveryhub.store.entity.FoodCategory;
+import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class StoreCreateRequestDto {
             .phone(getPhone())
             .foodCategory(getFoodCategory())
             .ownerId(getOwnerId())
-            .isOpen(false)
+            .status(StoreStatus.CLOSED)
             .build();
     }
 }

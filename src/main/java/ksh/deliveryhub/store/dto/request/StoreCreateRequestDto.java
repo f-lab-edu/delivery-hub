@@ -3,6 +3,7 @@ package ksh.deliveryhub.store.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import ksh.deliveryhub.common.util.PhoneNumberUtils;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
@@ -34,11 +35,13 @@ public class StoreCreateRequestDto {
     private Long ownerId;
 
     public Store toModel() {
+        String trimmedPhoneNumber = PhoneNumberUtils.trim(getPhone());
+
         return Store.builder()
             .name(getName())
             .description(getDescription())
             .address(getAddress())
-            .phone(getPhone())
+            .phone(trimmedPhoneNumber)
             .foodCategory(getFoodCategory())
             .ownerId(getOwnerId())
             .status(StoreStatus.CLOSED)

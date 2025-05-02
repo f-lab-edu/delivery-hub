@@ -5,10 +5,8 @@ import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.menu.dto.request.MenuCreateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuOptionCreateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuUpdateRequestDto;
-import ksh.deliveryhub.menu.dto.response.DeletedMenuResponseDto;
 import ksh.deliveryhub.menu.dto.response.MenuResponseDto;
 import ksh.deliveryhub.menu.facade.MenuFacade;
-import ksh.deliveryhub.menu.model.Menu;
 import ksh.deliveryhub.menu.model.MenuOption;
 import ksh.deliveryhub.menu.model.MenuWithOptions;
 import lombok.RequiredArgsConstructor;
@@ -64,17 +62,14 @@ public class MenuController {
     }
 
     @DeleteMapping("/stores/{storeId}/menus/{menuId}")
-    public ResponseEntity<SuccessResponseDto> deleteMenu(
+    public ResponseEntity<Void> deleteMenu(
         @PathVariable("storeId") Long storeId,
         @PathVariable("menuId") Long menuId
     ) {
-        MenuWithOptions menuWithOptions = menuFacade.deleteMenu(menuId, storeId);
-
-        DeletedMenuResponseDto deletedMenuResponseDto = DeletedMenuResponseDto.from(menuWithOptions);
-        SuccessResponseDto<DeletedMenuResponseDto> response = SuccessResponseDto.of(deletedMenuResponseDto);
+        menuFacade.deleteMenu(menuId, storeId);
 
         return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(response);
+            .status(HttpStatus.NO_CONTENT)
+            .build();
     }
 }

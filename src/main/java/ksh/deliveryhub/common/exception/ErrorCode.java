@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    STORE_NOT_FOUND(404, "store.not.found");
+    STORE_NOT_FOUND(404, "store.not.found"),
+    STORE_INVALID_PHONE(400, "store.invalid.phone");
 
     private final int status;
     private final String messageKey;

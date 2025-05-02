@@ -3,6 +3,7 @@ package ksh.deliveryhub.store.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import ksh.deliveryhub.common.util.PhoneNumberUtils;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,12 +30,14 @@ public class StoreUpdateRequestDto {
     private String phone;
 
     public Store toModel(long id) {
+        String trimmedPhoneNumber = PhoneNumberUtils.trim(getPhone());
+
         return Store.builder()
             .id(id)
             .name(getName())
             .description(getDescription())
             .address(getAddress())
-            .phone(getPhone())
+            .phone(trimmedPhoneNumber)
             .build();
     }
 }

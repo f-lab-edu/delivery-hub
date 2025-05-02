@@ -36,11 +36,13 @@ public class StoreEntity extends BaseEntity {
     public void update(
         String name,
         String description,
+        StoreStatus status,
         String address,
         String phone
     ) {
         this.name = name;
         this.description = description;
+        this.status = status;
         this.address = address;
         this.phone = phone;
     }

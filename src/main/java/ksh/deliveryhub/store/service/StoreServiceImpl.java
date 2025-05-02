@@ -52,6 +52,7 @@ public class StoreServiceImpl implements StoreService{
         storeEntity.update(
             store.getName(),
             store.getDescription(),
+            store.getStatus(),
             store.getAddress(),
             store.getPhone()
         );

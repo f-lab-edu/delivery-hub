@@ -39,22 +39,31 @@ public class MenuOptionServiceImpl implements MenuOptionService {
     @Transactional
     @Override
     public List<MenuOption> updateOptions(List<MenuOption> menuOptions) {
-        Map<Long, MenuOption> menuOptionMap = menuOptions.stream()
-            .collect(Collectors.toMap(MenuOption::getId, Function.identity()));
+        List<Long> ids = menuOptions.stream()
+            .map(MenuOption::getId)
+            .toList();
 
-        List<MenuOptionEntity> menuOptionEntities = menuOptionRepository.findAllById(menuOptionMap.keySet());
-        if (menuOptionEntities.size() != menuOptionMap.size()) {
+        List<MenuOptionEntity> entities = menuOptionRepository.findAllById(ids);
+        if (entities.size() != ids.size()) {
             throw new CustomException(ErrorCode.MENU_OPTION_IDS_INVALID);
         }
-        for (MenuOptionEntity menuOptionEntity : menuOptionEntities) {
-            MenuOption menuOption = menuOptionMap.get(menuOptionEntity.getId());
-            menuOptionEntity.update(menuOption.getName(), menuOption.getPrice());
+
+        Map<Long, MenuOptionEntity> entityMap = entities.stream()
+            .collect(Collectors.toMap(
+                MenuOptionEntity::getId,
+                Function.identity()
+            ));
+
+        for (MenuOption option : menuOptions) {
+            MenuOptionEntity entity = entityMap.get(option.getId());
+            entity.update(option.getName(), option.getPrice());
         }
 
-        return menuOptionEntities.stream()
-            .map(MenuOption::from)
+        return menuOptions.stream()
+            .map(option -> MenuOption.from(entityMap.get(option.getId())))
             .toList();
     }
+
 
     @Transactional
     @Override

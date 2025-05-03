@@ -38,7 +38,7 @@ public class MenuUpdateRequestDto {
     private String image;
 
     @Valid
-    private List<MenuOptionCreateRequestDto> menuOptions;
+    private List<MenuOptionUpdateRequestDto> menuOptions;
 
     public Menu toModel(long id, long storeId) {
         return Menu.builder()

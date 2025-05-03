@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.menu.dto.request.MenuCreateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuOptionCreateRequestDto;
+import ksh.deliveryhub.menu.dto.request.MenuOptionUpdateRequestDto;
 import ksh.deliveryhub.menu.dto.request.MenuUpdateRequestDto;
 import ksh.deliveryhub.menu.dto.response.MenuResponseDto;
 import ksh.deliveryhub.menu.facade.MenuFacade;
@@ -48,7 +49,7 @@ public class MenuController {
         @Valid @RequestBody MenuUpdateRequestDto request
     ) {
         List<MenuOption> menuOptions = request.getMenuOptions().stream()
-            .map(MenuOptionCreateRequestDto::toModel)
+            .map(MenuOptionUpdateRequestDto::toModel)
             .toList();
 
         MenuWithOptions menuWithOptions = menuFacade.updateMenu(request.toModel(menuId, storeId), menuOptions);

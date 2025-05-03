@@ -23,7 +23,7 @@ public class CartMenuEntity extends BaseEntity {
 
     private Long menuId;
 
-    private Long orderId;
+    private Long optionId;
 
     @Builder
     private CartMenuEntity(
@@ -31,12 +31,12 @@ public class CartMenuEntity extends BaseEntity {
         Integer quantity,
         Long cartId,
         Long menuId,
-        Long orderId
+        Long optionId
     ) {
         this.id = id;
         this.quantity = quantity;
         this.cartId = cartId;
         this.menuId = menuId;
-        this.orderId = orderId;
+        this.optionId = optionId;
     }
 }

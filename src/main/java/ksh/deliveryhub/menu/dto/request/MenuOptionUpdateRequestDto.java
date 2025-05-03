@@ -25,6 +25,7 @@ public class MenuOptionUpdateRequestDto {
 
     public MenuOption toModel() {
         return MenuOption.builder()
+            .id(getId())
             .name(getName())
             .price(getPrice())
             .build();

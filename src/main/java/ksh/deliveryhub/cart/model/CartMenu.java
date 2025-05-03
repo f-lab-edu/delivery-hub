@@ -12,25 +12,25 @@ public class CartMenu {
     private Integer quantity;
     private Long cartId;
     private Long menuId;
-    private Long orderId;
+    private Long optionId;
 
-    private static CartMenu from(CartMenuEntity cartMenuEntity) {
+    public static CartMenu from(CartMenuEntity cartMenuEntity) {
         return CartMenu.builder()
             .id(cartMenuEntity.getId())
             .quantity(cartMenuEntity.getQuantity())
             .cartId(cartMenuEntity.getCartId())
             .menuId(cartMenuEntity.getMenuId())
-            .orderId(cartMenuEntity.getOrderId())
+            .optionId(cartMenuEntity.getOptionId())
             .build();
     }
 
-    private CartMenu toEntity() {
-        return CartMenu.builder()
+    public CartMenuEntity toEntity() {
+        return CartMenuEntity.builder()
             .id(getId())
             .quantity(getQuantity())
             .cartId(getCartId())
             .menuId(getMenuId())
-            .orderId(getOrderId())
+            .optionId(getOptionId())
             .build();
     }
 }

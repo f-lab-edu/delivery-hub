@@ -21,8 +21,8 @@ public class MenuFacade {
 
     public MenuWithOptions registerMenu(Menu menu, List<MenuOption> menuOptions) {
         storeService.exists(menu.getStoreId());
-        Menu registeredMenu = menuService.registerMenu(menu);
 
+        Menu registeredMenu = menuService.registerMenu(menu);
         List<MenuOption> registeredMenuOptions = menuOptionService.registerMenuOptions(registeredMenu.getId(), menuOptions);
 
         return MenuWithOptions.of(registeredMenu, registeredMenuOptions);

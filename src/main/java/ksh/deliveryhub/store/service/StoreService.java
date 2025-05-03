@@ -11,4 +11,6 @@ public interface StoreService {
     PageResult<Store> findOpenStores(Store store, PageRequestDto pageRequest);
 
     Store updateStore(Store store);
+
+    void exists(long id);
 }

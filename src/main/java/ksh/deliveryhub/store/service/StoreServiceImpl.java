@@ -59,4 +59,10 @@ public class StoreServiceImpl implements StoreService{
 
         return Store.from(storeEntity);
     }
+
+    @Override
+    public void exists(long id) {
+        storeRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    }
 }

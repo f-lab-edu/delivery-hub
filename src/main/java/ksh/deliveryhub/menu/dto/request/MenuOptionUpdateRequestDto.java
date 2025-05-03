@@ -12,6 +12,9 @@ import lombok.Getter;
 @Builder
 public class MenuOptionUpdateRequestDto {
 
+    @NotNull(message = "메뉴 옵션 id는 필수입니다.")
+    private Long id;
+
     @NotBlank(message = "메뉴 옵션 이름은 필수입니다.")
     @Size(max = 20, message = "메뉴 옵션 이름의 길이는 최대 20자입니다.")
     private String name;

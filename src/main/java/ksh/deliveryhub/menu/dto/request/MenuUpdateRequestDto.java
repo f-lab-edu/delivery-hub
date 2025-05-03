@@ -16,6 +16,8 @@ import java.util.List;
 @Builder
 public class MenuUpdateRequestDto {
 
+    @NotNull(message = "메뉴 id는 필수입니다.")
+    private Long id;
 
     @NotBlank(message = "메뉴명은 필수입니다.")
     @Size(max = 15, message = "메뉴명은 최대 15자입니다.")

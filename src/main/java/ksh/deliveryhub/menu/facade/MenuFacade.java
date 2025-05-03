@@ -8,6 +8,7 @@ import ksh.deliveryhub.menu.service.MenuService;
 import ksh.deliveryhub.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class MenuFacade {
     private final MenuOptionService menuOptionService;
     private final StoreService storeService;
 
+    @Transactional
     public MenuWithOptions registerMenu(Menu menu, List<MenuOption> menuOptions) {
         storeService.exists(menu.getStoreId());
 
@@ -28,6 +30,7 @@ public class MenuFacade {
         return MenuWithOptions.of(registeredMenu, registeredMenuOptions);
     }
 
+    @Transactional
     public MenuWithOptions updateMenu(Menu menu, List<MenuOption> menuOptions) {
         Menu updatedMenu = menuService.updateMenu(menu);
         List<MenuOption> updatedMenuOptions = menuOptionService.updateOptions(menuOptions);
@@ -35,6 +38,7 @@ public class MenuFacade {
         return MenuWithOptions.of(updatedMenu, updatedMenuOptions);
     }
 
+    @Transactional
     public MenuWithOptions deleteMenu(long id, long storeId) {
         List<MenuOption> menuOptions = menuOptionService.deleteMenuOptionsOfMenu(id);
         Menu menu = menuService.deleteMenu(id, storeId);

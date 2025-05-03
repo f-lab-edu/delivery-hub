@@ -7,7 +7,6 @@ import ksh.deliveryhub.menu.model.MenuOption;
 import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ public class MenuOptionServiceImpl implements MenuOptionService {
 
     private final MenuOptionRepository menuOptionRepository;
 
-    @Transactional
     @Override
     public List<MenuOption> registerMenuOptions(long menuId, List<MenuOption> menuOptions) {
         List<MenuOptionEntity> menuOptionEntities = menuOptions.stream()
@@ -36,7 +34,6 @@ public class MenuOptionServiceImpl implements MenuOptionService {
             .toList();
     }
 
-    @Transactional
     @Override
     public List<MenuOption> updateOptions(List<MenuOption> menuOptions) {
         List<Long> ids = menuOptions.stream()
@@ -65,7 +62,6 @@ public class MenuOptionServiceImpl implements MenuOptionService {
     }
 
 
-    @Transactional
     @Override
     public List<MenuOption> deleteMenuOptionsOfMenu(long menuId) {
         List<MenuOptionEntity> menuOptionEntities = menuOptionRepository.findByMenuId(menuId);

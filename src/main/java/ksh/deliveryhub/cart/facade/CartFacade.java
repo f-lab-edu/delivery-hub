@@ -35,4 +35,9 @@ public class CartFacade {
         Cart cart = cartService.getUserCart(userId);
         cartMenuService.deleteCartMenu(cartMenu.getId(), cart.getId());
     }
+
+    public void clearCart(long userId) {
+        Cart cart = cartService.getUserCart(userId);
+        cartMenuService.clearCartMenuOfUser(cart.getId());
+    }
 }

@@ -74,7 +74,7 @@ public class MenuOptionServiceImpl implements MenuOptionService {
     }
 
     @Override
-    public MenuOption getOptionIsInMenu(long id, long menuId) {
+    public MenuOption getOptionInMenu(long id, long menuId) {
         MenuOptionEntity optionEntity = menuOptionRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND));
 

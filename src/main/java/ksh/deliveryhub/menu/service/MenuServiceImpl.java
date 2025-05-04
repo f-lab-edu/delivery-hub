@@ -1,5 +1,6 @@
 package ksh.deliveryhub.menu.service;
 
+import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.menu.entity.MenuEntity;
@@ -8,6 +9,8 @@ import ksh.deliveryhub.menu.model.Menu;
 import ksh.deliveryhub.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -66,5 +69,16 @@ public class MenuServiceImpl implements MenuService {
         }
 
         return Menu.from(menuEntity);
+    }
+
+    @Override
+    public List<Menu> findMenusInCart(List<CartMenu> cartMenus) {
+        List<Long> ids = cartMenus.stream()
+            .map(CartMenu::getMenuId)
+            .toList();
+
+        return menuRepository.findAllById(ids).stream()
+            .map(Menu::from)
+            .toList();
     }
 }

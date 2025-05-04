@@ -28,10 +28,10 @@ public class CartFacade {
 
     public CartMenu addMenuToCart(long userId, CartMenu cartMenu) {
         Cart cart = cartService.getUserCart(userId);
-        menuService.getAvailableMenu(cartMenu.getMenuId());
+        Menu selectedMenu = menuService.getAvailableMenu(cartMenu.getMenuId());
         menuOptionService.getOptionInMenu(cartMenu.getOptionId(), cartMenu.getMenuId());
 
-        return cartMenuService.addCartMenu(cart.getId(), cartMenu);
+        return cartMenuService.addCartMenu(cart.getId(), cartMenu, selectedMenu.getStoreId());
     }
 
     public void changeQuantity(long userId, CartMenu cartMenu) {

@@ -18,7 +18,12 @@ public class CartMenuServiceImpl implements CartMenuService {
     private final CartMenuRepository cartMenuRepository;
 
     @Override
-    public CartMenu addCartMenu(long cartId, CartMenu cartMenu) {
+    public CartMenu addCartMenu(long cartId, CartMenu cartMenu, long storeIdOfNewMenu) {
+        Long storeIdOfExistingMenu = cartMenuRepository.findStoreIdOfExistingMenu(cartId);
+        if(storeIdOfExistingMenu != null && storeIdOfExistingMenu != storeIdOfNewMenu) {
+            throw new CustomException(ErrorCode.CART_MENU_STORE_CONFLICT);
+        }
+
         Optional<CartMenuEntity> optional = cartMenuRepository.findMenuInCart(
             cartId,
             cartMenu.getMenuId(),

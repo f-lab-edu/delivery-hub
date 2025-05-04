@@ -14,7 +14,8 @@ public enum ErrorCode {
     MENU_NOT_AVAILABLE(400, "menu.not.available"),
     MENU_OPTION_NOT_FOUND(404, "menu.option.not.found"),
     MENU_OPTION_IDS_INVALID(400, "menu.option.ids.invalid"),
-    CART_MENU_NOT_FOUND(404, "cart.menu.not.found");
+    CART_MENU_NOT_FOUND(404, "cart.menu.not.found"),
+    CART_MENU_STORE_CONFLICT(400, "cart.menu.store.conflict");
 
     private final int status;
     private final String messageKey;

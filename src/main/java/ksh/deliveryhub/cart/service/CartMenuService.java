@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CartMenuService {
 
-    CartMenu addCartMenu(long cartId, CartMenu cartMenu);
+    CartMenu addCartMenu(long cartId, CartMenu cartMenu, long storeIdOfNewMenu);
 
     void changeQuantity(long cartId, CartMenu cartMenu);
 

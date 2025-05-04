@@ -71,4 +71,16 @@ public class MenuOptionServiceImpl implements MenuOptionService {
             .map(MenuOption::from)
             .toList();
     }
+
+    @Override
+    public MenuOption getOptionIsInMenu(long id, long menuId) {
+        MenuOptionEntity optionEntity = menuOptionRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND));
+
+        if(optionEntity.getMenuId() != menuId) {
+            throw new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND_IN_MENU);
+        }
+
+        return MenuOption.from(optionEntity);
+    }
 }

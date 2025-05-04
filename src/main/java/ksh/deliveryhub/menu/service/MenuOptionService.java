@@ -11,4 +11,6 @@ public interface MenuOptionService {
     List<MenuOption> updateOptions(List<MenuOption> menuOptions);
 
     List<MenuOption> deleteMenuOptionsOfMenu(long menuId);
+
+    MenuOption getOptionIsInMenu(long id, long menuId);
 }

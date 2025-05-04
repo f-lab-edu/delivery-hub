@@ -9,25 +9,15 @@ import lombok.Getter;
 @Builder
 public class CartMenuDetail {
 
-    private long id;
-    private int quantity;
-    private String menuName;
-    private String menuDescription;
-    private int menuPrice;
-    private String menuImage;
-    private String optionName;
-    private int optionPrice;
+    private CartMenu cartMenu;
+    private Menu menu;
+    private MenuOption menuOption;
 
-    public static CartMenuDetail of(CartMenu cartMenu, Menu menu, MenuOption option) {
+    public static CartMenuDetail of(CartMenu cartMenu, Menu menu, MenuOption menuOption) {
         return CartMenuDetail.builder()
-            .id(cartMenu.getId())
-            .quantity(cartMenu.getQuantity())
-            .menuName(menu.getName())
-            .menuDescription(menu.getDescription())
-            .menuPrice(menu.getPrice())
-            .menuImage(menu.getImage())
-            .optionName(option.getName())
-            .optionPrice(option.getPrice())
+            .cartMenu(cartMenu)
+            .menu(menu)
+            .menuOption(menuOption)
             .build();
     }
 }

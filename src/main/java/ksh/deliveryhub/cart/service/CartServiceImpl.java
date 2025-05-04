@@ -17,7 +17,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getUserCart(long userId) {
-        CartEntity userCartEntity = cartRepository.findByUserId(userId)
+        CartEntity userCartEntity = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
             .orElseGet(() -> cartRepository.save(createCartEntity(userId)));
 
         return Cart.from(userCartEntity);

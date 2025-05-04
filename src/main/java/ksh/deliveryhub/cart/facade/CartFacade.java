@@ -65,8 +65,8 @@ public class CartFacade {
             .map(cm -> CartMenuDetail.of(
                 cm,
                 menuMap.get(cm.getMenuId()),
-                optionMap.get(cm.getOptionId()))
-            )
+                optionMap.get(cm.getOptionId())
+            ))
             .toList();
     }
 }

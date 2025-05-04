@@ -2,6 +2,7 @@ package ksh.deliveryhub.cart.api;
 
 import jakarta.validation.Valid;
 import ksh.deliveryhub.cart.dto.request.CartMenuCreateRequestDto;
+import ksh.deliveryhub.cart.dto.request.CartMenuUpdateRequestDto;
 import ksh.deliveryhub.cart.dto.response.CartMenuResponseDto;
 import ksh.deliveryhub.cart.dto.response.CartResponseDto;
 import ksh.deliveryhub.cart.facade.CartFacade;
@@ -44,6 +45,20 @@ public class CartController {
         @Valid @RequestBody CartMenuCreateRequestDto request
     ) {
         cartFacade.addMenuToCart(userId, request.toModel());
+
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .build();
+    }
+
+    @PostMapping("/carts/{cartId}/menus/{cartMenuId}")
+    public ResponseEntity<SuccessResponseDto> changeMenuQuantity(
+        @PathVariable("cartId") long cartId,
+        @PathVariable("cartMenuId") long cartMenuId,
+        @RequestParam("userId") long userId,
+        @Valid @RequestBody CartMenuUpdateRequestDto request
+    ) {
+        cartFacade.addMenuToCart(userId, request.toModel(cartMenuId));
 
         return ResponseEntity
             .status(HttpStatus.CREATED)

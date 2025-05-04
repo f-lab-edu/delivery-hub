@@ -20,7 +20,7 @@ public class CartController {
 
     private final CartFacade cartFacade;
 
-    @GetMapping("/carts/menus")
+    @GetMapping("/carts")
     public ResponseEntity<SuccessResponseDto> getUserCart(
         @RequestParam("userId") long userId
     ) {
@@ -61,7 +61,7 @@ public class CartController {
             .build();
     }
 
-    @PostMapping("/carts}")
+    @PostMapping("/carts")
     public ResponseEntity<SuccessResponseDto> clearCart(
         @RequestParam("userId") long userId,
         @Valid @RequestBody CartMenuUpdateRequestDto request

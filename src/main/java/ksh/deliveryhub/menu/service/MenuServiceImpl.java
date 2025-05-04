@@ -57,12 +57,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void checkAvailability(long menuId) {
-        MenuEntity menuEntity = menuRepository.findById(menuId)
+    public Menu getAvailableMenu(long id) {
+        MenuEntity menuEntity = menuRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
         if(menuEntity.getMenuStatus() != MenuStatus.AVAILABLE){
             throw new CustomException(ErrorCode.MENU_NOT_AVAILABLE);
         }
+
+        return Menu.from(menuEntity);
     }
 }

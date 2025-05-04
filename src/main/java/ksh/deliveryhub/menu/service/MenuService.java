@@ -10,5 +10,5 @@ public interface MenuService {
 
     Menu deleteMenu(long id, long storeId);
 
-    void checkAvailability(long menuId);
+    Menu getAvailableMenu(long menuId);
 }

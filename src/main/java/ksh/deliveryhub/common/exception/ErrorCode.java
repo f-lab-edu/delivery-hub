@@ -12,7 +12,9 @@ public enum ErrorCode {
     MENU_NOT_FOUND(404, "menu.not.found"),
     MENU_STORE_ID_MISMATCH(403, "menu.store.id.mismatch"),
     MENU_NOT_AVAILABLE(400, "menu.not.available"),
-    MENU_OPTION_IDS_INVALID(400, "menu.option.ids.invalid");
+    MENU_OPTION_IDS_INVALID(400, "menu.option.ids.invalid"),
+    CART_MENU_NOT_FOUND(404, "cart.menu.not.found"),
+    CART_MENU_NOT_FOUND_IN_CART(404, "cart.menu.not.found.in.cart");
 
     private final int status;
     private final String messageKey;

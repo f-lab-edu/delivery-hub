@@ -25,8 +25,8 @@ public class CartMenuEntity extends BaseEntity {
 
     private Long optionId;
 
-    public void increaseQuantity(Integer quantity) {
-        this.quantity += quantity;
+    public void updateQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     @Builder

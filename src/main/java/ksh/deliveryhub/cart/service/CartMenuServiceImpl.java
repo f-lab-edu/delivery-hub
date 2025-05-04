@@ -3,6 +3,8 @@ package ksh.deliveryhub.cart.service;
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
 import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.cart.repository.CartMenuRepository;
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,24 @@ public class CartMenuServiceImpl implements CartMenuService {
 
         if (optional.isPresent()) {
             CartMenuEntity cartMenuEntity = optional.get();
-            cartMenuEntity.increaseQuantity(cartMenu.getQuantity());
+            cartMenuEntity.updateQuantity(cartMenu.getQuantity());
             return CartMenu.from(cartMenuEntity);
         }
 
         CartMenuEntity savedEntity = cartMenuRepository.save(cartMenu.toEntity());
         return CartMenu.from(savedEntity);
+    }
+
+    @Override
+    public void changeQuantity(long userCartId, CartMenu cartMenu) {
+        CartMenuEntity cartMenuEntity = cartMenuRepository.findByIdAndCartId(cartMenu.getId(), userCartId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CART_MENU_NOT_FOUND));
+
+        if(cartMenu.getQuantity() < 1) {
+            cartMenuRepository.delete(cartMenuEntity);
+            return;
+        }
+
+        cartMenuEntity.updateQuantity(cartMenu.getQuantity());
     }
 }

@@ -5,4 +5,6 @@ import ksh.deliveryhub.cart.model.CartMenu;
 public interface CartMenuService {
 
     CartMenu addCartMenu(long cartId, CartMenu cartMenu);
+
+    void changeQuantity(long userCartId, CartMenu cartMenu);
 }

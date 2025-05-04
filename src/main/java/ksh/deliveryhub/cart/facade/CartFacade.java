@@ -30,4 +30,9 @@ public class CartFacade {
         Cart cart = cartService.getUserCart(userId);
         cartMenuService.changeQuantity(cart.getId(), cartMenu);
     }
+
+    public void deleteMenuInCart(long userId, CartMenu cartMenu) {
+        Cart cart = cartService.getUserCart(userId);
+        cartMenuService.deleteCartMenu(cartMenu.getId(), cart.getId());
+    }
 }

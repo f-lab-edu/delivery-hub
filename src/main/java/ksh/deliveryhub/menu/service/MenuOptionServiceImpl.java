@@ -78,7 +78,7 @@ public class MenuOptionServiceImpl implements MenuOptionService {
             .orElseThrow(() -> new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND));
 
         if(optionEntity.getMenuId() != menuId) {
-            throw new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND_IN_MENU);
+            throw new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND);
         }
 
         return MenuOption.from(optionEntity);

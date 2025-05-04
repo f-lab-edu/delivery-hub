@@ -9,4 +9,6 @@ public interface MenuService {
     Menu updateMenu(Menu menu);
 
     Menu deleteMenu(long id, long storeId);
+
+    void checkAvailability(long menuId);
 }

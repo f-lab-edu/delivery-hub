@@ -3,6 +3,7 @@ package ksh.deliveryhub.menu.service;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.menu.entity.MenuEntity;
+import ksh.deliveryhub.menu.entity.MenuStatus;
 import ksh.deliveryhub.menu.model.Menu;
 import ksh.deliveryhub.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,15 @@ public class MenuServiceImpl implements MenuService {
         menuRepository.deleteById(id);
 
         return Menu.from(menuEntity);
+    }
+
+    @Override
+    public void checkAvailability(long menuId) {
+        MenuEntity menuEntity = menuRepository.findById(menuId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+        if(menuEntity.getMenuStatus() != MenuStatus.AVAILABLE){
+            throw new CustomException(ErrorCode.MENU_NOT_AVAILABLE);
+        }
     }
 }

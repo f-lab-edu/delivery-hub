@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface CartMenuQueryRepository {
 
     Optional<CartMenuEntity> findMenuInCart(long cartId, long menuId, long optionId);
+
+    Long findStoreIdOfExistingMenu(long cartId);
 }

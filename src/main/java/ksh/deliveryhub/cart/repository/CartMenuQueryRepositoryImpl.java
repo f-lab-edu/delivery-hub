@@ -2,10 +2,12 @@ package ksh.deliveryhub.cart.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
-import ksh.deliveryhub.cart.entity.QCartMenuEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
+
+import static ksh.deliveryhub.cart.entity.QCartMenuEntity.cartMenuEntity;
+import static ksh.deliveryhub.menu.entity.QMenuEntity.menuEntity;
 
 @RequiredArgsConstructor
 public class CartMenuQueryRepositoryImpl implements CartMenuQueryRepository {
@@ -15,16 +17,28 @@ public class CartMenuQueryRepositoryImpl implements CartMenuQueryRepository {
 
     @Override
     public Optional<CartMenuEntity> findMenuInCart(long cartId, long menuId, long optionId) {
-        CartMenuEntity cartMenuEntity = queryFactory
-            .select(QCartMenuEntity.cartMenuEntity)
-            .from(QCartMenuEntity.cartMenuEntity)
+        CartMenuEntity entity = queryFactory
+            .select(cartMenuEntity)
+            .from(cartMenuEntity)
             .where(
-                QCartMenuEntity.cartMenuEntity.cartId.eq(cartId),
-                QCartMenuEntity.cartMenuEntity.menuId.eq(menuId),
-                QCartMenuEntity.cartMenuEntity.optionId.eq(optionId)
+                cartMenuEntity.cartId.eq(cartId),
+                cartMenuEntity.menuId.eq(menuId),
+                cartMenuEntity.optionId.eq(optionId)
             )
             .fetchOne();
 
-        return Optional.ofNullable(cartMenuEntity);
+        return Optional.ofNullable(entity);
+    }
+
+    @Override
+    public Long findStoreIdOfExistingMenu(long cartId) {
+        return queryFactory
+            .select(menuEntity.storeId)
+            .from(cartMenuEntity)
+            .join(menuEntity)
+            .on(cartMenuEntity.menuId.eq(menuEntity.id))
+            .where(cartMenuEntity.cartId.eq(cartId))
+            .limit(1)
+            .fetchOne();
     }
 }

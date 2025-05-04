@@ -35,8 +35,8 @@ public class CartMenuServiceImpl implements CartMenuService {
     }
 
     @Override
-    public void changeQuantity(long userCartId, CartMenu cartMenu) {
-        CartMenuEntity cartMenuEntity = cartMenuRepository.findByIdAndCartId(cartMenu.getId(), userCartId)
+    public void changeQuantity(long cartId, CartMenu cartMenu) {
+        CartMenuEntity cartMenuEntity = cartMenuRepository.findByIdAndCartId(cartMenu.getId(), cartId)
             .orElseThrow(() -> new CustomException(ErrorCode.CART_MENU_NOT_FOUND));
 
         if(cartMenu.getQuantity() < 1) {
@@ -45,5 +45,13 @@ public class CartMenuServiceImpl implements CartMenuService {
         }
 
         cartMenuEntity.updateQuantity(cartMenu.getQuantity());
+    }
+
+    @Override
+    public void deleteCartMenu(long id, long cartId) {
+        CartMenuEntity cartMenuEntity = cartMenuRepository.findByIdAndCartId(id, cartId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CART_MENU_NOT_FOUND));
+
+        cartMenuRepository.delete(cartMenuEntity);
     }
 }

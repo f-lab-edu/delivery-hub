@@ -64,4 +64,17 @@ public class CartController {
             .status(HttpStatus.CREATED)
             .build();
     }
+
+    @DeleteMapping("/carts/{cartId}/menus/{cartMenuId}")
+    public ResponseEntity<SuccessResponseDto> deleteMenu(
+        @PathVariable("cartId") long cartId,
+        @PathVariable("cartMenuId") long cartMenuId,
+        @RequestParam("userId") long userId
+    ) {
+        cartFacade.deleteMenuInCart(userId, cartMenuId);
+
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build();
+    }
 }

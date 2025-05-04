@@ -9,4 +9,6 @@ public interface CartMenuService {
     void changeQuantity(long cartId, CartMenu cartMenu);
 
     void deleteCartMenu(long id, long cartId);
+
+    void clearCartMenuOfUser(long cartId);
 }

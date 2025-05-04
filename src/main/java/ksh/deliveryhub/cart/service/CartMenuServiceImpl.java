@@ -54,4 +54,9 @@ public class CartMenuServiceImpl implements CartMenuService {
 
         cartMenuRepository.delete(cartMenuEntity);
     }
+
+    @Override
+    public void clearCartMenuOfUser(long cartId) {
+        cartMenuRepository.deleteByCartId(cartId);
+    }
 }

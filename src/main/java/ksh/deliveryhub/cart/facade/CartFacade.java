@@ -4,8 +4,7 @@ import ksh.deliveryhub.cart.model.Cart;
 import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
-import ksh.deliveryhub.common.exception.CustomException;
-import ksh.deliveryhub.common.exception.ErrorCode;
+import ksh.deliveryhub.menu.service.MenuOptionService;
 import ksh.deliveryhub.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,10 +16,12 @@ public class CartFacade {
     private final CartService cartService;
     private final CartMenuService cartMenuService;
     private final MenuService menuService;
+    private final MenuOptionService menuOptionService;
 
     public CartMenu addMenuToCart(long userId, CartMenu cartMenu) {
         Cart cart = cartService.getUserCart(userId);
-        menuService.checkAvailability(cartMenu.getMenuId());
+        menuService.getAvailableMenu(cartMenu.getMenuId());
+        menuOptionService.getOptionIsInMenu(cartMenu.getOptionId(), cartMenu.getMenuId());
 
         return cartMenuService.addCartMenu(cart.getId(), cartMenu);
     }

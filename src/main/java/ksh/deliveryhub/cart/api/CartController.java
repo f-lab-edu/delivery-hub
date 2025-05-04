@@ -58,7 +58,7 @@ public class CartController {
         @RequestParam("userId") long userId,
         @Valid @RequestBody CartMenuUpdateRequestDto request
     ) {
-        cartFacade.addMenuToCart(userId, request.toModel(cartMenuId));
+        cartFacade.changeQuantity(userId, request.toModel(cartMenuId));
 
         return ResponseEntity
             .status(HttpStatus.CREATED)

@@ -6,7 +6,6 @@ import ksh.deliveryhub.cart.dto.request.CartMenuUpdateRequestDto;
 import ksh.deliveryhub.cart.dto.response.CartMenuResponseDto;
 import ksh.deliveryhub.cart.dto.response.CartResponseDto;
 import ksh.deliveryhub.cart.facade.CartFacade;
-import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -59,6 +58,19 @@ public class CartController {
         @Valid @RequestBody CartMenuUpdateRequestDto request
     ) {
         cartFacade.changeQuantity(userId, request.toModel(cartMenuId));
+
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .build();
+    }
+
+    @PostMapping("/carts/{cartId}}")
+    public ResponseEntity<SuccessResponseDto> clearCart(
+        @PathVariable("cartId") long cartId,
+        @RequestParam("userId") long userId,
+        @Valid @RequestBody CartMenuUpdateRequestDto request
+    ) {
+        cartFacade.clearCart(userId);
 
         return ResponseEntity
             .status(HttpStatus.CREATED)

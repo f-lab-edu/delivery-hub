@@ -8,6 +8,7 @@ import ksh.deliveryhub.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,5 +59,12 @@ public class CartMenuServiceImpl implements CartMenuService {
     @Override
     public void clearCartMenuOfUser(long cartId) {
         cartMenuRepository.deleteByCartId(cartId);
+    }
+
+    @Override
+    public List<CartMenu> findCartMenusInCart(long cartId) {
+        return cartMenuRepository.findByCartId(cartId).stream()
+            .map(CartMenu::from)
+            .toList();
     }
 }

@@ -37,6 +37,7 @@ public class CouponEntity extends BaseEntity {
 
     @Builder
     private CouponEntity(
+        Long id,
         String code,
         String description,
         Integer discountAmount,
@@ -45,6 +46,7 @@ public class CouponEntity extends BaseEntity {
         Integer issueNumberLimit,
         Integer minimumSpend
     ) {
+        this.id = id;
         this.code = code;
         this.description = description;
         this.discountAmount = discountAmount;

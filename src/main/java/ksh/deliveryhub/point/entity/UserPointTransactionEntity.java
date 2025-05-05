@@ -34,6 +34,7 @@ public class UserPointTransactionEntity extends BaseEntity {
 
     @Builder
     private UserPointTransactionEntity(
+        Long id,
         PointEventType pointEventType,
         Integer initialBalance,
         Integer remainingBalance,
@@ -41,6 +42,7 @@ public class UserPointTransactionEntity extends BaseEntity {
         Long orderId,
         Long userPointId
     ) {
+        this.id = id;
         this.pointEventType = pointEventType;
         this.initialBalance = initialBalance;
         this.remainingBalance = remainingBalance;

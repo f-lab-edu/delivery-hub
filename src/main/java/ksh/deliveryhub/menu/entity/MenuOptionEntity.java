@@ -23,12 +23,23 @@ public class MenuOptionEntity extends BaseEntity {
 
     private Long menuId;
 
+    public void updateMenuId(long menuId) {
+        this.menuId = menuId;
+    }
+
+    public void update(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
+
     @Builder
     private MenuOptionEntity(
+        Long id,
         String name,
         Integer price,
         Long menuId
     ) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.menuId = menuId;

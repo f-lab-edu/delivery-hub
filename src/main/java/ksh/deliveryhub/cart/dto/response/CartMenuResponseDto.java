@@ -18,7 +18,7 @@ public class CartMenuResponseDto {
     private int menuPrice;
     private String menuImage;
     private String optionName;
-    private int optionPrice;
+    private Integer optionPrice;
 
     public static CartMenuResponseDto from(CartMenuDetail cartMenuDetail) {
         CartMenu cartMenu = cartMenuDetail.getCartMenu();
@@ -32,8 +32,8 @@ public class CartMenuResponseDto {
             .menuDescription(menu.getDescription())
             .menuPrice(menu.getPrice())
             .menuImage(menu.getImage())
-            .optionName(option.getName())
-            .optionPrice(option.getPrice())
+            .optionName(option != null ? option.getName() : null)
+            .optionPrice(option != null ? option.getPrice() : null)
             .build();
     }
 }

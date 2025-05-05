@@ -32,7 +32,7 @@ public class CartMenuServiceImpl implements CartMenuService {
 
         if (optional.isPresent()) {
             CartMenuEntity cartMenuEntity = optional.get();
-            cartMenuEntity.updateQuantity(cartMenu.getQuantity());
+            cartMenuEntity.incrementQuantity(cartMenu.getQuantity());
             return CartMenu.from(cartMenuEntity);
         }
 

@@ -29,6 +29,10 @@ public class CartMenuEntity extends BaseEntity {
         this.quantity = quantity;
     }
 
+    public void incrementQuantity(Integer quantity) {
+        this.quantity += quantity;
+    }
+
     @Builder
     private CartMenuEntity(
         Long id,

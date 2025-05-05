@@ -54,9 +54,7 @@ public class MenuEntity extends BaseEntity {
         MenuStatus menuStatus,
         Integer price,
         String image,
-        Long storeId,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+        Long storeId
     ) {
         this.id = id;
         this.name = name;
@@ -65,7 +63,5 @@ public class MenuEntity extends BaseEntity {
         this.price = price;
         this.image = image;
         this.storeId = storeId;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 }

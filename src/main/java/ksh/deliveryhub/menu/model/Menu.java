@@ -18,8 +18,6 @@ public class Menu {
     private Integer price;
     private String image;
     private Long storeId;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
     public static Menu from(MenuEntity menuEntity) {
         return Menu.builder()
@@ -43,8 +41,6 @@ public class Menu {
             .price(getPrice())
             .image(getImage())
             .storeId(getStoreId())
-            .createdAt(getCreatedAt())
-            .modifiedAt(getModifiedAt())
             .build();
     }
 }

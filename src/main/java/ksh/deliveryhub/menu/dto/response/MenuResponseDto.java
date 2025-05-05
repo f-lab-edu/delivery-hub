@@ -22,7 +22,7 @@ public class MenuResponseDto {
     private String image;
     private Long storeId;
     private LocalDateTime createdAt;
-    private List<MenuOptionResponseDto> options = new ArrayList<>();
+    private List<MenuOptionResponseDto> options;
 
     public static MenuResponseDto from(MenuWithOptions menuWithOptions) {
         Menu menu = menuWithOptions.getMenu();
@@ -38,7 +38,6 @@ public class MenuResponseDto {
             .price(menu.getPrice())
             .image(menu.getImage())
             .storeId(menu.getStoreId())
-            .createdAt(menu.getCreatedAt())
             .options(menuOptionResponseDtos)
             .build();
     }

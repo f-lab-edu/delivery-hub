@@ -104,6 +104,61 @@ class CartMenuServiceImplTest {
             .returns(ErrorCode.CART_MENU_STORE_CONFLICT, CustomException::getErrorCode);
     }
 
+    @Test
+    public void 장바구니에_담긴_메뉴의_수량을_변경한다() throws Exception{
+        //given
+        CartMenuEntity cartMenuEntity = createCartMenuEntity(1L, 1L, 3L, 3);
+        cartMenuRepository.save(cartMenuEntity);
+
+        CartMenu cartMenu = CartMenu.builder()
+            .id(cartMenuEntity.getId())
+            .quantity(1)
+            .build();
+
+        //when
+        cartMenuService.changeQuantity(1L, cartMenu);
+
+        //then
+        CartMenuEntity updatedCartMenuEntity = cartMenuRepository.findById(cartMenuEntity.getId()).get();
+        assertThat(updatedCartMenuEntity.getQuantity()).isEqualTo(1);
+    }
+
+    @Test
+    public void 장바구니에_담긴_메뉴의_수량을_변경할_때_수량이_0이면_메뉴를_장바구니에서_삭제한다() throws Exception{
+        //given
+        CartMenuEntity cartMenuEntity = createCartMenuEntity(1L, 1L, 3L, 3);
+        cartMenuRepository.save(cartMenuEntity);
+
+        CartMenu cartMenu = CartMenu.builder()
+            .id(cartMenuEntity.getId())
+            .quantity(0)
+            .build();
+
+        //when
+        cartMenuService.changeQuantity(1L, cartMenu);
+
+        //then
+        boolean exists = cartMenuRepository.existsById(cartMenuEntity.getId());
+        assertThat(exists).isFalse();
+    }
+
+    @Test
+    public void 장바구니에_담긴_메뉴의_수량을_변경할_때_사용자의_장바구니에_없는_메뉴는_수량을_변경할_수_없다() throws Exception{
+        //given
+        CartMenuEntity cartMenuEntity = createCartMenuEntity(1L, 1L, 3L, 3);
+        cartMenuRepository.save(cartMenuEntity);
+
+        CartMenu cartMenu = CartMenu.builder()
+            .id(3L)
+            .quantity(1)
+            .build();
+
+        //when //then
+        assertThatExceptionOfType(CustomException.class)
+            .isThrownBy(() -> cartMenuService.changeQuantity(1L, cartMenu))
+            .returns(ErrorCode.CART_MENU_NOT_FOUND, CustomException::getErrorCode);
+    }
+
     private static MenuEntity createMenuEntity(long storeId) {
         return MenuEntity.builder()
             .storeId(storeId)

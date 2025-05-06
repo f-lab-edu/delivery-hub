@@ -36,6 +36,14 @@ public class CouponEntity extends BaseEntity {
 
     private Integer minimumSpend;
 
+    public void decreaseRemainingQuantity() {
+        this.remainingQuantity--;
+
+        if(this.remainingQuantity <= 0) {
+            this.couponStatus = CouponStatus.INACTIVE;
+        }
+    }
+
     @Builder
     private CouponEntity(
         Long id,

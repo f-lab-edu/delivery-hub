@@ -6,9 +6,9 @@ import ksh.deliveryhub.coupon.model.CouponTransaction;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.repository.CouponTransactionRepository;
 import lombok.Builder;
-import lombok.Getter;
+import org.springframework.stereotype.Service;
 
-@Getter
+@Service
 @Builder
 public class CouponTransactionServiceImpl implements CouponTransactionService {
 

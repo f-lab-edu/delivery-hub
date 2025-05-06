@@ -17,6 +17,10 @@ public class CouponFacade {
     private final UserCouponService userCouponService;
     private final CouponTransactionService couponTransactionService;
 
+    public Coupon createCoupon(Coupon coupon) {
+        return couponService.createCoupon(coupon);
+    }
+
     public UserCouponDetail registerUserCoupon(long userId, String code) {
         Coupon coupon = couponService.issueCoupon(code);
         UserCoupon userCoupon = userCouponService.registerCoupon(userId, coupon);

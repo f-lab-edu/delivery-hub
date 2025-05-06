@@ -12,6 +12,7 @@ import lombok.Getter;
 public class CartMenuResponseDto {
 
     private long id;
+    private int totalPrice;
     private int quantity;
     private String menuName;
     private String menuDescription;
@@ -25,8 +26,13 @@ public class CartMenuResponseDto {
         Menu menu = cartMenuDetail.getMenu();
         MenuOption option = cartMenuDetail.getMenuOption();
 
+        int quantity = cartMenu.getQuantity();
+        int cartMenuPrice = menu.getPrice() + (option != null ? option.getPrice() : 0);
+        int totalPrice = quantity * cartMenuPrice;
+
         return CartMenuResponseDto.builder()
             .id(cartMenu.getId())
+            .totalPrice(totalPrice)
             .quantity(cartMenu.getQuantity())
             .menuName(menu.getName())
             .menuDescription(menu.getDescription())

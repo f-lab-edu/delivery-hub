@@ -18,7 +18,7 @@ public class UserCouponServiceImpl implements UserCouponService{
 
     @Override
     public UserCoupon registerCoupon(long userId, Coupon coupon) {
-        Integer duration = coupon.getValidDays();
+        Integer duration = coupon.getDuration();
         LocalDateTime expireAt = LocalDateTime.now().plusDays(duration);
 
         UserCouponEntity userCouponEntity = UserCouponEntity.builder()

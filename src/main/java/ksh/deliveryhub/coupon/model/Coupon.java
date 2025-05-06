@@ -14,7 +14,7 @@ public class Coupon {
     private String code;
     private String description;
     private Integer discountAmount;
-    private Integer validDays;
+    private Integer duration;
     private FoodCategory foodCategory;
     private CouponStatus couponStatus;
     private Integer issueNumberLimit;
@@ -26,7 +26,7 @@ public class Coupon {
             .code(couponEntity.getCode())
             .description(couponEntity.getDescription())
             .discountAmount(couponEntity.getDiscountAmount())
-            .validDays(couponEntity.getValidDays())
+            .duration(couponEntity.getDuration())
             .foodCategory(couponEntity.getFoodCategory())
             .couponStatus(couponEntity.getCouponStatus())
             .issueNumberLimit(couponEntity.getIssueNumberLimit())
@@ -40,7 +40,7 @@ public class Coupon {
             .code(code)
             .description(getDescription())
             .discountAmount(getDiscountAmount())
-            .validDays(getValidDays())
+            .duration(getDuration())
             .foodCategory(getFoodCategory())
             .couponStatus(getCouponStatus())
             .issueNumberLimit(getIssueNumberLimit())

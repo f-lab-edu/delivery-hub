@@ -17,7 +17,7 @@ public class Coupon {
     private Integer duration;
     private FoodCategory foodCategory;
     private CouponStatus couponStatus;
-    private Integer issueNumberLimit;
+    private Integer remainingQuantity;
     private Integer minimumSpend;
 
     public static Coupon from(CouponEntity couponEntity) {
@@ -29,7 +29,7 @@ public class Coupon {
             .duration(couponEntity.getDuration())
             .foodCategory(couponEntity.getFoodCategory())
             .couponStatus(couponEntity.getCouponStatus())
-            .issueNumberLimit(couponEntity.getIssueNumberLimit())
+            .remainingQuantity(couponEntity.getRemainingQuantity())
             .minimumSpend(couponEntity.getMinimumSpend())
             .build();
     }
@@ -43,7 +43,7 @@ public class Coupon {
             .duration(getDuration())
             .foodCategory(getFoodCategory())
             .couponStatus(getCouponStatus())
-            .issueNumberLimit(getIssueNumberLimit())
+            .remainingQuantity(getRemainingQuantity())
             .minimumSpend(getMinimumSpend())
             .build();
     }

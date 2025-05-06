@@ -32,7 +32,7 @@ public class CouponEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CouponStatus couponStatus;
 
-    private Integer issueNumberLimit;
+    private Integer remainingQuantity;
 
     private Integer minimumSpend;
 
@@ -45,7 +45,7 @@ public class CouponEntity extends BaseEntity {
         Integer duration,
         FoodCategory foodCategory,
         CouponStatus couponStatus,
-        Integer issueNumberLimit,
+        Integer remainingQuantity,
         Integer minimumSpend
     ) {
         this.id = id;
@@ -55,7 +55,7 @@ public class CouponEntity extends BaseEntity {
         this.duration = duration;
         this.foodCategory = foodCategory;
         this.couponStatus = couponStatus;
-        this.issueNumberLimit = issueNumberLimit;
+        this.remainingQuantity = remainingQuantity;
         this.minimumSpend = minimumSpend;
     }
 }

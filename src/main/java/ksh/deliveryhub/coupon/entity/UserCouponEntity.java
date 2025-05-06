@@ -24,7 +24,7 @@ public class UserCouponEntity extends BaseEntity {
     private Long couponId;
 
     @Enumerated(EnumType.STRING)
-    private CouponStatus couponStatus;
+    private UserCouponStatus couponStatus;
 
     private LocalDateTime expireAt;
 
@@ -33,7 +33,7 @@ public class UserCouponEntity extends BaseEntity {
         Long id,
         Long userId,
         Long couponId,
-        CouponStatus couponStatus,
+        UserCouponStatus couponStatus,
         LocalDateTime expireAt
     ) {
         this.id = id;

@@ -22,8 +22,6 @@ public class CouponTransactionEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CouponEventType eventType;
 
-    private LocalDateTime eventTime;
-
     private Long userCouponId;
 
     private Long orderId;
@@ -41,7 +39,6 @@ public class CouponTransactionEntity extends BaseEntity {
     ) {
         this.id = id;
         this.eventType = eventType;
-        this.eventTime = eventTime;
         this.userCouponId = userCouponId;
         this.orderId = orderId;
         this.userId = userId;

@@ -13,7 +13,6 @@ public class CouponTransaction {
 
     private Long id;
     private CouponEventType eventType;
-    private LocalDateTime eventTime;
     private Long userCouponId;
     private Long orderId;
     private Long userId;
@@ -24,7 +23,6 @@ public class CouponTransaction {
         return CouponTransaction.builder()
             .id(couponTransactionEntity.getId())
             .eventType(couponTransactionEntity.getEventType())
-            .eventTime(couponTransactionEntity.getEventTime())
             .userCouponId(couponTransactionEntity.getUserCouponId())
             .orderId(couponTransactionEntity.getOrderId())
             .userId(couponTransactionEntity.getUserId())
@@ -35,7 +33,6 @@ public class CouponTransaction {
         return CouponTransactionEntity.builder()
             .id(getId())
             .eventType(getEventType())
-            .eventTime(getEventTime())
             .userCouponId(getUserCouponId())
             .orderId(getOrderId())
             .userId(getUserId())

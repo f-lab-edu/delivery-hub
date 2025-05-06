@@ -21,11 +21,9 @@ public class CouponFacade {
         return couponService.createCoupon(coupon);
     }
 
-    public UserCouponDetail registerUserCoupon(long userId, String code) {
+    public void registerUserCoupon(long userId, String code) {
         Coupon coupon = couponService.issueCoupon(code);
         UserCoupon userCoupon = userCouponService.registerCoupon(userId, coupon);
         couponTransactionService.saveIssueTransaction(userCoupon);
-
-        return UserCouponDetail.of(coupon, userCoupon);
     }
 }

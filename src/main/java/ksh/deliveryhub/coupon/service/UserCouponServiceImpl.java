@@ -5,12 +5,12 @@ import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Service
 @RequiredArgsConstructor
 public class UserCouponServiceImpl implements UserCouponService{
 

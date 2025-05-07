@@ -5,11 +5,11 @@ import ksh.deliveryhub.coupon.entity.CouponTransactionEntity;
 import ksh.deliveryhub.coupon.model.CouponTransaction;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.repository.CouponTransactionRepository;
-import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Builder
+@RequiredArgsConstructor
 public class CouponTransactionServiceImpl implements CouponTransactionService {
 
     private final CouponTransactionRepository couponTransactionRepository;

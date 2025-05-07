@@ -7,17 +7,17 @@ import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.CouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.repository.CouponRepository;
-import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Builder
+@RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
-    private CouponRepository couponRepository;
+    private final CouponRepository couponRepository;
 
     @Override
     public Coupon createCoupon(Coupon coupon) {

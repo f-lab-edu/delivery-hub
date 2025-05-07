@@ -1,5 +1,7 @@
 package ksh.deliveryhub.coupon.service;
 
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
@@ -20,6 +22,12 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public UserCoupon registerCoupon(long userId, Coupon coupon) {
+        userCouponRepository.findByUserIdAndCouponId(userId, coupon.getId())
+            .ifPresent(userCouponEntity ->
+                {throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);}
+            );
+
+
         Integer duration = coupon.getDuration();
         LocalDateTime expireAt = LocalDateTime.now().plusDays(duration);
 

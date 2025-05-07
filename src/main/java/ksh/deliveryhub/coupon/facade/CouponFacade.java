@@ -33,7 +33,7 @@ public class CouponFacade {
         couponTransactionService.saveIssueTransaction(userCoupon);
     }
 
-    public List<UserCouponDetail> findAvailableCoupons(long userId, FoodCategory foodCategory) {
+    public List<UserCouponDetail> findAvailableCouponDetails(long userId, FoodCategory foodCategory) {
         List<UserCoupon> availableCoupons = userCouponService.findAvailableCouponsOfUser(userId, foodCategory);
 
         List<Long> ids = availableCoupons.stream()

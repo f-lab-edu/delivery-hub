@@ -39,6 +39,10 @@ public class CouponServiceImpl implements CouponService {
 
         couponEntity.decreaseRemainingQuantity();
 
+        if(couponEntity.getRemainingQuantity() == 0) {
+            couponEntity.inactive();
+        }
+
         return Coupon.from(couponRepository.save(couponEntity));
     }
 

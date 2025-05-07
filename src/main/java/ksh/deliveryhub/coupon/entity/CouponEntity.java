@@ -38,10 +38,10 @@ public class CouponEntity extends BaseEntity {
 
     public void decreaseRemainingQuantity() {
         this.remainingQuantity--;
+    }
 
-        if(this.remainingQuantity <= 0) {
-            this.couponStatus = CouponStatus.INACTIVE;
-        }
+    public void inactive() {
+        this.couponStatus = CouponStatus.INACTIVE;
     }
 
     @Builder

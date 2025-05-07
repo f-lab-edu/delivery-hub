@@ -41,4 +41,11 @@ public class CouponServiceImpl implements CouponService {
 
         return Coupon.from(couponRepository.save(couponEntity));
     }
+
+    @Override
+    public List<Coupon> findCouponsByIdsIn(List<Long> ids) {
+        return couponRepository.findAllById(ids).stream()
+            .map(Coupon::from)
+            .toList();
+    }
 }

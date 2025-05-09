@@ -21,7 +21,7 @@ public class CartController {
     private final CartFacade cartFacade;
 
     @GetMapping("/users/{userId}/carts/menus")
-    public ResponseEntity<SuccessResponseDto> getUserCart(
+    public ResponseEntity<SuccessResponseDto> getUserCartDetails(
         @PathVariable("userId") long userId
     ) {
         List<CartMenuResponseDto> cartMenuResponseDtos = cartFacade.getUserCartMenuDetails(userId).stream()

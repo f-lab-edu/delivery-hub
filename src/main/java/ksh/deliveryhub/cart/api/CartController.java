@@ -38,7 +38,7 @@ public class CartController {
 
     @PostMapping("/users/{userId}/carts/menus")
     public ResponseEntity<SuccessResponseDto> addMenu(
-        @RequestParam("userId") long userId,
+        @PathVariable("userId") long userId,
         @Valid @RequestBody CartMenuCreateRequestDto request
     ) {
         cartFacade.addMenuToCart(userId, request.toModel());
@@ -50,8 +50,8 @@ public class CartController {
 
     @PostMapping("/users/{userId}/carts/menus/{cartMenuId}")
     public ResponseEntity<SuccessResponseDto> changeMenuQuantity(
+        @PathVariable("userId") long userId,
         @PathVariable("cartMenuId") long cartMenuId,
-        @RequestParam("userId") long userId,
         @Valid @RequestBody CartMenuUpdateRequestDto request
     ) {
         cartFacade.changeQuantity(userId, request.toModel(cartMenuId));
@@ -63,8 +63,7 @@ public class CartController {
 
     @PostMapping("/users/{userId}/carts/menus")
     public ResponseEntity<SuccessResponseDto> clearCart(
-        @RequestParam("userId") long userId,
-        @Valid @RequestBody CartMenuUpdateRequestDto request
+        @PathVariable("userId") long userId
     ) {
         cartFacade.clearCart(userId);
 
@@ -75,8 +74,8 @@ public class CartController {
 
     @DeleteMapping("/users/{userId}/carts/menus/{cartMenuId}")
     public ResponseEntity<SuccessResponseDto> deleteMenu(
-        @PathVariable("cartMenuId") long cartMenuId,
-        @RequestParam("userId") long userId
+        @PathVariable("userId") long userId,
+        @PathVariable("cartMenuId") long cartMenuId
     ) {
         cartFacade.deleteMenuInCart(userId, cartMenuId);
 

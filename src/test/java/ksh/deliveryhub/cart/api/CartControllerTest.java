@@ -1,26 +1,32 @@
 package ksh.deliveryhub.cart.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ksh.deliveryhub.cart.dto.response.CartMenuResponseDto;
+import ksh.deliveryhub.cart.dto.response.CartResponseDto;
 import ksh.deliveryhub.cart.entity.CartEntity;
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
 import ksh.deliveryhub.cart.repository.CartMenuRepository;
 import ksh.deliveryhub.cart.repository.CartRepository;
+import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.menu.entity.MenuEntity;
 import ksh.deliveryhub.menu.entity.MenuOptionEntity;
 import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import ksh.deliveryhub.menu.repository.MenuRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
 import static ksh.deliveryhub.cart.entity.CartStatus.ACTIVE;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,6 +34,9 @@ class CartControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Autowired
     CartRepository cartRepository;
@@ -42,7 +51,7 @@ class CartControllerTest {
     MenuOptionRepository menuOptionRepository;
 
     @Test
-    public void 장바구니에_메뉴를_추가하고_201응답을_받는다() throws Exception {
+    public void 장바구니에_담긴_메뉴_정보를_조회에_성공하면_201응답을_받는다() throws Exception {
         //given
         //카트 생성
         CartEntity cartEntity = createCartEntity(1L);
@@ -62,23 +71,38 @@ class CartControllerTest {
         CartMenuEntity cartMenuEntity2 = createCartMenuEntity(cartEntity.getId(), menuEntity2.getId(), null, 1);
         cartMenuRepository.saveAll(List.of(cartMenuEntity1, cartMenuEntity2));
 
-        //when //then
-        mockMvc.perform(
-                get("/carts")
-                    .param("userId", "1")
+        //when
+        MvcResult mvcResult = mockMvc.perform(
+                get("/users/{userId}/carts/menus", 1L)
             ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.menus").isArray())
-            .andExpect(jsonPath("$.data.menus[0].quantity").value(2))
-            .andExpect(jsonPath("$.data.menus[0].menuName").value(menuEntity1.getName()))
-            .andExpect(jsonPath("$.data.menus[0].menuPrice").value(menuEntity1.getPrice()))
-            .andExpect(jsonPath("$.data.menus[0].optionName").value(menuOptionEntity.getName()))
-            .andExpect(jsonPath("$.data.menus[0].optionPrice").value(menuOptionEntity.getPrice()))
-            .andExpect(jsonPath("$.data.menus[1].quantity").value(1))
-            .andExpect(jsonPath("$.data.menus[1].menuName").value(menuEntity2.getName()))
-            .andExpect(jsonPath("$.data.menus[1].menuPrice").value(menuEntity2.getPrice()))
-            .andExpect(jsonPath("$.data.menus[1].optionName").isEmpty())
-            .andExpect(jsonPath("$.data.menus[1].optionPrice").isEmpty());
+            .andReturn();
+
+        //then
+        String json = mvcResult.getResponse().getContentAsString();
+        SuccessResponseDto<CartResponseDto> response =
+            objectMapper.readValue(
+                json,
+                new TypeReference<SuccessResponseDto<CartResponseDto>>() {}
+            );
+
+        CartResponseDto dto = response.getData();
+        List<CartMenuResponseDto> menus = dto.getMenus();
+
+        assertThat(menus).hasSize(2);
+
+        CartMenuResponseDto first = menus.get(0);
+        assertThat(first.getQuantity()).isEqualTo(2);
+        assertThat(first.getMenuName()).isEqualTo(menuEntity1.getName());
+        assertThat(first.getMenuPrice()).isEqualTo(menuEntity1.getPrice());
+        assertThat(first.getOptionName()).isEqualTo(menuOptionEntity.getName());
+        assertThat(first.getOptionPrice()).isEqualTo(menuOptionEntity.getPrice());
+
+        CartMenuResponseDto second = menus.get(1);
+        assertThat(second.getQuantity()).isEqualTo(1);
+        assertThat(second.getMenuName()).isEqualTo(menuEntity2.getName());
+        assertThat(second.getMenuPrice()).isEqualTo(menuEntity2.getPrice());
+        assertThat(second.getOptionName()).isNull();
+        assertThat(second.getOptionPrice()).isNull();
     }
 
     private static CartEntity createCartEntity(long userId) {

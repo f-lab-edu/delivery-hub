@@ -47,7 +47,7 @@ public class CartController {
             .build();
     }
 
-    @PostMapping("/users/{userId}/carts/menus")
+    @DeleteMapping("/users/{userId}/carts/menus")
     public ResponseEntity<SuccessResponseDto> clearCart(
         @PathVariable("userId") long userId
     ) {

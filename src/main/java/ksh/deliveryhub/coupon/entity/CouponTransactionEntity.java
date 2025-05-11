@@ -22,9 +22,7 @@ public class CouponTransactionEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CouponEventType eventType;
 
-    private LocalDateTime eventTime;
-
-    private Long couponId;
+    private Long userCouponId;
 
     private Long orderId;
 
@@ -35,14 +33,13 @@ public class CouponTransactionEntity extends BaseEntity {
         Long id,
         CouponEventType eventType,
         LocalDateTime eventTime,
-        Long couponId,
+        Long userCouponId,
         Long orderId,
         Long userId
     ) {
         this.id = id;
         this.eventType = eventType;
-        this.eventTime = eventTime;
-        this.couponId = couponId;
+        this.userCouponId = userCouponId;
         this.orderId = orderId;
         this.userId = userId;
     }

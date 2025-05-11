@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,14 +24,25 @@ public class CouponEntity extends BaseEntity {
 
     private Integer discountAmount;
 
-    private Integer validDays;
+    private Integer duration;
 
     @Enumerated(EnumType.STRING)
     private FoodCategory foodCategory;
 
-    private Integer issueNumberLimit;
+    @Enumerated(EnumType.STRING)
+    private CouponStatus couponStatus;
+
+    private Integer remainingQuantity;
 
     private Integer minimumSpend;
+
+    public void decreaseRemainingQuantity() {
+        this.remainingQuantity--;
+    }
+
+    public void inactive() {
+        this.couponStatus = CouponStatus.INACTIVE;
+    }
 
     @Builder
     private CouponEntity(
@@ -41,18 +50,20 @@ public class CouponEntity extends BaseEntity {
         String code,
         String description,
         Integer discountAmount,
-        Integer validDays,
+        Integer duration,
         FoodCategory foodCategory,
-        Integer issueNumberLimit,
+        CouponStatus couponStatus,
+        Integer remainingQuantity,
         Integer minimumSpend
     ) {
         this.id = id;
         this.code = code;
         this.description = description;
         this.discountAmount = discountAmount;
-        this.validDays = validDays;
+        this.duration = duration;
         this.foodCategory = foodCategory;
-        this.issueNumberLimit = issueNumberLimit;
+        this.couponStatus = couponStatus;
+        this.remainingQuantity = remainingQuantity;
         this.minimumSpend = minimumSpend;
     }
 }

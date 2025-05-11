@@ -1,6 +1,7 @@
 package ksh.deliveryhub.coupon.entity;
 
-public enum CouponStatus {
+public enum UserCouponStatus {
     ACTIVE,
-    INACTIVE
+    EXPIRED,
+    USED
 }

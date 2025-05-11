@@ -9,6 +9,7 @@ import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -23,16 +24,19 @@ public class CouponFacade {
     private final UserCouponService userCouponService;
     private final CouponTransactionService couponTransactionService;
 
+    @Transactional
     public Coupon createCoupon(Coupon coupon) {
         return couponService.createCoupon(coupon);
     }
 
+    @Transactional
     public void registerUserCoupon(long userId, String code) {
         Coupon coupon = couponService.issueCoupon(code);
         UserCoupon userCoupon = userCouponService.registerCoupon(userId, coupon);
         couponTransactionService.saveIssueTransaction(userCoupon);
     }
 
+    @Transactional(readOnly = true)
     public List<UserCouponDetail> findAvailableCouponDetails(long userId, FoodCategory foodCategory) {
         List<UserCoupon> availableCoupons = userCouponService.findAvailableCouponsOfUser(userId, foodCategory);
 

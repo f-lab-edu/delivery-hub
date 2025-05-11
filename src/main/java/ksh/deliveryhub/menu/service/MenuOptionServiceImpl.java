@@ -1,5 +1,6 @@
 package ksh.deliveryhub.menu.service;
 
+import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.menu.entity.MenuOptionEntity;
@@ -68,6 +69,29 @@ public class MenuOptionServiceImpl implements MenuOptionService {
         menuOptionRepository.deleteAll(menuOptionEntities);
 
         return menuOptionEntities.stream()
+            .map(MenuOption::from)
+            .toList();
+    }
+
+    @Override
+    public MenuOption getOptionInMenu(long id, long menuId) {
+        MenuOptionEntity optionEntity = menuOptionRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND));
+
+        if(optionEntity.getMenuId() != menuId) {
+            throw new CustomException(ErrorCode.MENU_OPTION_NOT_FOUND);
+        }
+
+        return MenuOption.from(optionEntity);
+    }
+
+    @Override
+    public List<MenuOption> findOptionsOfCartMenu(List<CartMenu> cartMenus) {
+        List<Long> ids = cartMenus.stream()
+            .map(CartMenu::getOptionId)
+            .toList();
+
+        return menuOptionRepository.findAllById(ids).stream()
             .map(MenuOption::from)
             .toList();
     }

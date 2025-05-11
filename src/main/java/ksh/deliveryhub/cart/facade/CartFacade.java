@@ -11,6 +11,7 @@ import ksh.deliveryhub.menu.service.MenuOptionService;
 import ksh.deliveryhub.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class CartFacade {
     private final MenuService menuService;
     private final MenuOptionService menuOptionService;
 
+    @Transactional
     public CartMenu addMenuToCart(long userId, CartMenu cartMenu) {
         Cart cart = cartService.getUserCart(userId);
         Menu selectedMenu = menuService.getAvailableMenu(cartMenu.getMenuId());
@@ -36,21 +38,25 @@ public class CartFacade {
         return cartMenuService.addCartMenu(cart.getId(), cartMenu, selectedMenu.getStoreId());
     }
 
+    @Transactional
     public void changeQuantity(long userId, CartMenu cartMenu) {
         Cart cart = cartService.getUserCart(userId);
         cartMenuService.changeQuantity(cart.getId(), cartMenu);
     }
 
+    @Transactional
     public void deleteMenuInCart(long userId, long cartMenuId) {
         Cart cart = cartService.getUserCart(userId);
         cartMenuService.deleteCartMenu(cartMenuId, cart.getId());
     }
 
+    @Transactional
     public void clearCart(long userId) {
         Cart cart = cartService.getUserCart(userId);
         cartMenuService.clearCartMenuOfUser(cart.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<CartMenuDetail> findUserCartMenuDetails(long userId) {
         Cart cart = cartService.getUserCart(userId);
         List<CartMenu> cartMenus = cartMenuService.findCartMenusInCart(cart.getId());

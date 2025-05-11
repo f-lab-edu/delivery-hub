@@ -7,6 +7,7 @@ import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class CartMenuServiceImpl implements CartMenuService {
         return CartMenu.from(savedEntity);
     }
 
+    @Transactional
     @Override
     public void changeQuantity(long cartId, CartMenu cartMenu) {
         CartMenuEntity cartMenuEntity = cartMenuRepository.findByIdAndCartId(cartMenu.getId(), cartId)

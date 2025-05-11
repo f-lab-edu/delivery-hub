@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,7 +26,7 @@ public class UserCouponEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserCouponStatus couponStatus;
 
-    private LocalDateTime expireAt;
+    private LocalDate expireAt;
 
     @Builder
     private UserCouponEntity(
@@ -34,7 +34,7 @@ public class UserCouponEntity extends BaseEntity {
         Long userId,
         Long couponId,
         UserCouponStatus couponStatus,
-        LocalDateTime expireAt
+        LocalDate expireAt
     ) {
         this.id = id;
         this.userId = userId;

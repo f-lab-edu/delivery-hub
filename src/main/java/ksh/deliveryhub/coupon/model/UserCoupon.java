@@ -5,7 +5,7 @@ import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -15,7 +15,7 @@ public class UserCoupon {
     private Long userId;
     private Long couponId;
     private UserCouponStatus couponStatus;
-    private LocalDateTime expireAt;
+    private LocalDate expireAt;
 
     public static UserCoupon from(UserCouponEntity userCouponEntity) {
         return UserCoupon.builder()

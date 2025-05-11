@@ -11,7 +11,8 @@ import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserCouponServiceImpl implements UserCouponService {
 
     private final UserCouponRepository userCouponRepository;
+    private final Clock clock;
 
     @Override
     public UserCoupon registerCoupon(long userId, Coupon coupon) {
@@ -29,7 +31,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
 
         Integer duration = coupon.getDuration();
-        LocalDateTime expireAt = LocalDateTime.now().plusDays(duration);
+        LocalDate expireAt = LocalDate.now(clock).plusDays(duration);
 
         UserCouponEntity userCouponEntity = UserCouponEntity.builder()
             .couponStatus(UserCouponStatus.ACTIVE)

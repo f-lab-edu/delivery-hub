@@ -36,7 +36,7 @@ public class UserCouponController {
         SuccessResponseDto<UserCouponDetailListResponseDto> response = SuccessResponseDto.of(userCouponDetailList);
 
         return ResponseEntity
-            .status(HttpStatus.CREATED)
+            .status(HttpStatus.OK)
             .body(response);
     }
 

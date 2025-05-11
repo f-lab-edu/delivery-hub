@@ -49,7 +49,7 @@ public class CartFacade {
         cartMenuService.clearCartMenuOfUser(cart.getId());
     }
 
-    public List<CartMenuDetail> getUserCartMenuDetails(long userId) {
+    public List<CartMenuDetail> findUserCartMenuDetails(long userId) {
         Cart cart = cartService.getUserCart(userId);
         List<CartMenu> cartMenus = cartMenuService.findCartMenusInCart(cart.getId());
         List<Menu> menusInCart = menuService.findMenusInCart(cartMenus);

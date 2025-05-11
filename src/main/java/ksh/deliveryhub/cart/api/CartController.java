@@ -21,10 +21,10 @@ public class CartController {
     private final CartFacade cartFacade;
 
     @GetMapping("/users/{userId}/carts/menus")
-    public ResponseEntity<SuccessResponseDto> getUserCartDetails(
+    public ResponseEntity<SuccessResponseDto> findUserCartDetails(
         @PathVariable("userId") long userId
     ) {
-        List<CartMenuResponseDto> cartMenuResponseDtos = cartFacade.getUserCartMenuDetails(userId).stream()
+        List<CartMenuResponseDto> cartMenuResponseDtos = cartFacade.findUserCartMenuDetails(userId).stream()
             .map(CartMenuResponseDto::from)
             .toList();
 

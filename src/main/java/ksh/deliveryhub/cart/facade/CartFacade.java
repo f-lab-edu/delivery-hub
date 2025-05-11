@@ -29,7 +29,9 @@ public class CartFacade {
     public CartMenu addMenuToCart(long userId, CartMenu cartMenu) {
         Cart cart = cartService.getUserCart(userId);
         Menu selectedMenu = menuService.getAvailableMenu(cartMenu.getMenuId());
-        menuOptionService.getOptionInMenu(cartMenu.getOptionId(), cartMenu.getMenuId());
+        if(cartMenu.getOptionId() != null){
+            menuOptionService.getOptionInMenu(cartMenu.getOptionId(), cartMenu.getMenuId());
+        }
 
         return cartMenuService.addCartMenu(cart.getId(), cartMenu, selectedMenu.getStoreId());
     }

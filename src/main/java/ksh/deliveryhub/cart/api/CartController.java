@@ -2,7 +2,6 @@ package ksh.deliveryhub.cart.api;
 
 import jakarta.validation.Valid;
 import ksh.deliveryhub.cart.dto.request.CartMenuCreateRequestDto;
-import ksh.deliveryhub.cart.dto.request.CartMenuUpdateRequestDto;
 import ksh.deliveryhub.cart.dto.response.CartMenuResponseDto;
 import ksh.deliveryhub.cart.dto.response.CartResponseDto;
 import ksh.deliveryhub.cart.facade.CartFacade;
@@ -48,19 +47,6 @@ public class CartController {
             .build();
     }
 
-    @PostMapping("/users/{userId}/carts/menus/{cartMenuId}")
-    public ResponseEntity<SuccessResponseDto> changeMenuQuantity(
-        @PathVariable("userId") long userId,
-        @PathVariable("cartMenuId") long cartMenuId,
-        @Valid @RequestBody CartMenuUpdateRequestDto request
-    ) {
-        cartFacade.changeQuantity(userId, request.toModel(cartMenuId));
-
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .build();
-    }
-
     @PostMapping("/users/{userId}/carts/menus")
     public ResponseEntity<SuccessResponseDto> clearCart(
         @PathVariable("userId") long userId
@@ -69,18 +55,6 @@ public class CartController {
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .build();
-    }
-
-    @DeleteMapping("/users/{userId}/carts/menus/{cartMenuId}")
-    public ResponseEntity<SuccessResponseDto> deleteMenu(
-        @PathVariable("userId") long userId,
-        @PathVariable("cartMenuId") long cartMenuId
-    ) {
-        cartFacade.deleteMenuInCart(userId, cartMenuId);
-
-        return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
             .build();
     }
 }

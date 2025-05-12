@@ -1,23 +1,26 @@
 package ksh.deliveryhub.cart.model;
 
-import ksh.deliveryhub.menu.model.Menu;
-import ksh.deliveryhub.menu.model.MenuOption;
-import lombok.Builder;
+import com.querydsl.core.annotations.QueryProjection;
+import ksh.deliveryhub.menu.entity.MenuStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@Builder
+@AllArgsConstructor(onConstructor = @__(@QueryProjection))
 public class CartMenuDetail {
 
-    private CartMenu cartMenu;
-    private Menu menu;
-    private MenuOption menuOption;
+    private Long id;
+    private Integer quantity;
 
-    public static CartMenuDetail of(CartMenu cartMenu, Menu menu, MenuOption menuOption) {
-        return CartMenuDetail.builder()
-            .cartMenu(cartMenu)
-            .menu(menu)
-            .menuOption(menuOption)
-            .build();
-    }
+    private Long menuId;
+    private String menuName;
+    private String menuDescription;
+    private MenuStatus menuStatus;
+    private Integer menuPrice;
+    private String image;
+    private Long storeId;
+
+    private Long optionId;
+    private String optionName;
+    private Integer optionPrice;
 }

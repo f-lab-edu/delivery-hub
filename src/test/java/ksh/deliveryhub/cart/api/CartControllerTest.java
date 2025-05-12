@@ -14,6 +14,7 @@ import ksh.deliveryhub.menu.entity.MenuOptionEntity;
 import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import ksh.deliveryhub.menu.repository.MenuRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,6 +50,14 @@ class CartControllerTest {
 
     @Autowired
     MenuOptionRepository menuOptionRepository;
+
+    @AfterEach
+    void tearDown() {
+        cartMenuRepository.deleteAllInBatch();
+        cartRepository.deleteAllInBatch();
+        menuRepository.deleteAllInBatch();
+        menuOptionRepository.deleteAllInBatch();
+    }
 
     @Test
     public void 장바구니에_담긴_메뉴_정보를_조회에_성공하면_201응답을_받는다() throws Exception {

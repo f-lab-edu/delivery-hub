@@ -6,6 +6,7 @@ import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
+import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
@@ -45,13 +46,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<UserCoupon> findAvailableCouponsOfUser(long userId, FoodCategory foodCategory) {
-        return userCouponRepository.findApplicableCoupons(
-                userId,
-                foodCategory
-            )
-            .stream()
-            .map(UserCoupon::from)
-            .toList();
+    public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
+        return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory);
     }
 }

@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -38,21 +35,6 @@ public class CouponFacade {
 
     @Transactional(readOnly = true)
     public List<UserCouponDetail> findAvailableCouponDetails(long userId, FoodCategory foodCategory) {
-        List<UserCoupon> availableCoupons = userCouponService.findAvailableCouponsOfUser(userId, foodCategory);
-
-        List<Long> ids = availableCoupons.stream()
-            .map(UserCoupon::getId)
-            .toList();
-        List<Coupon> relatedCoupons = couponService.findCouponsByIdsIn(ids);
-
-        Map<Long, UserCoupon> userCouponMap = availableCoupons.stream()
-            .collect(Collectors.toMap(UserCoupon::getCouponId, Function.identity()));
-
-        return relatedCoupons.stream()
-            .map(coupon -> UserCouponDetail.of(
-                coupon,
-                userCouponMap.get(coupon.getId())
-            ))
-            .toList();
+        return userCouponService.findAvailableCouponsWithDetail(userId, foodCategory);
     }
 }

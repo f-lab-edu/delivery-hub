@@ -1,9 +1,6 @@
 package ksh.deliveryhub.cart.dto.response;
 
-import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
-import ksh.deliveryhub.menu.model.Menu;
-import ksh.deliveryhub.menu.model.MenuOption;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,24 +19,20 @@ public class CartMenuResponseDto {
     private Integer optionPrice;
 
     public static CartMenuResponseDto from(CartMenuDetail cartMenuDetail) {
-        CartMenu cartMenu = cartMenuDetail.getCartMenu();
-        Menu menu = cartMenuDetail.getMenu();
-        MenuOption option = cartMenuDetail.getMenuOption();
-
-        int quantity = cartMenu.getQuantity();
-        int cartMenuPrice = menu.getPrice() + (option != null ? option.getPrice() : 0);
+        int quantity = cartMenuDetail.getQuantity();
+        int cartMenuPrice = cartMenuDetail.getMenuPrice() + (cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionPrice() : 0);
         int totalPrice = quantity * cartMenuPrice;
 
         return CartMenuResponseDto.builder()
-            .id(cartMenu.getId())
+            .id(cartMenuDetail.getId())
             .totalPrice(totalPrice)
-            .quantity(cartMenu.getQuantity())
-            .menuName(menu.getName())
-            .menuDescription(menu.getDescription())
-            .menuPrice(menu.getPrice())
-            .menuImage(menu.getImage())
-            .optionName(option != null ? option.getName() : null)
-            .optionPrice(option != null ? option.getPrice() : null)
+            .quantity(cartMenuDetail.getQuantity())
+            .menuName(cartMenuDetail.getMenuName())
+            .menuDescription(cartMenuDetail.getMenuDescription())
+            .menuPrice(cartMenuDetail.getMenuPrice())
+            .menuImage(cartMenuDetail.getImage())
+            .optionName(cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionName() : null)
+            .optionPrice(cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionPrice() : null)
             .build();
     }
 }

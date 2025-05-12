@@ -4,6 +4,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
+import ksh.deliveryhub.coupon.model.QUserCouponDetail;
+import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 
@@ -18,11 +20,26 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<UserCouponEntity> findApplicableCoupons(long userId, FoodCategory foodCategory) {
+    public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
         BooleanExpression foodCategoryEquals = foodCategory == null ? null : couponEntity.foodCategory.eq(foodCategory);
 
         return queryFactory
-            .select(userCouponEntity)
+            .select(new QUserCouponDetail(
+                userCouponEntity.id,
+                userCouponEntity.userId,
+                userCouponEntity.couponStatus,
+                userCouponEntity.expireAt,
+
+                couponEntity.id,
+                couponEntity.code,
+                couponEntity.description,
+                couponEntity.discountAmount,
+                couponEntity.duration,
+                couponEntity.foodCategory,
+                couponEntity.couponStatus,
+                couponEntity.remainingQuantity,
+                couponEntity.minimumSpend
+            ))
             .from(userCouponEntity)
             .join(couponEntity)
             .on(userCouponEntity.couponId.eq(couponEntity.id))

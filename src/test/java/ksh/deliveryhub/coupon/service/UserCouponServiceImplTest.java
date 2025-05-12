@@ -6,6 +6,7 @@ import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
+import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.repository.CouponRepository;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
 import ksh.deliveryhub.store.entity.FoodCategory;
@@ -123,7 +124,7 @@ class UserCouponServiceImplTest {
         userCouponRepository.saveAll(List.of(userCouponEntity1, userCouponEntity2));
 
         //when
-        List<UserCoupon> userCoupons = userCouponService.findAvailableCouponsOfUser(1L, null);
+        List<UserCouponDetail> userCoupons = userCouponService.findAvailableCouponsWithDetail(1L, null);
 
         //then
         assertThat(userCoupons).hasSize(2)

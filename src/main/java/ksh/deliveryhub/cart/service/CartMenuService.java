@@ -1,6 +1,7 @@
 package ksh.deliveryhub.cart.service;
 
 import ksh.deliveryhub.cart.model.CartMenu;
+import ksh.deliveryhub.cart.model.CartMenuDetail;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface CartMenuService {
 
     void clearCartMenuOfUser(long cartId);
 
-    List<CartMenu> findCartMenusInCart(long userId);
+    List<CartMenuDetail> findCartMenusWithDetail(long cartId);
 }

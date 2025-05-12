@@ -2,6 +2,7 @@ package ksh.deliveryhub.cart.service;
 
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
 import ksh.deliveryhub.cart.model.CartMenu;
+import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.cart.repository.CartMenuRepository;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
@@ -69,9 +70,7 @@ public class CartMenuServiceImpl implements CartMenuService {
     }
 
     @Override
-    public List<CartMenu> findCartMenusInCart(long cartId) {
-        return cartMenuRepository.findByCartId(cartId).stream()
-            .map(CartMenu::from)
-            .toList();
+    public List<CartMenuDetail> findCartMenusWithDetail(long cartId) {
+        return cartMenuRepository.findCartMenusWithDetail(cartId);
     }
 }

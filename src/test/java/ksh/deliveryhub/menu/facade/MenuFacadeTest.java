@@ -10,6 +10,7 @@ import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import ksh.deliveryhub.menu.repository.MenuRepository;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.repository.StoreRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,13 @@ class MenuFacadeTest {
 
     @Autowired
     StoreRepository storeRepository;
+
+    @AfterEach
+    void tearDown() {
+        menuRepository.deleteAllInBatch();
+        menuOptionRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
+    }
 
     @Test
     public void 가게에_새로운_메뉴를_등록한다() throws Exception {

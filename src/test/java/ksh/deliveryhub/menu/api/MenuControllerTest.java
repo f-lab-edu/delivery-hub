@@ -51,6 +51,8 @@ class MenuControllerTest {
     @AfterEach
     void tearDown() {
         menuRepository.deleteAllInBatch();
+        menuOptionRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
     }
 
     @Test

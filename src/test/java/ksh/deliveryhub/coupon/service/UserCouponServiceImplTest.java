@@ -46,6 +46,7 @@ class UserCouponServiceImplTest {
     @AfterEach
     void tearDown() {
         userCouponRepository.deleteAllInBatch();
+        couponRepository.deleteAllInBatch();
     }
 
     @Test

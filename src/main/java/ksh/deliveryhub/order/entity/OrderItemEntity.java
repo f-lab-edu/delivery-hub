@@ -19,6 +19,10 @@ public class OrderItemEntity extends BaseEntity {
 
     private Integer quantity;
 
+    private Integer menuPrice;
+
+    private Integer optionPrice;
+
     private Long orderId;
 
     private Long menuId;
@@ -29,12 +33,16 @@ public class OrderItemEntity extends BaseEntity {
     private OrderItemEntity(
         Long id,
         Integer quantity,
+        Integer menuPrice,
+        Integer optionPrice,
         Long orderId,
         Long menuId,
         Long optionId
     ) {
         this.id = id;
         this.quantity = quantity;
+        this.menuPrice = menuPrice;
+        this.optionPrice = optionPrice;
         this.orderId = orderId;
         this.menuId = menuId;
         this.optionId = optionId;

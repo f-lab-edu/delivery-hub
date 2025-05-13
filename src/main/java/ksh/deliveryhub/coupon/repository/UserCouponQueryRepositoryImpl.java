@@ -10,6 +10,7 @@ import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ksh.deliveryhub.coupon.entity.QCouponEntity.couponEntity;
 import static ksh.deliveryhub.coupon.entity.QUserCouponEntity.userCouponEntity;
@@ -24,22 +25,7 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
         BooleanExpression foodCategoryEquals = foodCategory == null ? null : couponEntity.foodCategory.eq(foodCategory);
 
         return queryFactory
-            .select(new QUserCouponDetail(
-                userCouponEntity.id,
-                userCouponEntity.userId,
-                userCouponEntity.couponStatus,
-                userCouponEntity.expireAt,
-
-                couponEntity.id,
-                couponEntity.code,
-                couponEntity.description,
-                couponEntity.discountAmount,
-                couponEntity.duration,
-                couponEntity.foodCategory,
-                couponEntity.couponStatus,
-                couponEntity.remainingQuantity,
-                couponEntity.minimumSpend
-            ))
+            .select(projectUserCouponDetail())
             .from(userCouponEntity)
             .join(couponEntity)
             .on(userCouponEntity.couponId.eq(couponEntity.id))
@@ -49,5 +35,41 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
                 foodCategoryEquals
             )
             .fetch();
+    }
+
+    @Override
+    public Optional<UserCouponEntity> findAvailableCouponByIdAndUserId(long id, long userId) {
+        UserCouponEntity userCoupon = queryFactory
+            .select(userCouponEntity)
+            .from(userCouponEntity)
+            .join(couponEntity)
+            .on(userCouponEntity.couponId.eq(couponEntity.id))
+            .where(
+                userCouponEntity.id.eq(id),
+                userCouponEntity.userId.eq(userId),
+                userCouponEntity.couponStatus.eq(UserCouponStatus.ACTIVE)
+            )
+            .fetchOne();
+
+        return Optional.ofNullable(userCoupon);
+    }
+
+    private static QUserCouponDetail projectUserCouponDetail() {
+        return new QUserCouponDetail(
+            userCouponEntity.id,
+            userCouponEntity.userId,
+            userCouponEntity.couponStatus,
+            userCouponEntity.expireAt,
+
+            couponEntity.id,
+            couponEntity.code,
+            couponEntity.description,
+            couponEntity.discountAmount,
+            couponEntity.duration,
+            couponEntity.foodCategory,
+            couponEntity.couponStatus,
+            couponEntity.remainingQuantity,
+            couponEntity.minimumSpend
+        );
     }
 }

@@ -54,7 +54,11 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Transactional
     @Override
-    public UserCouponDetail reserveCoupon(long id, long userId, FoodCategory foodCategory) {
+    public UserCouponDetail reserveCoupon(Long id, long userId, FoodCategory foodCategory) {
+        if(id == null) {
+            return UserCouponDetail.empty();
+        }
+
         Tuple tuple = userCouponRepository.findCouponToApply(id, userId, foodCategory)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_COUPON_NOT_USABLE));
 

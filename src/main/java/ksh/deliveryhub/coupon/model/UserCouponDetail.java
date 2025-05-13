@@ -43,4 +43,10 @@ public class UserCouponDetail {
             .discountAmount(discountAmount)
             .build();
     }
+
+    public static UserCouponDetail empty() {
+        return UserCouponDetail.builder()
+            .discountAmount(0)
+            .build();
+    }
 }

@@ -29,7 +29,7 @@ public class OrderFacade {
     private final CartService cartService;
 
     @Transactional
-    public Order placeOrder(long userId, long userCouponId, int pointToUse) {
+    public Order placeOrder(long userId, Long userCouponId, int pointToUse) {
         //장바구니 조회 및 검증
         Cart cart = cartService.getUserCart(userId);
         List<CartMenuDetail> cartMenuDetails = cartMenuService.checkCartMenuBeforeOrder(cart.getId());
@@ -37,8 +37,8 @@ public class OrderFacade {
         //사용할 쿠폰 검증 및 예약
         FoodCategory foodCategory = cartMenuDetails.getFirst().getFoodCategory();
         UserCouponDetail userCouponDetail = userCouponService.reserveCoupon(
-            userId,
             userCouponId,
+            userId,
             foodCategory
         );
 

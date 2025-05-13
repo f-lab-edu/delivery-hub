@@ -2,14 +2,17 @@ package ksh.deliveryhub.coupon.model;
 
 import com.querydsl.core.annotations.QueryProjection;
 import ksh.deliveryhub.coupon.entity.CouponStatus;
+import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
+@Builder
 @AllArgsConstructor(onConstructor = @__(@QueryProjection))
 public class UserCouponDetail {
 
@@ -27,4 +30,17 @@ public class UserCouponDetail {
     private CouponStatus couponStatus;
     private Integer remainingQuantity;
     private Integer minimumSpend;
+
+    public static UserCouponDetail of(
+        UserCouponEntity userCouponEntity,
+        int discountAmount
+    ) {
+        return UserCouponDetail.builder()
+            .id(userCouponEntity.getId())
+            .userId(userCouponEntity.getUserId())
+            .userCouponStatus(userCouponEntity.getCouponStatus())
+            .expireAt(userCouponEntity.getExpireAt())
+            .discountAmount(discountAmount)
+            .build();
+    }
 }

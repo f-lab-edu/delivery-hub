@@ -1,5 +1,6 @@
 package ksh.deliveryhub.coupon.service;
 
+import com.querydsl.core.Tuple;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
@@ -51,12 +52,15 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public UserCoupon reserveCoupon(long id, long userId) {
-        UserCouponEntity userCouponEntity = userCouponRepository.findAvailableCouponByIdAndUserId(id, userId)
+    public UserCouponDetail reserveCoupon(long id, long userId, FoodCategory foodCategory) {
+        Tuple tuple = userCouponRepository.findCouponToApply(id, userId, foodCategory)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_COUPON_NOT_USABLE));
 
+        UserCouponEntity userCouponEntity = tuple.get(0, UserCouponEntity.class);
         userCouponEntity.reserve();
 
-        return UserCoupon.from(userCouponEntity);
+        int discountAmount = tuple.get(1, Integer.class);
+
+        return UserCouponDetail.of(userCouponEntity, discountAmount);
     }
 }

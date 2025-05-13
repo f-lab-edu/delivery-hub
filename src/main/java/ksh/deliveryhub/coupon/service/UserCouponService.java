@@ -13,5 +13,5 @@ public interface UserCouponService {
 
     List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory);
 
-    UserCoupon reserveCoupon(long id, long userId);
+    UserCouponDetail reserveCoupon(long id, long userId, FoodCategory foodCategory);
 }

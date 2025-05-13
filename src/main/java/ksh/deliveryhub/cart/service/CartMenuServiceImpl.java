@@ -78,7 +78,7 @@ public class CartMenuServiceImpl implements CartMenuService {
     @Override
     public List<CartMenuDetail> checkCartMenuBeforeOrder(long cartId) {
         List<CartMenuDetail> cartMenuDetails = cartMenuRepository.findCartMenusWithDetail(cartId);
-\
+
         for (CartMenuDetail cartMenuDetail : cartMenuDetails) {
             if(cartMenuDetail.getMenuStatus() != MenuStatus.AVAILABLE) {
                 throw new CustomException(ErrorCode.MENU_NOT_AVAILABLE);

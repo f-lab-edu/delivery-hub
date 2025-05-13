@@ -19,7 +19,10 @@ public enum ErrorCode {
     COUPON_NOT_FOUND(404, "coupon.not.found"),
     COUPON_OUT_OF_STOCK(400, "coupon.out.of.stock"),
     USER_COUPON_ALREADY_REGISTERED(400, "user.coupon.already.registered"),
-    USER_COUPON_NOT_USABLE(400, "user.coupon.not.usable");
+    USER_COUPON_NOT_USABLE(400, "user.coupon.not.usable"),
+    USER_POINT_NOT_FOUND(404, "user.point.not.found"),
+    USER_POINT_NOT_ENOUGH(400, "user.point.not.enough");
+
 
     private final int status;
     private final String messageKey;

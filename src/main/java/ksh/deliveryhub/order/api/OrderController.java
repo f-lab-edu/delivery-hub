@@ -27,7 +27,7 @@ public class OrderController {
         Order order = orderFacade.placeOrder(
             userId,
             request.getUserCouponId(),
-            request.getPointToUse()
+            request.getPointToUse() != null ? request.getPointToUse() : 0
         );
 
         OrderCreateResponseDto responseDto = OrderCreateResponseDto.from(order);

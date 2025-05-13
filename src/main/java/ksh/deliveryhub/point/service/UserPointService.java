@@ -2,5 +2,5 @@ package ksh.deliveryhub.point.service;
 
 public interface UserPointService {
 
-    void checkBalance(long userId, int pointToUse);
+    void checkBalanceBeforeOrder(long userId, int pointToUse);
 }

@@ -14,7 +14,7 @@ public class UserPointServiceImpl implements UserPointService{
     private final UserPointRepository userPointRepository;
 
     @Override
-    public void checkBalance(long userId, int pointToUse) {
+    public void checkBalanceBeforeOrder(long userId, int pointToUse) {
         UserPointEntity userPointEntity = userPointRepository.findByUserId(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_POINT_NOT_FOUND));
 

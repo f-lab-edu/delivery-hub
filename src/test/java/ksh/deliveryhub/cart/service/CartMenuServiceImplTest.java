@@ -47,6 +47,7 @@ class CartMenuServiceImplTest {
         cartMenuRepository.deleteAllInBatch();
         menuRepository.deleteAllInBatch();
         menuOptionRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
     }
 
     @Test

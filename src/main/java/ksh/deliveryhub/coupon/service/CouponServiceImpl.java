@@ -45,12 +45,4 @@ public class CouponServiceImpl implements CouponService {
 
         return Coupon.from(couponRepository.save(couponEntity));
     }
-
-    @Override
-    public Coupon getById(long id) {
-        CouponEntity couponEntity = couponRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ErrorCode.COUPON_NOT_FOUND));
-
-        return Coupon.from(couponEntity);
-    }
 }

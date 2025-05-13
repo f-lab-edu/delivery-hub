@@ -11,6 +11,8 @@ import ksh.deliveryhub.menu.entity.MenuOptionEntity;
 import ksh.deliveryhub.menu.entity.MenuStatus;
 import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import ksh.deliveryhub.menu.repository.MenuRepository;
+import ksh.deliveryhub.store.entity.StoreEntity;
+import ksh.deliveryhub.store.repository.StoreRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ class CartMenuServiceImplTest {
 
     @Autowired
     private MenuOptionRepository menuOptionRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     @AfterEach
     void tearDown() {
@@ -170,8 +175,11 @@ class CartMenuServiceImplTest {
     @Test
     public void 장바구니에_담긴_메뉴를_메뉴_옵션_정보와_함께_조회한다() {
         // given
-        MenuEntity menuEntity1 = createMenuEntity("일반 피자", 10000, 1L);
-        MenuEntity menuEntity2 = createMenuEntity("고급 피자", 15000, 1L);
+        StoreEntity storeEntity = StoreEntity.builder().build();
+        storeRepository.save(storeEntity);
+
+        MenuEntity menuEntity1 = createMenuEntity("일반 피자", 10000, storeEntity.getId());
+        MenuEntity menuEntity2 = createMenuEntity("고급 피자", 15000, storeEntity.getId());
         menuRepository.saveAll(List.of(menuEntity1, menuEntity2));
 
         MenuOptionEntity optionEntity = createMenuOptionEntity("치즈 추가", 500, menuEntity1.getId());

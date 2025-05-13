@@ -1,9 +1,9 @@
 package ksh.deliveryhub.coupon.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
-import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.QUserCouponDetail;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
@@ -39,20 +39,21 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
     }
 
     @Override
-    public Optional<UserCouponEntity> findAvailableCouponByIdAndUserId(long id, long userId) {
-        UserCouponEntity userCoupon = queryFactory
-            .select(userCouponEntity)
+    public Optional<Tuple> findCouponToApply(long id, long userId, FoodCategory foodCategory) {
+        Tuple tuple = queryFactory
+            .select(userCouponEntity, couponEntity.discountAmount)
             .from(userCouponEntity)
             .join(couponEntity).on(userCouponEntity.couponId.eq(couponEntity.id))
             .where(
                 userCouponEntity.id.eq(id),
                 userCouponEntity.userId.eq(userId),
-                userCouponEntity.couponStatus.eq(UserCouponStatus.ACTIVE)
+                userCouponEntity.couponStatus.eq(UserCouponStatus.ACTIVE),
+                couponEntity.foodCategory.eq(foodCategory)
             )
             .setLockMode(LockModeType.PESSIMISTIC_WRITE)
             .fetchOne();
 
-        return Optional.ofNullable(userCoupon);
+        return Optional.ofNullable(tuple);
     }
 
     private static QUserCouponDetail projectUserCouponDetail() {

@@ -14,7 +14,7 @@ public class OrderCreateResponseDto {
     public static OrderCreateResponseDto from(Order order) {
         return OrderCreateResponseDto.builder()
             .id(order.getId())
-            .totalPrice(order.getTotalPrice())
+            .totalPrice(order.getFinalPrice())
             .build();
     }
 }

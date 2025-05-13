@@ -23,4 +23,9 @@ public class CartMenuDetail {
     private Long optionId;
     private String optionName;
     private Integer optionPrice;
+
+    public int getTotalPrice() {
+        int optionPrice = optionId != null ? this.optionPrice : 0;
+        return (menuPrice + optionPrice) * quantity;
+    }
 }

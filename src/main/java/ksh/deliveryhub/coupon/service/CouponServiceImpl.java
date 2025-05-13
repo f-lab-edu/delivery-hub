@@ -47,9 +47,10 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> findCouponsByIdsIn(List<Long> ids) {
-        return couponRepository.findAllById(ids).stream()
-            .map(Coupon::from)
-            .toList();
+    public Coupon getById(long id) {
+        CouponEntity couponEntity = couponRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.COUPON_NOT_FOUND));
+
+        return Coupon.from(couponEntity);
     }
 }

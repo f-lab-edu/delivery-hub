@@ -12,6 +12,7 @@ import ksh.deliveryhub.coupon.repository.UserCouponRepository;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -51,6 +52,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory);
     }
 
+    @Transactional
     @Override
     public UserCouponDetail reserveCoupon(long id, long userId, FoodCategory foodCategory) {
         Tuple tuple = userCouponRepository.findCouponToApply(id, userId, foodCategory)

@@ -5,7 +5,6 @@ import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
-import ksh.deliveryhub.coupon.service.CouponService;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.service.OrderItemService;
@@ -14,6 +13,7 @@ import ksh.deliveryhub.point.service.UserPointService;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class OrderFacade {
     private final UserPointService userPointService;
     private final CartService cartService;
 
+    @Transactional
     public Order placeOrder(long userId, long userCouponId, int pointToUse) {
         //장바구니 조회 및 검증
         Cart cart = cartService.getUserCart(userId);

@@ -49,4 +49,14 @@ public class UserCouponServiceImpl implements UserCouponService {
     public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
         return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory);
     }
+
+    @Override
+    public UserCoupon reserveCoupon(long id, long userId) {
+        UserCouponEntity userCouponEntity = userCouponRepository.findAvailableCouponByIdAndUserId(id, userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_COUPON_NOT_USABLE));
+
+        userCouponEntity.reserve();
+
+        return UserCoupon.from(userCouponEntity);
+    }
 }

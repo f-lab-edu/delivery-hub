@@ -28,6 +28,10 @@ public class UserCouponEntity extends BaseEntity {
 
     private LocalDate expireAt;
 
+    public void reserve() {
+        this.couponStatus = UserCouponStatus.RESERVED;
+    }
+
     @Builder
     private UserCouponEntity(
         Long id,

@@ -1,6 +1,6 @@
 package ksh.deliveryhub.coupon.repository;
 
-import ksh.deliveryhub.coupon.entity.UserCouponEntity;
+import com.querydsl.core.Tuple;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.store.entity.FoodCategory;
 
@@ -11,5 +11,5 @@ public interface UserCouponQueryRepository {
 
     List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory);
 
-    Optional<UserCouponEntity> findAvailableCouponByIdAndUserId(long id, long userId);
+    Optional<Tuple> findCouponToApply(long id, long userId, FoodCategory foodCategory);
 }

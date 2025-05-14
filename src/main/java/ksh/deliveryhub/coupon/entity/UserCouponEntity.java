@@ -32,6 +32,10 @@ public class UserCouponEntity extends BaseEntity {
         this.couponStatus = UserCouponStatus.RESERVED;
     }
 
+    public void use() {
+        this.couponStatus = UserCouponStatus.USED;
+    }
+
     @Builder
     private UserCouponEntity(
         Long id,

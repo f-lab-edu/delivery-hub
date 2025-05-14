@@ -75,4 +75,12 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         return UserCouponDetail.fromEntities(userCouponEntity, couponEntity);
     }
+
+    @Override
+    public UserCoupon useCoupon(long id, long userId) {
+        UserCouponEntity userCouponEntity = userCouponRepository.getReservedCouponForPayment(id, userId);
+        userCouponEntity.use();
+
+        return UserCoupon.from(userCouponEntity);
+    }
 }

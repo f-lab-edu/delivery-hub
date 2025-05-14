@@ -14,7 +14,7 @@ public class Order {
     private Integer discountAmount;
     private Integer usedPoint;
     private Integer finalPrice;
-    private OrderStatus orderStatus;
+    private OrderStatus status;
     private Long userId;
     private Long storeId;
     private Long riderId;
@@ -26,7 +26,7 @@ public class Order {
             .discountAmount(orderEntity.getDiscountAmount())
             .usedPoint(orderEntity.getUsedPoint())
             .finalPrice(orderEntity.getFinalPrice())
-            .orderStatus(orderEntity.getOrderStatus())
+            .status(orderEntity.getStatus())
             .userId(orderEntity.getUserId())
             .storeId(orderEntity.getStoreId())
             .riderId(orderEntity.getRiderId())
@@ -40,7 +40,7 @@ public class Order {
             .discountAmount(getDiscountAmount())
             .usedPoint(getUsedPoint())
             .finalPrice(getFinalPrice())
-            .orderStatus(getOrderStatus())
+            .status(getStatus())
             .userId(getUserId())
             .storeId(getStoreId())
             .riderId(getRiderId())

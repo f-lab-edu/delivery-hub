@@ -20,9 +20,6 @@ public class PaymentEntity extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    @Enumerated(value = EnumType.STRING)
-    private PaymentStatus paymentStatus;
-
     private Integer amount;
 
     private Long orderId;
@@ -31,13 +28,11 @@ public class PaymentEntity extends BaseEntity {
     private PaymentEntity(
         Long id,
         PaymentMethod paymentMethod,
-        PaymentStatus paymentStatus,
         Integer amount,
         Long orderId
     ) {
         this.id = id;
         this.paymentMethod = paymentMethod;
-        this.paymentStatus = paymentStatus;
         this.amount = amount;
         this.orderId = orderId;
     }

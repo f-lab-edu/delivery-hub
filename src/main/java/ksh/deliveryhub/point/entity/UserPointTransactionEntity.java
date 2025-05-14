@@ -32,6 +32,10 @@ public class UserPointTransactionEntity extends BaseEntity {
 
     private Long userPointId;
 
+    public void decreaseRemainingBalance(int amount) {
+        this.remainingBalance -= amount;
+    }
+
     @Builder
     private UserPointTransactionEntity(
         Long id,

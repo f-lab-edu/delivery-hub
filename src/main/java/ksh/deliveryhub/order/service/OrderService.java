@@ -8,4 +8,6 @@ public interface OrderService {
     Order createOrder(OrderCreateCommand command);
 
     Order getPendingOrder(long id, long userId);
+
+    void completePayment(long id);
 }

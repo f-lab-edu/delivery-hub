@@ -9,6 +9,7 @@ import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +45,14 @@ public class OrderServiceImpl implements OrderService{
             .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         return Order.from(orderEntity);
+    }
+
+    @Transactional
+    @Override
+    public void completePayment(long id) {
+        OrderEntity orderEntity = orderRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        orderEntity.updateStatus(OrderStatus.PAID);
     }
 }

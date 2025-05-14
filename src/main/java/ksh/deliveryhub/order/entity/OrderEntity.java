@@ -26,13 +26,17 @@ public class OrderEntity extends BaseEntity {
     private Integer finalPrice;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
     private Long userId;
 
     private Long storeId;
 
     private Long riderId;
+
+    public void updateStatus(OrderStatus OrderStatus) {
+        this.orderStatus = OrderStatus;
+    }
 
     @Builder
     private OrderEntity(
@@ -41,7 +45,7 @@ public class OrderEntity extends BaseEntity {
         Integer discountAmount,
         Integer usedPoint,
         Integer finalPrice,
-        OrderStatus status,
+        OrderStatus orderStatus,
         Long userId,
         Long storeId,
         Long riderId
@@ -51,7 +55,7 @@ public class OrderEntity extends BaseEntity {
         this.discountAmount = discountAmount;
         this.usedPoint = usedPoint;
         this.finalPrice = finalPrice;
-        this.status = status;
+        this.orderStatus = orderStatus;
         this.userId = userId;
         this.storeId = storeId;
         this.riderId = riderId;

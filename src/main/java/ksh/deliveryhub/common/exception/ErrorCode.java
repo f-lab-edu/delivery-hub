@@ -20,6 +20,7 @@ public enum ErrorCode {
     COUPON_OUT_OF_STOCK(400, "coupon.out.of.stock"),
     USER_COUPON_ALREADY_REGISTERED(400, "user.coupon.already.registered"),
     USER_COUPON_NOT_USABLE(400, "user.coupon.not.usable"),
+    USER_COUPON_NOT_FOUND(404, "user.coupon.not.found"),
     USER_POINT_NOT_FOUND(404, "user.point.not.found"),
     USER_POINT_NOT_ENOUGH(400, "user.point.not.enough"),
     CART_EMPTY(400, "cart.empty");

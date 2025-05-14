@@ -38,6 +38,21 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
         return UserPointTransaction.from(useTx);
     }
 
+    @Override
+    public void saveEarnTransaction(int earnedPoint, long orderId, long userPointId) {
+        LocalDate expireDate = LocalDate.now(clock).plusMonths(1);
+
+        UserPointTransactionEntity earnedTransaction = UserPointTransactionEntity.builder()
+            .pointEventType(PointEventType.EARN)
+            .initialBalance(earnedPoint)
+            .remainingBalance(earnedPoint)
+            .expireDate(expireDate)
+            .orderId(orderId)
+            .userPointId(userPointId)
+            .build();
+        userPointTransactionRepository.save(earnedTransaction);
+    }
+
     private static void deductPoints(List<UserPointTransactionEntity> earnings, int amountToDeduct) {
         int remaining = amountToDeduct;
         for (UserPointTransactionEntity earn : earnings) {

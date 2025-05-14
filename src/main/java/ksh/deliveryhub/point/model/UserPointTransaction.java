@@ -17,7 +17,7 @@ public class UserPointTransaction {
     private Integer remainingBalance;
     private LocalDate expireDate;
     private Long orderId;
-    private Long userPointId;
+    private Long userId;
 
     public static UserPointTransaction from(UserPointTransactionEntity entity) {
         return UserPointTransaction.builder()
@@ -27,7 +27,7 @@ public class UserPointTransaction {
             .remainingBalance(entity.getRemainingBalance())
             .expireDate(entity.getExpireDate())
             .orderId(entity.getOrderId())
-            .userPointId(entity.getUserPointId())
+            .userId(entity.getUserId())
             .build();
     }
 
@@ -39,7 +39,7 @@ public class UserPointTransaction {
             .remainingBalance(getRemainingBalance())
             .expireDate(getExpireDate())
             .orderId(getOrderId())
-            .userPointId(getUserPointId())
+            .userId(getUserId())
             .build();
     }
 }

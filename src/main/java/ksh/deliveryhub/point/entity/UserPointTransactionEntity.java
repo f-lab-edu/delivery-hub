@@ -30,7 +30,7 @@ public class UserPointTransactionEntity extends BaseEntity {
 
     private Long orderId;
 
-    private Long userPointId;
+    private Long userId;
 
     public void decreaseRemainingBalance(int amount) {
         this.remainingBalance -= amount;
@@ -44,7 +44,7 @@ public class UserPointTransactionEntity extends BaseEntity {
         Integer remainingBalance,
         LocalDate expireDate,
         Long orderId,
-        Long userPointId
+        Long userId
     ) {
         this.id = id;
         this.pointEventType = pointEventType;
@@ -52,6 +52,6 @@ public class UserPointTransactionEntity extends BaseEntity {
         this.remainingBalance = remainingBalance;
         this.expireDate = expireDate;
         this.orderId = orderId;
-        this.userPointId = userPointId;
+        this.userId = userId;
     }
 }

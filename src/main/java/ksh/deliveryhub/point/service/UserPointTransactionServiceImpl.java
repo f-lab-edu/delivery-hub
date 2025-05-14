@@ -19,11 +19,11 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
     private final Clock clock;
 
     @Override
-    public UserPointTransaction saveUseTransaction(int amountToUse, long orderId, long userPointId) {
+    public UserPointTransaction saveUseTransaction(int amountToUse, long orderId, long userId) {
         LocalDate today = LocalDate.now(clock);
 
         List<UserPointTransactionEntity> earnings =
-            userPointTransactionRepository.findAvailableEarningTransactions(userPointId, today);
+            userPointTransactionRepository.findAvailableEarningTransactions(userId, today);
 
         deductPoints(earnings, amountToUse);
 
@@ -31,7 +31,7 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
             .pointEventType(PointEventType.USE)
             .initialBalance(amountToUse)
             .orderId(orderId)
-            .userPointId(userPointId)
+            .userId(userId)
             .build();
         userPointTransactionRepository.save(useTx);
 
@@ -39,7 +39,7 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
     }
 
     @Override
-    public void saveEarnTransaction(int earnedPoint, long orderId, long userPointId) {
+    public void saveEarnTransaction(int earnedPoint, long orderId, long userId) {
         LocalDate expireDate = LocalDate.now(clock).plusMonths(1);
 
         UserPointTransactionEntity earnedTransaction = UserPointTransactionEntity.builder()
@@ -48,7 +48,7 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
             .remainingBalance(earnedPoint)
             .expireDate(expireDate)
             .orderId(orderId)
-            .userPointId(userPointId)
+            .userId(userId)
             .build();
         userPointTransactionRepository.save(earnedTransaction);
     }

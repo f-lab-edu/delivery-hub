@@ -18,7 +18,7 @@ public class CouponTransactionServiceImpl implements CouponTransactionService {
     public CouponTransaction saveIssueTransaction(UserCoupon userCoupon) {
         CouponTransactionEntity couponTransactionEntity = CouponTransactionEntity.builder()
             .userCouponId(userCoupon.getId())
-            .eventType(CouponEventType.ISSUED)
+            .eventType(CouponEventType.ISSUE)
             .build();
         couponTransactionRepository.save(couponTransactionEntity);
 

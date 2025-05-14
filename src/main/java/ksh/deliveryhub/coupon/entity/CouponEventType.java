@@ -1,7 +1,7 @@
 package ksh.deliveryhub.coupon.entity;
 
 public enum CouponEventType {
-    ISSUED,
+    ISSUE,
     USE,
-    CANCELLED
+    CANCEL
 }

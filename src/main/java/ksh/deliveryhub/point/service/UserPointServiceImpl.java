@@ -3,7 +3,6 @@ package ksh.deliveryhub.point.service;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.point.entity.UserPointEntity;
-import ksh.deliveryhub.point.model.UserPoint;
 import ksh.deliveryhub.point.repository.UserPointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,11 +36,13 @@ public class UserPointServiceImpl implements UserPointService{
     }
 
     @Override
-    public void earnPoint(long userId, int finalPrice) {
+    public int earnPoint(long userId, int finalPrice) {
         UserPointEntity userPointEntity = userPointRepository.findByUserId(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_POINT_NOT_FOUND));
 
         int earnedPoint = (int) (finalPrice * 0.1);
         userPointEntity.increaseBalance(earnedPoint);
+
+        return earnedPoint;
     }
 }

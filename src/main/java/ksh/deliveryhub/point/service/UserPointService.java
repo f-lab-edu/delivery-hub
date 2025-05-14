@@ -6,5 +6,5 @@ public interface UserPointService {
 
     void usePoint(long userId, int pointToUse);
 
-    void earnPoint(long userId, int finalPrice);
+    int earnPoint(long userId, int finalPrice);
 }

@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,7 +26,7 @@ public class UserPointTransactionEntity extends BaseEntity {
 
     private Integer remainingBalance;
 
-    private LocalDateTime expireDate;
+    private LocalDate expireDate;
 
     private Long orderId;
 
@@ -38,7 +38,7 @@ public class UserPointTransactionEntity extends BaseEntity {
         PointEventType pointEventType,
         Integer initialBalance,
         Integer remainingBalance,
-        LocalDateTime expireDate,
+        LocalDate expireDate,
         Long orderId,
         Long userPointId
     ) {

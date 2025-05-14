@@ -24,4 +24,16 @@ public class CouponTransactionServiceImpl implements CouponTransactionService {
 
         return CouponTransaction.from(couponTransactionEntity);
     }
+
+    @Override
+    public CouponTransaction saveUseTransaction(UserCoupon userCoupon, long orderId) {
+        CouponTransactionEntity couponTransactionEntity = CouponTransactionEntity.builder()
+            .userCouponId(userCoupon.getId())
+            .orderId(orderId)
+            .eventType(CouponEventType.USE)
+            .build();
+        couponTransactionRepository.save(couponTransactionEntity);
+
+        return CouponTransaction.from(couponTransactionEntity);
+    }
 }

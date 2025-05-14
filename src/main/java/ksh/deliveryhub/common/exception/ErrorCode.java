@@ -24,7 +24,8 @@ public enum ErrorCode {
     USER_POINT_NOT_FOUND(404, "user.point.not.found"),
     USER_POINT_NOT_ENOUGH(400, "user.point.not.enough"),
     CART_EMPTY(400, "cart.empty"),
-    ORDER_NOT_FOUND(404, "order.not.found"),;
+    ORDER_NOT_FOUND(404, "order.not.found"),
+    CART_NOT_FOUND(404, "cart.not.found"),;
 
 
     private final int status;

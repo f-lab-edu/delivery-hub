@@ -34,6 +34,10 @@ public class OrderEntity extends BaseEntity {
 
     private Long riderId;
 
+    public void updateStatus(OrderStatus OrderStatus) {
+        this.orderStatus = OrderStatus;
+    }
+
     @Builder
     private OrderEntity(
         Long id,

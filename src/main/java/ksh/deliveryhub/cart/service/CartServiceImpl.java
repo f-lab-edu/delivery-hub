@@ -4,6 +4,8 @@ import ksh.deliveryhub.cart.entity.CartEntity;
 import ksh.deliveryhub.cart.entity.CartStatus;
 import ksh.deliveryhub.cart.model.Cart;
 import ksh.deliveryhub.cart.repository.CartRepository;
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,13 @@ public class CartServiceImpl implements CartService {
             .orElseGet(() -> cartRepository.save(createCartEntity(userId)));
 
         return Cart.from(userCartEntity);
+    }
+
+    @Override
+    public void closeCartAfterPayment(long userId) {
+        cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
+            .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND))
+            .updateStatus(CartStatus.CLOSED);
     }
 
     private static CartEntity createCartEntity(long userId) {

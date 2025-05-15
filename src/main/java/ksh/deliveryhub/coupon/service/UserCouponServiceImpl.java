@@ -26,6 +26,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     private final UserCouponRepository userCouponRepository;
     private final Clock clock;
 
+    @Transactional
     @Override
     public UserCoupon registerCoupon(long userId, Coupon coupon) {
         userCouponRepository.findByUserIdAndCouponId(userId, coupon.getId())
@@ -48,6 +49,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         return UserCoupon.from(userCouponEntity);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
         return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory).stream()
@@ -74,5 +76,14 @@ public class UserCouponServiceImpl implements UserCouponService {
         CouponEntity couponEntity = userCouponDetailProjection.getCouponEntity();
 
         return UserCouponDetail.fromEntities(userCouponEntity, couponEntity);
+    }
+
+    @Transactional
+    @Override
+    public UserCoupon useCoupon(long id, long userId) {
+        UserCouponEntity userCouponEntity = userCouponRepository.getReservedCouponForPayment(id, userId);
+        userCouponEntity.use();
+
+        return UserCoupon.from(userCouponEntity);
     }
 }

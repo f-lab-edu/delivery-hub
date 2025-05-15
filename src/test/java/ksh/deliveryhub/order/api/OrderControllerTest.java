@@ -25,6 +25,7 @@ import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.repository.StoreRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -61,6 +62,17 @@ class OrderControllerTest {
     MenuOptionRepository menuOptionRepository;
     @Autowired
     CouponRepository couponRepository;
+
+    @AfterEach
+    void tearDown() {
+        cartMenuRepository.deleteAllInBatch();
+        userCouponRepository.deleteAllInBatch();
+        userPointRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
+        menuRepository.deleteAllInBatch();
+        menuOptionRepository.deleteAllInBatch();
+        couponRepository.deleteAllInBatch();
+    }
 
     @Test
     void 사용할_쿠폰과_포인트_정보를_포함해_주문을_생성하고_주문_정보와_201_응답을_반환한다() throws Exception {

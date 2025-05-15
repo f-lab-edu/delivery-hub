@@ -6,6 +6,7 @@ import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
+import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.service.OrderItemService;
 import ksh.deliveryhub.order.service.OrderService;
@@ -46,17 +47,8 @@ public class OrderFacade {
         userPointService.checkBalanceBeforeOrder(userId, pointToUse);
 
         //주문 생성
-        Long storeId = cartMenuDetails.getFirst().getStoreId();
-        int totalPrice = cartMenuDetails.stream()
-            .mapToInt(CartMenuDetail::getTotalPrice)
-            .sum();
-        Order order = orderService.createOrder(
-            userId,
-            storeId,
-            totalPrice,
-            userCouponDetail.getCoupon().getDiscountAmount(),
-            pointToUse
-        );
+        OrderCreateCommand command = OrderCreateCommand.of(userCouponDetail, cartMenuDetails, pointToUse);
+        Order order = orderService.createOrder(command);
 
         orderItemService.createOrderItems(order.getId(), cartMenuDetails);
 

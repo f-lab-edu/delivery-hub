@@ -1,5 +1,6 @@
 package ksh.deliveryhub.order.service;
 
+import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.entity.OrderEntity;
 import ksh.deliveryhub.order.entity.OrderStatus;
 import ksh.deliveryhub.order.model.Order;
@@ -14,7 +15,10 @@ public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
 
     @Override
-    public Order createOrder(long userId, long storeId, int totalPrice, int discountAmount, int usedPoint) {
+    public Order createOrder(OrderCreateCommand command) {
+        final int totalPrice = command.getTotalPrice();
+        final int discountAmount = command.getDiscountAmount();
+        final int usedPoint = command.getUsedPoint();
         final int finalPrice = totalPrice - discountAmount - usedPoint;
 
         OrderEntity orderEntity = OrderEntity.builder()
@@ -23,8 +27,8 @@ public class OrderServiceImpl implements OrderService{
             .usedPoint(usedPoint)
             .finalPrice(finalPrice)
             .orderStatus(OrderStatus.PENDING)
-            .userId(userId)
-            .storeId(storeId)
+            .userId(command.getUserId())
+            .storeId(command.getStoreId())
             .build();
 
         OrderEntity savedOrderEntity = orderRepository.save(orderEntity);

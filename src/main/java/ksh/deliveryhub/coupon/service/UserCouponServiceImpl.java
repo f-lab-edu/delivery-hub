@@ -1,14 +1,15 @@
 package ksh.deliveryhub.coupon.service;
 
-import com.querydsl.core.Tuple;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
+import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
+import ksh.deliveryhub.coupon.repository.projection.UserCouponDetailProjection;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,12 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
-        return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory);
+        return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory).stream()
+            .map(projection -> UserCouponDetail.fromEntities(
+                projection.getUserCouponEntity(),
+                projection.getCouponEntity()
+            ))
+            .toList();
     }
 
     @Transactional
@@ -59,14 +65,14 @@ public class UserCouponServiceImpl implements UserCouponService {
             return UserCouponDetail.empty();
         }
 
-        Tuple tuple = userCouponRepository.findCouponToApply(id, userId, foodCategory)
+        UserCouponDetailProjection userCouponDetailProjection = userCouponRepository.findCouponToApply(id, userId, foodCategory)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_COUPON_NOT_USABLE));
 
-        UserCouponEntity userCouponEntity = tuple.get(0, UserCouponEntity.class);
+        UserCouponEntity userCouponEntity = userCouponDetailProjection.getUserCouponEntity();
         userCouponEntity.reserve();
 
-        int discountAmount = tuple.get(1, Integer.class);
+        CouponEntity couponEntity = userCouponDetailProjection.getCouponEntity();
 
-        return UserCouponDetail.of(userCouponEntity, discountAmount);
+        return UserCouponDetail.fromEntities(userCouponEntity, couponEntity);
     }
 }

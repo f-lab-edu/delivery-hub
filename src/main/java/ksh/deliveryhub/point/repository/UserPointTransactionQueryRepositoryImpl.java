@@ -23,7 +23,7 @@ public class UserPointTransactionQueryRepositoryImpl implements UserPointTransac
             .where(
                 userPointTransactionEntity.pointEventType.eq(PointEventType.EARN),
                 userPointTransactionEntity.userId.eq(userId),
-                userPointTransactionEntity.expireDate.after(LocalDate.now()),
+                userPointTransactionEntity.expireDate.after(now),
                 userPointTransactionEntity.remainingBalance.gt(0)
             )
             .orderBy(userPointTransactionEntity.expireDate.asc())

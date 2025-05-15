@@ -54,7 +54,7 @@ public class OrderFacade {
             userId,
             storeId,
             totalPrice,
-            userCouponDetail.getDiscountAmount(),
+            userCouponDetail.getCoupon().getDiscountAmount(),
             pointToUse
         );
 

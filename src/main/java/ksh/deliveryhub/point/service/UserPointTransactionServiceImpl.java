@@ -6,6 +6,7 @@ import ksh.deliveryhub.point.model.UserPointTransaction;
 import ksh.deliveryhub.point.repository.UserPointTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class UserPointTransactionServiceImpl implements UserPointTransactionServ
     private final UserPointTransactionRepository userPointTransactionRepository;
     private final Clock clock;
 
+    @Transactional
     @Override
     public UserPointTransaction saveUseTransaction(int amountToUse, long orderId, long userId) {
         LocalDate today = LocalDate.now(clock);

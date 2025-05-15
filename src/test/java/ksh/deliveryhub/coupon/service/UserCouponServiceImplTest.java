@@ -4,6 +4,7 @@ import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
+import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
@@ -23,6 +24,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static ksh.deliveryhub.coupon.entity.UserCouponStatus.ACTIVE;
+import static ksh.deliveryhub.coupon.entity.UserCouponStatus.RESERVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -128,10 +130,79 @@ class UserCouponServiceImplTest {
 
         //then
         assertThat(userCoupons).hasSize(2)
-            .extracting("userId", "couponId")
+            .extracting("userCoupon.userId", "userCoupon.couponId")
             .containsExactlyInAnyOrder(
                 tuple(1L, couponEntity1.getId()),
                 tuple(1L, couponEntity2.getId())
             );
+    }
+
+    @Test
+    public void 주문에_적용할_쿠폰을_예약_상태로_바꾼다() throws Exception{
+        //given
+        CouponEntity couponEntity = CouponEntity.builder()
+            .foodCategory(FoodCategory.PIZZA)
+            .discountAmount(1000)
+            .build();
+        couponRepository.save(couponEntity);
+
+        UserCouponEntity userCouponEntity = UserCouponEntity.builder()
+            .userId(1L)
+            .couponId(couponEntity.getId())
+            .couponStatus(ACTIVE)
+            .build();
+        userCouponRepository.save(userCouponEntity);
+
+        //when
+        UserCouponDetail userCouponDetail = userCouponService.reserveCoupon(userCouponEntity.getId(), 1L, couponEntity.getFoodCategory());
+
+        //then
+        UserCouponEntity reservedUserCouponEntity = userCouponRepository.findById(userCouponEntity.getId()).get();
+        assertThat(reservedUserCouponEntity.getCouponStatus()).isEqualTo(UserCouponStatus.RESERVED);
+        assertThat(userCouponDetail.getCoupon().getDiscountAmount()).isEqualTo(1000);
+    }
+
+    @Test
+    public void 쿠폰을_적용할_수_없는_음식_카테고리일_경우_쿠폰_사용_예약에_실패한다() throws Exception{
+        //given
+        CouponEntity couponEntity = CouponEntity.builder()
+            .foodCategory(FoodCategory.PIZZA)
+            .discountAmount(1000)
+            .build();
+        couponRepository.save(couponEntity);
+
+        UserCouponEntity userCouponEntity = UserCouponEntity.builder()
+            .userId(1L)
+            .couponId(couponEntity.getId())
+            .couponStatus(ACTIVE)
+            .build();
+        userCouponRepository.save(userCouponEntity);
+
+        //when //then
+        assertThatExceptionOfType(CustomException.class)
+            .isThrownBy(() -> userCouponService.reserveCoupon(userCouponEntity.getId(), 1L, FoodCategory.CHICKEN))
+            .returns(ErrorCode.USER_COUPON_NOT_USABLE, CustomException::getErrorCode);
+    }
+
+    @Test
+    public void 사용_가능한_상태의_쿠폰이_아닌_경우_쿠폰_사용_예약에_실패한다() throws Exception{
+        //given
+        CouponEntity couponEntity = CouponEntity.builder()
+            .foodCategory(FoodCategory.PIZZA)
+            .discountAmount(1000)
+            .build();
+        couponRepository.save(couponEntity);
+
+        UserCouponEntity userCouponEntity = UserCouponEntity.builder()
+            .userId(1L)
+            .couponId(couponEntity.getId())
+            .couponStatus(RESERVED)
+            .build();
+        userCouponRepository.save(userCouponEntity);
+
+        //when //then
+        assertThatExceptionOfType(CustomException.class)
+            .isThrownBy(() -> userCouponService.reserveCoupon(userCouponEntity.getId(), 1L, FoodCategory.CHICKEN))
+            .returns(ErrorCode.USER_COUPON_NOT_USABLE, CustomException::getErrorCode);
     }
 }

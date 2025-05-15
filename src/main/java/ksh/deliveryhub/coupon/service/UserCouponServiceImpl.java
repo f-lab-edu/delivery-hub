@@ -2,15 +2,18 @@ package ksh.deliveryhub.coupon.service;
 
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
+import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
+import ksh.deliveryhub.coupon.repository.projection.UserCouponDetailProjection;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -47,6 +50,29 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
-        return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory);
+        return userCouponRepository.findAvailableCouponsWithDetail(userId, foodCategory).stream()
+            .map(projection -> UserCouponDetail.fromEntities(
+                projection.getUserCouponEntity(),
+                projection.getCouponEntity()
+            ))
+            .toList();
+    }
+
+    @Transactional
+    @Override
+    public UserCouponDetail reserveCoupon(Long id, long userId, FoodCategory foodCategory) {
+        if(id == null) {
+            return UserCouponDetail.empty();
+        }
+
+        UserCouponDetailProjection userCouponDetailProjection = userCouponRepository.findCouponToApply(id, userId, foodCategory)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_COUPON_NOT_USABLE));
+
+        UserCouponEntity userCouponEntity = userCouponDetailProjection.getUserCouponEntity();
+        userCouponEntity.reserve();
+
+        CouponEntity couponEntity = userCouponDetailProjection.getCouponEntity();
+
+        return UserCouponDetail.fromEntities(userCouponEntity, couponEntity);
     }
 }

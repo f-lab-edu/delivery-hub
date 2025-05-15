@@ -16,4 +16,6 @@ public interface CartMenuService {
     void clearCartMenuOfUser(long cartId);
 
     List<CartMenuDetail> findCartMenusWithDetail(long cartId);
+
+    List<CartMenuDetail> checkCartMenuBeforeOrder(long cartId);
 }

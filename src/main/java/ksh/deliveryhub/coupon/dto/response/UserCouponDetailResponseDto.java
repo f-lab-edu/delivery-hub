@@ -1,5 +1,7 @@
 package ksh.deliveryhub.coupon.dto.response;
 
+import ksh.deliveryhub.coupon.model.Coupon;
+import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.Builder;
@@ -19,13 +21,16 @@ public class UserCouponDetailResponseDto {
     private Integer minimumSpend;
 
     public static UserCouponDetailResponseDto from(UserCouponDetail userCouponDetail) {
+        UserCoupon userCoupon = userCouponDetail.getUserCoupon();
+        Coupon coupon = userCouponDetail.getCoupon();
+
         return UserCouponDetailResponseDto.builder()
-            .code(userCouponDetail.getCode())
-            .description(userCouponDetail.getDescription())
-            .discountAmount(userCouponDetail.getDiscountAmount())
-            .expireAt(userCouponDetail.getExpireAt())
-            .foodCategory(userCouponDetail.getFoodCategory())
-            .minimumSpend(userCouponDetail.getMinimumSpend())
+            .code(coupon.getCode())
+            .description(coupon.getDescription())
+            .discountAmount(coupon.getDiscountAmount())
+            .expireAt(userCoupon.getExpireAt())
+            .foodCategory(coupon.getFoodCategory())
+            .minimumSpend(coupon.getMinimumSpend())
             .build();
     }
 }

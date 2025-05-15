@@ -47,4 +47,16 @@ public class Coupon {
             .minimumSpend(getMinimumSpend())
             .build();
     }
+
+    public static Coupon empty() {
+        return Coupon.builder()
+            .id(0L)
+            .code("")
+            .description("")
+            .discountAmount(0)
+            .duration(0)
+            .remainingQuantity(0)
+            .minimumSpend(0)
+            .build();
+    }
 }

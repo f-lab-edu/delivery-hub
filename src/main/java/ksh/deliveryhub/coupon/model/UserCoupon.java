@@ -36,4 +36,12 @@ public class UserCoupon {
             .expireAt(getExpireAt())
             .build();
     }
+
+    public static UserCoupon empty() {
+        return UserCoupon.builder()
+            .id(0L)
+            .userId(0L)
+            .couponId(0L)
+            .build();
+    }
 }

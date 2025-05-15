@@ -13,6 +13,9 @@ import ksh.deliveryhub.menu.entity.MenuEntity;
 import ksh.deliveryhub.menu.entity.MenuOptionEntity;
 import ksh.deliveryhub.menu.repository.MenuOptionRepository;
 import ksh.deliveryhub.menu.repository.MenuRepository;
+import ksh.deliveryhub.store.entity.FoodCategory;
+import ksh.deliveryhub.store.entity.StoreEntity;
+import ksh.deliveryhub.store.repository.StoreRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -51,24 +54,32 @@ class CartControllerTest {
     @Autowired
     MenuOptionRepository menuOptionRepository;
 
+    @Autowired
+    StoreRepository storeRepository;
+
     @AfterEach
     void tearDown() {
         cartMenuRepository.deleteAllInBatch();
         cartRepository.deleteAllInBatch();
         menuRepository.deleteAllInBatch();
         menuOptionRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
     }
 
     @Test
     public void 장바구니에_담긴_메뉴_정보를_조회에_성공하면_201응답을_받는다() throws Exception {
         //given
+        //가게 생성
+        StoreEntity storeEntity = StoreEntity.builder().build();
+        storeRepository.save(storeEntity);
+
         //카트 생성
         CartEntity cartEntity = createCartEntity(1L);
         cartRepository.save(cartEntity);
 
         //메뉴 생성
-        MenuEntity menuEntity1 = createMenuEntity("치즈 피자", "치즈 들어감", 10000, 1L);
-        MenuEntity menuEntity2 = createMenuEntity("페퍼로니 피자", "페퍼로니 들어감", 15000, 1L);
+        MenuEntity menuEntity1 = createMenuEntity("치즈 피자", "치즈 들어감", 10000, storeEntity.getId());
+        MenuEntity menuEntity2 = createMenuEntity("페퍼로니 피자", "페퍼로니 들어감", 15000, storeEntity.getId());
         menuRepository.saveAll(List.of(menuEntity1, menuEntity2));
 
         //메뉴의 옵션 생성

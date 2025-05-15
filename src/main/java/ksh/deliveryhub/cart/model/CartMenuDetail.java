@@ -2,6 +2,7 @@ package ksh.deliveryhub.cart.model;
 
 import com.querydsl.core.annotations.QueryProjection;
 import ksh.deliveryhub.menu.entity.MenuStatus;
+import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,8 +20,14 @@ public class CartMenuDetail {
     private Integer menuPrice;
     private String image;
     private Long storeId;
+    private FoodCategory foodCategory;
 
     private Long optionId;
     private String optionName;
     private Integer optionPrice;
+
+    public int getTotalPrice() {
+        int optionPrice = optionId != null ? this.optionPrice : 0;
+        return (menuPrice + optionPrice) * quantity;
+    }
 }

@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.cart.model.QCartMenuDetail;
+import ksh.deliveryhub.store.entity.QStoreEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import static ksh.deliveryhub.cart.entity.QCartMenuEntity.cartMenuEntity;
 import static ksh.deliveryhub.menu.entity.QMenuEntity.menuEntity;
 import static ksh.deliveryhub.menu.entity.QMenuOptionEntity.menuOptionEntity;
+import static ksh.deliveryhub.store.entity.QStoreEntity.*;
 
 @RequiredArgsConstructor
 public class CartMenuQueryRepositoryImpl implements CartMenuQueryRepository {
@@ -52,26 +54,32 @@ public class CartMenuQueryRepositoryImpl implements CartMenuQueryRepository {
     @Override
     public List<CartMenuDetail> findCartMenusWithDetail(long cartId) {
         return queryFactory
-            .select(new QCartMenuDetail(
-                cartMenuEntity.id,
-                cartMenuEntity.quantity,
-
-                menuEntity.id,
-                menuEntity.name,
-                menuEntity.description,
-                menuEntity.menuStatus,
-                menuEntity.price,
-                menuEntity.image,
-                menuEntity.storeId,
-
-                menuOptionEntity.id,
-                menuOptionEntity.name,
-                menuOptionEntity.price
-            ))
+            .select(projectCartMenuDetail())
             .from(cartMenuEntity)
             .join(menuEntity).on(cartMenuEntity.menuId.eq(menuEntity.id))
+            .join(storeEntity).on(menuEntity.storeId.eq(storeEntity.id))
             .leftJoin(menuOptionEntity).on(cartMenuEntity.optionId.eq(menuOptionEntity.id))
             .where(cartMenuEntity.cartId.eq(cartId))
             .fetch();
+    }
+
+    private static QCartMenuDetail projectCartMenuDetail() {
+        return new QCartMenuDetail(
+            cartMenuEntity.id,
+            cartMenuEntity.quantity,
+
+            menuEntity.id,
+            menuEntity.name,
+            menuEntity.description,
+            menuEntity.menuStatus,
+            menuEntity.price,
+            menuEntity.image,
+            menuEntity.storeId,
+            storeEntity.foodCategory,
+
+            menuOptionEntity.id,
+            menuOptionEntity.name,
+            menuOptionEntity.price
+        );
     }
 }

@@ -13,6 +13,7 @@ import ksh.deliveryhub.point.service.UserPointService;
 import ksh.deliveryhub.point.service.UserPointTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class PaymentFacade {
     private final CartService cartService;
     private final PaymentService paymentService;
 
+    @Transactional
     public Payment processPayment(
         long userId,
         long orderId,

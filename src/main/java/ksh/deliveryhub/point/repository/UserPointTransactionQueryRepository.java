@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserPointTransactionQueryRepository {
 
-    List<UserPointTransactionEntity> findAvailableEarningTransactions(long userPointId, LocalDate now);
+    List<UserPointTransactionEntity> findAvailableEarningTransactions(long userId, LocalDate now);
 }

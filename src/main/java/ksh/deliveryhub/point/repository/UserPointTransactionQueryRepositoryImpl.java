@@ -16,13 +16,13 @@ public class UserPointTransactionQueryRepositoryImpl implements UserPointTransac
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<UserPointTransactionEntity> findAvailableEarningTransactions(long userPointId, LocalDate now) {
+    public List<UserPointTransactionEntity> findAvailableEarningTransactions(long userId, LocalDate now) {
         return queryFactory
             .select(userPointTransactionEntity)
             .from(userPointTransactionEntity)
             .where(
                 userPointTransactionEntity.pointEventType.eq(PointEventType.EARN),
-                userPointTransactionEntity.userPointId.eq(userPointId),
+                userPointTransactionEntity.userId.eq(userId),
                 userPointTransactionEntity.expireDate.after(LocalDate.now()),
                 userPointTransactionEntity.remainingBalance.gt(0)
             )

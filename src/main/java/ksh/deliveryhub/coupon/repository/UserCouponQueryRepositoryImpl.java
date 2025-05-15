@@ -1,12 +1,11 @@
 package ksh.deliveryhub.coupon.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
-import ksh.deliveryhub.coupon.model.QUserCouponDetail;
-import ksh.deliveryhub.coupon.model.UserCouponDetail;
+import ksh.deliveryhub.coupon.repository.projection.QUserCouponDetailProjection;
+import ksh.deliveryhub.coupon.repository.projection.UserCouponDetailProjection;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 
@@ -22,11 +21,11 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
+    public List<UserCouponDetailProjection> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory) {
         BooleanExpression foodCategoryEquals = foodCategory == null ? null : couponEntity.foodCategory.eq(foodCategory);
 
         return queryFactory
-            .select(projectUserCouponDetail())
+            .select(new QUserCouponDetailProjection(userCouponEntity, couponEntity))
             .from(userCouponEntity)
             .join(couponEntity)
             .on(userCouponEntity.couponId.eq(couponEntity.id))
@@ -39,9 +38,9 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
     }
 
     @Override
-    public Optional<Tuple> findCouponToApply(long id, long userId, FoodCategory foodCategory) {
-        Tuple tuple = queryFactory
-            .select(userCouponEntity, couponEntity.discountAmount)
+    public Optional<UserCouponDetailProjection> findCouponToApply(long id, long userId, FoodCategory foodCategory) {
+        UserCouponDetailProjection userCouponDetailProjection = queryFactory
+            .select(new QUserCouponDetailProjection(userCouponEntity, couponEntity))
             .from(userCouponEntity)
             .join(couponEntity).on(userCouponEntity.couponId.eq(couponEntity.id))
             .where(
@@ -53,25 +52,6 @@ public class UserCouponQueryRepositoryImpl implements UserCouponQueryRepository 
             .setLockMode(LockModeType.PESSIMISTIC_WRITE)
             .fetchOne();
 
-        return Optional.ofNullable(tuple);
-    }
-
-    private static QUserCouponDetail projectUserCouponDetail() {
-        return new QUserCouponDetail(
-            userCouponEntity.id,
-            userCouponEntity.userId,
-            userCouponEntity.couponStatus,
-            userCouponEntity.expireAt,
-
-            couponEntity.id,
-            couponEntity.code,
-            couponEntity.description,
-            couponEntity.discountAmount,
-            couponEntity.duration,
-            couponEntity.foodCategory,
-            couponEntity.couponStatus,
-            couponEntity.remainingQuantity,
-            couponEntity.minimumSpend
-        );
+        return Optional.ofNullable(userCouponDetailProjection);
     }
 }

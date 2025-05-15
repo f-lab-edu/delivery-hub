@@ -130,7 +130,7 @@ class UserCouponServiceImplTest {
 
         //then
         assertThat(userCoupons).hasSize(2)
-            .extracting("userId", "couponId")
+            .extracting("userCoupon.userId", "userCoupon.couponId")
             .containsExactlyInAnyOrder(
                 tuple(1L, couponEntity1.getId()),
                 tuple(1L, couponEntity2.getId())
@@ -159,7 +159,7 @@ class UserCouponServiceImplTest {
         //then
         UserCouponEntity reservedUserCouponEntity = userCouponRepository.findById(userCouponEntity.getId()).get();
         assertThat(reservedUserCouponEntity.getCouponStatus()).isEqualTo(UserCouponStatus.RESERVED);
-        assertThat(userCouponDetail.getDiscountAmount()).isEqualTo(1000);
+        assertThat(userCouponDetail.getCoupon().getDiscountAmount()).isEqualTo(1000);
     }
 
     @Test

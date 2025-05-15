@@ -79,13 +79,14 @@ public class CartMenuServiceImpl implements CartMenuService {
     public List<CartMenuDetail> checkCartMenuBeforeOrder(long cartId) {
         List<CartMenuDetail> cartMenuDetails = cartMenuRepository.findCartMenusWithDetail(cartId);
 
+        if(cartMenuDetails.isEmpty()) {
+            throw new CustomException(ErrorCode.CART_EMPTY);
+        }
+
         for (CartMenuDetail cartMenuDetail : cartMenuDetails) {
             if(cartMenuDetail.getMenuStatus() != MenuStatus.AVAILABLE) {
                 throw new CustomException(ErrorCode.MENU_NOT_AVAILABLE);
             }
-        }
-        if(cartMenuDetails.isEmpty()) {
-            throw new CustomException(ErrorCode.CART_EMPTY);
         }
 
         return cartMenuDetails;

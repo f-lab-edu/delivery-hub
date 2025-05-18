@@ -5,4 +5,6 @@ import ksh.deliveryhub.cart.model.Cart;
 public interface CartService {
 
     Cart getUserCart(long userId);
+
+    void closeCartAfterPayment(long userId);
 }

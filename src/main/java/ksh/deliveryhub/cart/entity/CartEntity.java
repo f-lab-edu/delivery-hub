@@ -26,6 +26,10 @@ public class CartEntity extends BaseEntity {
 
     private Long userId;
 
+    public void updateStatus(CartStatus status) {
+        this.status = status;
+    }
+
     @Builder
     private CartEntity(
         Long id,

@@ -22,4 +22,27 @@ public class UserPointServiceImpl implements UserPointService{
             throw new CustomException(ErrorCode.USER_POINT_NOT_ENOUGH);
         }
     }
+
+    @Override
+    public void usePoint(long userId, int pointToUse) {
+        UserPointEntity userPointEntity = userPointRepository.findByUserId(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_POINT_NOT_FOUND));
+
+        if(userPointEntity.getBalance() < pointToUse) {
+            throw new CustomException(ErrorCode.USER_POINT_NOT_ENOUGH);
+        }
+
+        userPointEntity.decreaseBalance(pointToUse);
+    }
+
+    @Override
+    public int earnPoint(long userId, int finalPrice) {
+        UserPointEntity userPointEntity = userPointRepository.findByUserId(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_POINT_NOT_FOUND));
+
+        int earnedPoint = (int) (finalPrice * 0.1);
+        userPointEntity.increaseBalance(earnedPoint);
+
+        return earnedPoint;
+    }
 }

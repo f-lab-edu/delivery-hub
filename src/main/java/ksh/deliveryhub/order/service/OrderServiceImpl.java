@@ -1,12 +1,15 @@
 package ksh.deliveryhub.order.service;
 
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.order.entity.OrderEntity;
 import ksh.deliveryhub.order.entity.OrderStatus;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +37,22 @@ public class OrderServiceImpl implements OrderService{
         OrderEntity savedOrderEntity = orderRepository.save(orderEntity);
 
         return Order.from(savedOrderEntity);
+    }
+
+    @Override
+    public Order getPendingOrder(long id, long userId) {
+        OrderEntity orderEntity = orderRepository.findByIdAndUserIdAndOrderStatus(id, userId, OrderStatus.PENDING)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        return Order.from(orderEntity);
+    }
+
+    @Transactional
+    @Override
+    public void completePayment(long id) {
+        OrderEntity orderEntity = orderRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        orderEntity.updateStatus(OrderStatus.PAID);
     }
 }

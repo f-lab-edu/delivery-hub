@@ -195,7 +195,13 @@ class CartMenuServiceImplTest {
 
         // then
         assertThat(details).hasSize(2)
-            .extracting("quantity", "menuId", "menuPrice", "optionId", "optionPrice")
+            .extracting(
+                "cartMenu.quantity",
+                "menu.id",
+                "menu.price",
+                "menuOption.id",
+                "menuOption.price"
+            )
             .containsExactlyInAnyOrder(
                 tuple(2, menuEntity1.getId(), menuEntity1.getPrice(), optionEntity.getId(), optionEntity.getPrice()),
                 tuple(1, menuEntity2.getId(), menuEntity2.getPrice(), null, null)

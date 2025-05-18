@@ -36,7 +36,7 @@ public class OrderFacade {
         List<CartMenuDetail> cartMenuDetails = cartMenuService.checkCartMenuBeforeOrder(cart.getId());
 
         //사용할 쿠폰 검증 및 예약
-        FoodCategory foodCategory = cartMenuDetails.getFirst().getFoodCategory();
+        FoodCategory foodCategory = cartMenuDetails.getFirst().getStore().getFoodCategory();
         UserCouponDetail userCouponDetail = userCouponService.reserveCoupon(
             userCouponId,
             userId,

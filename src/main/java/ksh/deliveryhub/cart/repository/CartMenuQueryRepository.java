@@ -1,7 +1,7 @@
 package ksh.deliveryhub.cart.repository;
 
 import ksh.deliveryhub.cart.entity.CartMenuEntity;
-import ksh.deliveryhub.cart.model.CartMenuDetail;
+import ksh.deliveryhub.cart.repository.projection.CartMenuDetailProjection;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +12,5 @@ public interface CartMenuQueryRepository {
 
     Long findStoreIdOfExistingMenu(long cartId);
 
-    List<CartMenuDetail> findCartMenusWithDetail(long cartId);
+    List<CartMenuDetailProjection> findCartMenusWithDetail(long cartId);
 }

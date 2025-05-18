@@ -1,33 +1,37 @@
 package ksh.deliveryhub.cart.model;
 
-import com.querydsl.core.annotations.QueryProjection;
-import ksh.deliveryhub.menu.entity.MenuStatus;
-import ksh.deliveryhub.store.entity.FoodCategory;
-import lombok.AllArgsConstructor;
+import ksh.deliveryhub.cart.repository.projection.CartMenuDetailProjection;
+import ksh.deliveryhub.menu.entity.MenuOptionEntity;
+import ksh.deliveryhub.menu.model.Menu;
+import ksh.deliveryhub.menu.model.MenuOption;
+import ksh.deliveryhub.store.model.Store;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor(onConstructor = @__(@QueryProjection))
+@Builder
 public class CartMenuDetail {
 
-    private Long id;
-    private Integer quantity;
+    private CartMenu cartMenu;
+    private Menu menu;
+    private MenuOption menuOption;
+    private Store store;
 
-    private Long menuId;
-    private String menuName;
-    private String menuDescription;
-    private MenuStatus menuStatus;
-    private Integer menuPrice;
-    private String image;
-    private Long storeId;
-    private FoodCategory foodCategory;
-
-    private Long optionId;
-    private String optionName;
-    private Integer optionPrice;
+    public static CartMenuDetail from(
+        CartMenuDetailProjection projection
+    ) {
+        MenuOptionEntity menuOptionEntity = projection.getMenuOptionEntity();
+        return CartMenuDetail.builder()
+            .cartMenu(CartMenu.from(projection.getCartMenuEntity()))
+            .menu(Menu.from(projection.getMenuEntity()))
+            .menuOption(MenuOption.from(menuOptionEntity))
+            .store(Store.from(projection.getStoreEntity()))
+            .build();
+    }
 
     public int getTotalPrice() {
-        int optionPrice = optionId != null ? this.optionPrice : 0;
-        return (menuPrice + optionPrice) * quantity;
+
+        int optionPrice = menuOption != null ? menuOption.getPrice() : 0;
+        return (menu.getPrice() + optionPrice) * cartMenu.getQuantity();
     }
 }

@@ -1,6 +1,9 @@
 package ksh.deliveryhub.order.model;
 
+import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
+import ksh.deliveryhub.menu.model.Menu;
+import ksh.deliveryhub.menu.model.MenuOption;
 import ksh.deliveryhub.order.entity.OrderItemEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,13 +21,17 @@ public class OrderItem {
     private Long optionId;
 
     public static OrderItem from(long orderId, CartMenuDetail cartMenuDetail) {
+        CartMenu cartMenu = cartMenuDetail.getCartMenu();
+        Menu menu = cartMenuDetail.getMenu();
+        MenuOption menuOption = cartMenuDetail.getMenuOption();
+
         return OrderItem.builder()
-            .quantity(cartMenuDetail.getQuantity())
-            .menuPrice(cartMenuDetail.getMenuPrice())
-            .optionPrice(cartMenuDetail.getOptionPrice())
+            .quantity(cartMenu.getQuantity())
+            .menuPrice(menu.getPrice())
+            .optionPrice(menuOption != null ? menuOption.getPrice() : null)
             .orderId(orderId)
-            .menuId(cartMenuDetail.getMenuId())
-            .optionId(cartMenuDetail.getOptionId())
+            .menuId(menu.getId())
+            .optionId(menuOption != null ? menuOption.getId() : null)
             .build();
     }
 

@@ -14,6 +14,10 @@ public class MenuOption {
     private Long menuId;
 
     public static MenuOption from(MenuOptionEntity menuOptionEntity) {
+        if (menuOptionEntity == null) {
+            return null;
+        }
+
         return MenuOption.builder()
             .id(menuOptionEntity.getId())
             .name(menuOptionEntity.getName())

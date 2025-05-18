@@ -1,6 +1,9 @@
 package ksh.deliveryhub.cart.dto.response;
 
+import ksh.deliveryhub.cart.model.CartMenu;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
+import ksh.deliveryhub.menu.model.Menu;
+import ksh.deliveryhub.menu.model.MenuOption;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,20 +22,24 @@ public class CartMenuResponseDto {
     private Integer optionPrice;
 
     public static CartMenuResponseDto from(CartMenuDetail cartMenuDetail) {
-        int quantity = cartMenuDetail.getQuantity();
-        int cartMenuPrice = cartMenuDetail.getMenuPrice() + (cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionPrice() : 0);
+        CartMenu cartMenu = cartMenuDetail.getCartMenu();
+        Menu menu = cartMenuDetail.getMenu();
+        MenuOption menuOption = cartMenuDetail.getMenuOption();
+
+        int quantity = cartMenu.getQuantity();
+        int cartMenuPrice = menu.getPrice() + (menuOption != null ? menuOption.getPrice() : 0);
         int totalPrice = quantity * cartMenuPrice;
 
         return CartMenuResponseDto.builder()
-            .id(cartMenuDetail.getId())
+            .id(cartMenu.getId())
             .totalPrice(totalPrice)
-            .quantity(cartMenuDetail.getQuantity())
-            .menuName(cartMenuDetail.getMenuName())
-            .menuDescription(cartMenuDetail.getMenuDescription())
-            .menuPrice(cartMenuDetail.getMenuPrice())
-            .menuImage(cartMenuDetail.getImage())
-            .optionName(cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionName() : null)
-            .optionPrice(cartMenuDetail.getOptionId() != null ? cartMenuDetail.getOptionPrice() : null)
+            .quantity(cartMenu.getQuantity())
+            .menuName(menu.getName())
+            .menuDescription(menu.getDescription())
+            .menuPrice(menu.getPrice())
+            .menuImage(menu.getImage())
+            .optionName(menuOption != null ? menuOption.getName() : null)
+            .optionPrice(menuOption != null ? menuOption.getPrice() : null)
             .build();
     }
 }

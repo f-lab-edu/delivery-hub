@@ -7,6 +7,7 @@ import ksh.deliveryhub.cart.repository.CartMenuRepository;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.menu.entity.MenuStatus;
+import ksh.deliveryhub.menu.model.Menu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,19 +73,24 @@ public class CartMenuServiceImpl implements CartMenuService {
 
     @Override
     public List<CartMenuDetail> findCartMenusWithDetail(long cartId) {
-        return cartMenuRepository.findCartMenusWithDetail(cartId);
+        return cartMenuRepository.findCartMenusWithDetail(cartId).stream()
+            .map(CartMenuDetail::from)
+            .toList();
     }
 
     @Override
     public List<CartMenuDetail> checkCartMenuBeforeOrder(long cartId) {
-        List<CartMenuDetail> cartMenuDetails = cartMenuRepository.findCartMenusWithDetail(cartId);
+        List<CartMenuDetail> cartMenuDetails = cartMenuRepository.findCartMenusWithDetail(cartId).stream()
+            .map(CartMenuDetail::from)
+            .toList();
 
         if(cartMenuDetails.isEmpty()) {
             throw new CustomException(ErrorCode.CART_EMPTY);
         }
 
         for (CartMenuDetail cartMenuDetail : cartMenuDetails) {
-            if(cartMenuDetail.getMenuStatus() != MenuStatus.AVAILABLE) {
+            Menu menu = cartMenuDetail.getMenu();
+            if(menu.getMenuStatus() != MenuStatus.AVAILABLE) {
                 throw new CustomException(ErrorCode.MENU_NOT_AVAILABLE);
             }
         }

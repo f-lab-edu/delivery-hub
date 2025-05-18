@@ -23,7 +23,7 @@ public class OrderCreateCommand {
         int pointToUse
     ) {
         long userId = userCouponDetail.getUserCoupon().getUserId();
-        long storeId = cartMenuDetails.getFirst().getStoreId();
+        long storeId = cartMenuDetails.getFirst().getStore().getId();
         final int totalPrice = cartMenuDetails.stream()
             .mapToInt(CartMenuDetail::getTotalPrice)
             .sum();

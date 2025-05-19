@@ -13,6 +13,10 @@ java {
     }
 }
 
+ext {
+    querydslVersion  = '5.1.0'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -30,8 +34,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     //Querydsl
-    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    implementation      "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
 
     //Lombock
     compileOnly 'org.projectlombok:lombok'

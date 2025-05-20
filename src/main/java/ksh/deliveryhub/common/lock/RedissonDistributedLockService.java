@@ -29,13 +29,7 @@ public class RedissonDistributedLockService implements DistributedLockService{
     ) {
         String lockKey = LOCK_PREFIX + key;
         RLock lock = redissonClient.getLock(lockKey);
-        boolean acquired;
-        try {
-            acquired = lock.tryLock(waitTime, leaseTime, unit);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new CustomException(ErrorCode.LOCK_ACQUIRE_INTERRUPTED);
-        }
+        boolean acquired = tryLock(waitTime, leaseTime, unit, lock);
 
         if (!acquired) {
             throw new CustomException(ErrorCode.LOCK_ACQUIRE_TIMEOUT);
@@ -44,17 +38,32 @@ public class RedissonDistributedLockService implements DistributedLockService{
         try {
             businessLogic.run();
         } finally {
-            if (TransactionSynchronizationManager.isActualTransactionActive()) {
-                TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-                    @Override
-                    public void afterCompletion(int status) {
-                        lock.unlock();
-                    }
-                });
-            } else {
-                lock.unlock();
-            }
+            unlock(lock);
         }
 
+    }
+
+    private static boolean tryLock(long waitTime, long leaseTime, TimeUnit unit, RLock lock) {
+        boolean acquired;
+        try {
+            acquired = lock.tryLock(waitTime, leaseTime, unit);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new CustomException(ErrorCode.LOCK_ACQUIRE_INTERRUPTED);
+        }
+        return acquired;
+    }
+
+    private static void unlock(RLock lock) {
+        if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCompletion(int status) {
+                    lock.unlock();
+                }
+            });
+        } else {
+            lock.unlock();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package ksh.deliveryhub.common.lock;
 
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -32,11 +34,11 @@ public class RedissonDistributedLockService implements DistributedLockService{
             acquired = lock.tryLock(waitTime, leaseTime, unit);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("락 획득 대기 중 인터럽트 발생", e);
+            throw new CustomException(ErrorCode.LOCK_ACQUIRE_INTERRUPTED);
         }
 
         if (!acquired) {
-            throw new IllegalStateException("락을 획득하지 못했습니다: " + lockKey);
+            throw new CustomException(ErrorCode.LOCK_ACQUIRE_TIMEOUT);
         }
 
         try {

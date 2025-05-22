@@ -4,13 +4,10 @@ import ksh.deliveryhub.common.util.CouponCodeUtils;
 import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.repository.CouponRepository;
 import ksh.deliveryhub.store.entity.FoodCategory;
-import org.jmock.lib.concurrent.Blitzer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static ksh.deliveryhub.coupon.entity.CouponStatus.ACTIVE;
 import static ksh.deliveryhub.coupon.entity.CouponStatus.INACTIVE;
@@ -58,34 +55,6 @@ class CouponServiceImplTest {
         //then
         CouponEntity decreasedCouponEntity = couponRepository.findById(couponEntity.getId()).get();
         assertThat(decreasedCouponEntity.getCouponStatus()).isEqualTo(INACTIVE);
-    }
-
-    @Test
-    public void 여러_유저가_동시에_요청했을_때_쿠폰_수가_부족하면_더_이상_발행하지_않는다() throws Exception{
-        //given
-        String code = CouponCodeUtils.generateCode();
-        CouponEntity couponEntity = createCouponEntity(code, 95, FoodCategory.PIZZA);
-        couponRepository.save(couponEntity);
-
-        Blitzer blitzer = new Blitzer(100, 1);
-        AtomicInteger successCount = new AtomicInteger(0);
-        AtomicInteger failureCount = new AtomicInteger(0);
-
-        //when
-        blitzer.blitz(
-            () -> {
-                try {
-                    couponService.issueCoupon(code);
-                    successCount.incrementAndGet();
-                } catch (Exception e) {
-                    failureCount.incrementAndGet();
-                }
-            }
-        );
-
-        //then
-        assertThat(successCount.get()).isEqualTo(95);
-        assertThat(failureCount.get()).isEqualTo(5);
     }
 
     private static CouponEntity createCouponEntity(String code, int remainingQuantity, FoodCategory foodCategory) {

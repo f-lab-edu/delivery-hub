@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserCouponService {
 
-    UserCoupon registerCoupon(long userId, Coupon coupon);
+    void registerCoupon(long userId, Coupon coupon);
 
     List<UserCouponDetail> findAvailableCouponsWithDetail(long userId, FoodCategory foodCategory);
 

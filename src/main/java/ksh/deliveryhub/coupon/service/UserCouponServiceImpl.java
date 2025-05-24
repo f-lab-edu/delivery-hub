@@ -4,10 +4,10 @@ import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
-import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
 import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
+import ksh.deliveryhub.coupon.producer.UserCouponRegisterProducer;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
 import ksh.deliveryhub.coupon.repository.projection.UserCouponDetailProjection;
 import ksh.deliveryhub.store.entity.FoodCategory;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,29 +23,17 @@ import java.util.List;
 public class UserCouponServiceImpl implements UserCouponService {
 
     private final UserCouponRepository userCouponRepository;
+    private final UserCouponRegisterProducer couponRegisterProducer;
     private final Clock clock;
 
-    @Transactional
     @Override
-    public UserCoupon registerCoupon(long userId, Coupon coupon) {
+    public void registerCoupon(long userId, Coupon coupon) {
         userCouponRepository.findByUserIdAndCouponId(userId, coupon.getId())
             .ifPresent(userCouponEntity ->
                 {throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);}
             );
 
-
-        Integer duration = coupon.getDuration();
-        LocalDate expireAt = LocalDate.now(clock).plusDays(duration);
-
-        UserCouponEntity userCouponEntity = UserCouponEntity.builder()
-            .couponStatus(UserCouponStatus.ACTIVE)
-            .userId(userId)
-            .couponId(coupon.getId())
-            .expireAt(expireAt)
-            .build();
-        userCouponRepository.save(userCouponEntity);
-
-        return UserCoupon.from(userCouponEntity);
+        couponRegisterProducer.register(userId, coupon.getId(), coupon.getDuration());
     }
 
     @Transactional(readOnly = true)

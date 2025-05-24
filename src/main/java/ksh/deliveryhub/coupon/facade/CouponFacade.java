@@ -2,10 +2,8 @@ package ksh.deliveryhub.coupon.facade;
 
 import ksh.deliveryhub.common.lock.DistributedLockService;
 import ksh.deliveryhub.coupon.model.Coupon;
-import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.CouponService;
-import ksh.deliveryhub.coupon.service.CouponTransactionService;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,6 @@ public class CouponFacade {
 
     private final CouponService couponService;
     private final UserCouponService userCouponService;
-    private final CouponTransactionService couponTransactionService;
     private final DistributedLockService lockService;
 
     @Transactional
@@ -38,8 +35,7 @@ public class CouponFacade {
             TimeUnit.MILLISECONDS,
             () -> {
                 Coupon coupon = couponService.issueCoupon(code);
-                UserCoupon userCoupon = userCouponService.registerCoupon(userId, coupon);
-                couponTransactionService.saveIssueTransaction(userCoupon);
+                userCouponService.registerCoupon(userId, coupon);
             }
         );
     }

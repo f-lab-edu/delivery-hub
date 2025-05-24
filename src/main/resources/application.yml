@@ -13,5 +13,8 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
 
+environment:
+  KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+
 logging.level:
   org.hibernate.SQL: debug

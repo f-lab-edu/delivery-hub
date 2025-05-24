@@ -6,7 +6,6 @@ import ksh.deliveryhub.coupon.entity.CouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.model.Coupon;
-import ksh.deliveryhub.coupon.model.UserCoupon;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.repository.CouponRepository;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
@@ -69,10 +68,11 @@ class UserCouponServiceImplTest {
         LocalDate expireAt = LocalDate.of(2025, 5, 12);
 
         //when
-        UserCoupon registeredCoupon = userCouponService.registerCoupon(1L, coupon);
+        userCouponService.registerCoupon(1L, coupon);
+        Thread.sleep(10000);
 
         //then
-        UserCouponEntity userCouponEntity = userCouponRepository.findById(registeredCoupon.getId()).get();
+        UserCouponEntity userCouponEntity = userCouponRepository.findByUserIdAndCouponId(1L, 1L).get();
         assertThat(userCouponEntity.getUserId()).isEqualTo(1L);
         assertThat(userCouponEntity.getCouponId()).isEqualTo(1L);
         assertThat(userCouponEntity.getCouponStatus()).isEqualTo(ACTIVE);

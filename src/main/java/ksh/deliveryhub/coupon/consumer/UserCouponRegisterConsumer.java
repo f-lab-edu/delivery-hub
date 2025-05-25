@@ -2,12 +2,14 @@ package ksh.deliveryhub.coupon.consumer;
 
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
+import ksh.deliveryhub.common.redis.CacheKey;
 import ksh.deliveryhub.coupon.dto.event.UserCouponRegisterEvent;
 import ksh.deliveryhub.coupon.entity.CouponEventType;
 import ksh.deliveryhub.coupon.entity.CouponTransactionEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponEntity;
 import ksh.deliveryhub.coupon.entity.UserCouponStatus;
 import ksh.deliveryhub.coupon.repository.CouponTransactionRepository;
+import ksh.deliveryhub.coupon.repository.UserCouponCacheRepository;
 import ksh.deliveryhub.coupon.repository.UserCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -23,6 +25,7 @@ public class UserCouponRegisterConsumer {
 
     private final UserCouponRepository userCouponRepository;
     private final CouponTransactionRepository couponTransactionRepository;
+    private final UserCouponCacheRepository userCouponCacheRepository;
     private final Clock clock;
 
 
@@ -38,10 +41,11 @@ public class UserCouponRegisterConsumer {
     }
 
     private UserCouponEntity saveUserCouponEntity(UserCouponRegisterEvent event) {
-        userCouponRepository.findByUserIdAndCouponId(event.getUserId(), event.getCouponId())
-            .ifPresent(userCouponEntity ->
-                {throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);}
-            );
+        String key = CacheKey.REGISTERED_USER_SET.makeKey(String.valueOf(event.getUserId()));
+        boolean alreadyRegistered = userCouponCacheRepository.addRegisteredUserIdInSet(key, event.getUserId());
+        if(alreadyRegistered) {
+            throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);
+        }
 
 
         int duration = event.getDuration();

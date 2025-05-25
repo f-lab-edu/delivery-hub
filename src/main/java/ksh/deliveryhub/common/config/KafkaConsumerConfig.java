@@ -1,5 +1,6 @@
 package ksh.deliveryhub.common.config;
 
+import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.coupon.dto.event.UserCouponRegisterEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.TopicPartition;
@@ -58,7 +59,7 @@ public class KafkaConsumerConfig {
             recoverer,
             new FixedBackOff(1000L, 2L)
         );
-
+        errorHandler.addNotRetryableExceptions(CustomException.class);
         factory.setCommonErrorHandler(errorHandler);
 
         return factory;

@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
 import java.util.List;
 
 @Service
@@ -24,7 +23,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     private final UserCouponRepository userCouponRepository;
     private final UserCouponRegisterProducer couponRegisterProducer;
-    private final Clock clock;
 
     @Override
     public void registerCoupon(long userId, Coupon coupon) {

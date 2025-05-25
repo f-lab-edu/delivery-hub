@@ -1,5 +1,7 @@
 package ksh.deliveryhub.coupon.consumer;
 
+import ksh.deliveryhub.common.exception.CustomException;
+import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.coupon.dto.event.UserCouponRegisterEvent;
 import ksh.deliveryhub.coupon.entity.CouponEventType;
 import ksh.deliveryhub.coupon.entity.CouponTransactionEntity;
@@ -36,6 +38,12 @@ public class UserCouponRegisterConsumer {
     }
 
     private UserCouponEntity saveUserCouponEntity(UserCouponRegisterEvent event) {
+        userCouponRepository.findByUserIdAndCouponId(event.getUserId(), event.getCouponId())
+            .ifPresent(userCouponEntity ->
+                {throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);}
+            );
+
+
         int duration = event.getDuration();
         LocalDate expireAt = LocalDate.now(clock).plusDays(duration);
 

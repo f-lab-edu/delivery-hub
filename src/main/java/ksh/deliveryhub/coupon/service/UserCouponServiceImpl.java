@@ -28,11 +28,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public void registerCoupon(long userId, Coupon coupon) {
-        userCouponRepository.findByUserIdAndCouponId(userId, coupon.getId())
-            .ifPresent(userCouponEntity ->
-                {throw new CustomException(ErrorCode.USER_COUPON_ALREADY_REGISTERED);}
-            );
-
         couponRegisterProducer.register(userId, coupon.getId(), coupon.getDuration());
     }
 

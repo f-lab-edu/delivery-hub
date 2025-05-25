@@ -28,7 +28,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public void registerCoupon(long userId, Coupon coupon) {
-        couponRegisterProducer.register(userId, coupon.getId(), coupon.getDuration());
+        couponRegisterProducer.register(coupon.getId(), userId, coupon.getDuration());
     }
 
     @Transactional(readOnly = true)

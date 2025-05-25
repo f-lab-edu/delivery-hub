@@ -2,13 +2,18 @@ package ksh.deliveryhub.common.config;
 
 import ksh.deliveryhub.coupon.dto.event.UserCouponRegisterEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +38,28 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, UserCouponRegisterEvent> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, UserCouponRegisterEvent> kafkaListenerContainerFactory(
+        ConsumerFactory<String, UserCouponRegisterEvent> cf,
+        KafkaTemplate<String, UserCouponRegisterEvent> template
+    ) {
+
         ConcurrentKafkaListenerContainerFactory<String, UserCouponRegisterEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(cf);
+
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
+            template,
+            (record, ex) -> {
+                record.headers().add("error-message", ex.getMessage().getBytes());
+                return new TopicPartition(record.topic() + ".DLT", record.partition());
+            }
+        );
+
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(
+            recoverer,
+            new FixedBackOff(1000L, 2L)
+        );
+
+        factory.setCommonErrorHandler(errorHandler);
 
         return factory;
     }

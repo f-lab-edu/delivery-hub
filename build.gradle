@@ -49,6 +49,7 @@ dependencies {
 
     //Redis
     implementation "org.redisson:redisson-spring-boot-starter:${redissonVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     //Jakarta API
     annotationProcessor 'jakarta.annotation:jakarta.annotation-api'

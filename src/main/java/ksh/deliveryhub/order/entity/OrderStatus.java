@@ -3,7 +3,7 @@ package ksh.deliveryhub.order.entity;
 public enum OrderStatus {
     PENDING,
     PAID,
-    COOKING,
+    ACCEPTED,
     DELIVERING,
     COMPLETED,
     CANCELLED,

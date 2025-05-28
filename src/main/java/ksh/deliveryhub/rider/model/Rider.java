@@ -2,7 +2,6 @@ package ksh.deliveryhub.rider.model;
 
 import ksh.deliveryhub.rider.entity.RiderEntity;
 import ksh.deliveryhub.rider.entity.RiderStatus;
-import ksh.deliveryhub.user.entity.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +14,7 @@ public class Rider {
     private String password;
     private String name;
     private String phone;
+    private String location;
     private RiderStatus status;
 
     public static Rider from(RiderEntity riderEntity) {
@@ -24,16 +24,20 @@ public class Rider {
             .password(riderEntity.getPassword())
             .name(riderEntity.getName())
             .phone(riderEntity.getPhone())
+            .location(riderEntity.getLocation())
+            .status(riderEntity.getStatus())
             .build();
     }
 
-    public UserEntity toEntity() {
-        return UserEntity.builder()
+    public RiderEntity toEntity() {
+        return RiderEntity.builder()
             .id(getId())
             .email(getEmail())
             .password(getPassword())
             .name(getName())
             .phone(getPhone())
+            .location(getLocation())
+            .status(getStatus())
             .build();
     }
 }

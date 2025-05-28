@@ -3,6 +3,7 @@ package ksh.deliveryhub.rider.entity;
 import jakarta.persistence.*;
 import ksh.deliveryhub.common.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,10 +25,32 @@ public class RiderEntity extends BaseEntity {
 
     private String phone;
 
+    private String location;
+
     @Enumerated(EnumType.STRING)
     private RiderStatus status;
 
-    public void updateStatus(RiderStatus status) {
+    public void startWork(String location) {
+        this.status = RiderStatus.IDLE;
+        this.location = location;
+    }
+
+    @Builder
+    private RiderEntity(
+        Long id,
+        String email,
+        String password,
+        String name,
+        String phone,
+        String location,
+        RiderStatus status
+    ) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.location = location;
         this.status = status;
     }
 }

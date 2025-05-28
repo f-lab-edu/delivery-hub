@@ -54,4 +54,9 @@ public class OrderFacade {
 
         return order;
     }
+
+    @Transactional
+    public void acceptOrder(long id, long storeId) {
+        orderService.acceptOrder(id, storeId);
+    }
 }

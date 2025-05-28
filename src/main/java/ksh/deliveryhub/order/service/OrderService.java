@@ -10,4 +10,6 @@ public interface OrderService {
     Order getPendingOrder(long id, long userId);
 
     void completePayment(long id);
+
+    void acceptOrder(long id, long storeId);
 }

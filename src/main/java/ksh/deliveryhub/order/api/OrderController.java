@@ -37,4 +37,16 @@ public class OrderController {
             .status(HttpStatus.CREATED)
             .body(response);
     }
+
+    @PostMapping("/store/{storeId}/orders/{orderId}")
+    public ResponseEntity<SuccessResponseDto> accpetOrder(
+        @PathVariable("storeId") long storeId,
+        @PathVariable("orderId") long orderId
+    ) {
+        orderFacade.acceptOrder(orderId, storeId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
 }

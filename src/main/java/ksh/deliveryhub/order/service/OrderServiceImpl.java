@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order getPendingOrder(long id, long userId) {
-        OrderEntity orderEntity = orderRepository.findByIdAndUserIdAndOrderStatus(id, userId, OrderStatus.PENDING)
+        OrderEntity orderEntity = orderRepository.findByIdAndStoreIdAndOrderStatus(id, userId, OrderStatus.PENDING)
             .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         return Order.from(orderEntity);
@@ -54,5 +54,12 @@ public class OrderServiceImpl implements OrderService{
             .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         orderEntity.updateStatus(OrderStatus.PAID);
+    }
+
+    @Override
+    public void acceptOrder(long id, long storeId) {
+        orderRepository.findByIdAndStoreIdAndOrderStatus(id, storeId, OrderStatus.PAID)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND))
+            .updateStatus(OrderStatus.ACCEPTED);
     }
 }

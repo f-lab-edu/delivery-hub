@@ -26,4 +26,8 @@ public class RiderEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RiderStatus status;
+
+    public void updateStatus(RiderStatus status) {
+        this.status = status;
+    }
 }

@@ -25,12 +25,13 @@ public class RiderEntity extends BaseEntity {
 
     private String phone;
 
-    private String location;
+    @Embedded
+    private Location location;
 
     @Enumerated(EnumType.STRING)
     private RiderStatus status;
 
-    public void startWork(String location) {
+    public void startWork(Location location) {
         this.status = RiderStatus.IDLE;
         this.location = location;
     }
@@ -42,7 +43,7 @@ public class RiderEntity extends BaseEntity {
         String password,
         String name,
         String phone,
-        String location,
+        Location location,
         RiderStatus status
     ) {
         this.id = id;

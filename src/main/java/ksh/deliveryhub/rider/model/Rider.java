@@ -1,5 +1,6 @@
 package ksh.deliveryhub.rider.model;
 
+import ksh.deliveryhub.rider.entity.Location;
 import ksh.deliveryhub.rider.entity.RiderEntity;
 import ksh.deliveryhub.rider.entity.RiderStatus;
 import lombok.Builder;
@@ -14,7 +15,7 @@ public class Rider {
     private String password;
     private String name;
     private String phone;
-    private String location;
+    private Location location;
     private RiderStatus status;
 
     public static Rider from(RiderEntity riderEntity) {

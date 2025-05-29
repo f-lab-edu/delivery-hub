@@ -1,5 +1,6 @@
 package ksh.deliveryhub.store.dto.response;
 
+import ksh.deliveryhub.store.entity.Address;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
@@ -13,7 +14,7 @@ public class StoreResponseDto {
     private Long id;
     private String name;
     private String description;
-    private String address;
+    private Address address;
     private String phone;
     private FoodCategory foodCategory;
     private StoreStatus status;

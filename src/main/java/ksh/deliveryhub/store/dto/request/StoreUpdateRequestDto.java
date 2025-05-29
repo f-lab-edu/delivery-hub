@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ksh.deliveryhub.common.util.PhoneNumberUtils;
+import ksh.deliveryhub.store.entity.Address;
 import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
 import lombok.Builder;
@@ -27,8 +28,8 @@ public class StoreUpdateRequestDto {
     @NotNull(message = "가게 상태는 필수입니다.")
     private StoreStatus status;
 
-    @NotBlank(message = "가게 주소는 필수입니다.")
-    private String address;
+    @NotNull(message = "가게 주소는 필수입니다.")
+    private Address address;
 
     @NotBlank(message = "가게 번호는 필수입니다.")
     private String phone;

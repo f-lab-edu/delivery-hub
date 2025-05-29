@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ksh.deliveryhub.common.util.PhoneNumberUtils;
+import ksh.deliveryhub.store.entity.Address;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreStatus;
 import ksh.deliveryhub.store.model.Store;
@@ -22,8 +23,8 @@ public class StoreCreateRequestDto {
     @Size(max = 50, message = "가게 설명은 최대 50자입니다.")
     private String description;
 
-    @NotBlank(message = "가게 주소는 필수입니다.")
-    private String address;
+    @NotNull(message = "가게의 주소는 필수입니다.")
+    private Address address;
 
     @NotBlank(message = "가게 번호는 필수입니다.")
     private String phone;

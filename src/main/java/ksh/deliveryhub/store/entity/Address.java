@@ -28,6 +28,11 @@ public class Address {
             .build();
     }
 
+    @Override
+    public String toString() {
+        return city + ", " + district + ", " + subdistrict + ", " + street + ", " + building;
+    }
+
     @Builder
     private Address(String city, String district, String subdistrict, String street, String building) {
         this.city = city;

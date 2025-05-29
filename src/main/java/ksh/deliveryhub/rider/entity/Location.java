@@ -16,6 +16,10 @@ public class Location {
     private String district;
     private String subDistrict;
 
+    public static Location of(String city, String district) {
+        return of(city, district, null);
+    }
+
     public static Location of(String city, String district, String subDistrict) {
         return Location.builder()
             .city(city)

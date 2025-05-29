@@ -1,17 +1,19 @@
 package ksh.deliveryhub.order.api;
 
+import jakarta.validation.Valid;
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
+import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
 import ksh.deliveryhub.order.dto.request.OrderCreateRequestDto;
+import ksh.deliveryhub.order.dto.request.OrderQueryRequestDto;
+import ksh.deliveryhub.order.dto.response.AcceptedOrderResponseDto;
 import ksh.deliveryhub.order.dto.response.OrderCreateResponseDto;
 import ksh.deliveryhub.order.facade.OrderFacade;
 import ksh.deliveryhub.order.model.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,5 +50,23 @@ public class OrderController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .build();
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery(
+        @Valid OrderQueryRequestDto orderQueryRequestDto,
+        @Valid PageRequestDto pageRequestDto
+    ) {
+        PageResult<AcceptedOrderResponseDto> pageResult = orderFacade.findOrdersWaitingForDelivery(
+                orderQueryRequestDto.getCurrentLocation(),
+                pageRequestDto
+            )
+            .map(AcceptedOrderResponseDto::from);
+
+        SuccessResponseDto<PageResult<AcceptedOrderResponseDto>> response = SuccessResponseDto.of(pageResult);
+
+        return  ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
     }
 }

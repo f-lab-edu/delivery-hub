@@ -25,15 +25,11 @@ public class RiderEntity extends BaseEntity {
 
     private String phone;
 
-    @Embedded
-    private Location location;
-
     @Enumerated(EnumType.STRING)
     private RiderStatus status;
 
-    public void startWork(Location location) {
+    public void startWork() {
         this.status = RiderStatus.IDLE;
-        this.location = location;
     }
 
     @Builder
@@ -51,7 +47,6 @@ public class RiderEntity extends BaseEntity {
         this.password = password;
         this.name = name;
         this.phone = phone;
-        this.location = location;
         this.status = status;
     }
 }

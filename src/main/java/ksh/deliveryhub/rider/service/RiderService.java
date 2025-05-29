@@ -21,6 +21,6 @@ public class RiderService {
             )
             .orElseThrow(() -> new CustomException(ErrorCode.RIDER_NOT_FOUND));
 
-        riderEntity.startWork(rider.getLocation());
+        riderEntity.startWork();
     }
 }

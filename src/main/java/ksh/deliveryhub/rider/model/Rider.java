@@ -25,7 +25,6 @@ public class Rider {
             .password(riderEntity.getPassword())
             .name(riderEntity.getName())
             .phone(riderEntity.getPhone())
-            .location(riderEntity.getLocation())
             .status(riderEntity.getStatus())
             .build();
     }

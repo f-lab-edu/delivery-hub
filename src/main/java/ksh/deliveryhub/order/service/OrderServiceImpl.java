@@ -1,19 +1,25 @@
 package ksh.deliveryhub.order.service;
 
-import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
+import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
+import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.entity.OrderEntity;
 import ksh.deliveryhub.order.entity.OrderStatus;
 import ksh.deliveryhub.order.model.Order;
+import ksh.deliveryhub.order.model.OrderWithStoreInfo;
 import ksh.deliveryhub.order.repository.OrderRepository;
+import ksh.deliveryhub.rider.entity.Location;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
@@ -61,5 +67,20 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.findByIdAndStoreIdAndOrderStatus(id, storeId, OrderStatus.PAID)
             .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND))
             .updateStatus(OrderStatus.ACCEPTED);
+    }
+
+    @Override
+    public PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto) {
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage(),
+            pageRequestDto.getSize()
+        );
+
+        return orderRepository.findByStatusAndCurrentLocation(
+                OrderStatus.ACCEPTED,
+                location,
+                pageable
+            )
+            .map(OrderWithStoreInfo::from);
     }
 }

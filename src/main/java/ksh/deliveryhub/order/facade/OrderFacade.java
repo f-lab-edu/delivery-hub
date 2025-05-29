@@ -4,19 +4,28 @@ import ksh.deliveryhub.cart.model.Cart;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
+import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.model.Order;
+import ksh.deliveryhub.order.model.OrderDetailForDelivery;
+import ksh.deliveryhub.order.model.OrderItemWithMenu;
+import ksh.deliveryhub.order.model.OrderWithStoreInfo;
 import ksh.deliveryhub.order.service.OrderItemService;
 import ksh.deliveryhub.order.service.OrderService;
 import ksh.deliveryhub.point.service.UserPointService;
+import ksh.deliveryhub.rider.entity.Location;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -58,5 +67,27 @@ public class OrderFacade {
     @Transactional
     public void acceptOrder(long id, long storeId) {
         orderService.acceptOrder(id, storeId);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto) {
+        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery(location, pageRequestDto);
+        List<Long> orderIds = pageResult.getContent()
+            .stream()
+            .map(OrderWithStoreInfo::getOrder)
+            .map(Order::getId)
+            .toList();
+
+        Map<Long, List<OrderItemWithMenu>> orderItemMap = orderItemService.getOrderItemsIn(orderIds).stream()
+            .collect(Collectors.groupingBy(
+                orderItem -> orderItem.getOrderItem().getOrderId()
+            ));
+
+        return pageResult.map(ows -> {
+            Long orderId = ows.getOrder().getId();
+            List<OrderItemWithMenu> items =
+                orderItemMap.getOrDefault(orderId, Collections.emptyList());
+            return OrderDetailForDelivery.of(ows, items);
+        });
     }
 }

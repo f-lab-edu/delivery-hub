@@ -1,6 +1,7 @@
 package ksh.deliveryhub.rider.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import ksh.deliveryhub.rider.entity.Location;
 import ksh.deliveryhub.rider.model.Rider;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +16,8 @@ public class RiderLoginRequestDto {
     @NotBlank(message = "비밀번호는 필수입니다.")
     private String password;
 
-    @NotBlank(message = "현재 위치는 필수입니다.")
-    private String location;
+    @NotBlank(message = "라이더의 현재 위치는 필수입니다.")
+    private Location location;
 
     public Rider toModel() {
         return Rider.builder()

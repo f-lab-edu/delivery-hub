@@ -3,6 +3,7 @@ package ksh.deliveryhub.order.service;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.order.entity.OrderItemEntity;
 import ksh.deliveryhub.order.model.OrderItem;
+import ksh.deliveryhub.order.model.OrderItemWithMenu;
 import ksh.deliveryhub.order.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,13 @@ public class OrderItemServiceImpl implements OrderItemService{
 
         return orderItemRepository.saveAll(orderItemEntities).stream()
             .map(OrderItem::from)
+            .toList();
+    }
+
+    @Override
+    public List<OrderItemWithMenu> getOrderItemsIn(List<Long> orderIds) {
+        return orderItemRepository.getOrderItemWithMenuIn(orderIds).stream()
+            .map(OrderItemWithMenu::from)
             .toList();
     }
 }

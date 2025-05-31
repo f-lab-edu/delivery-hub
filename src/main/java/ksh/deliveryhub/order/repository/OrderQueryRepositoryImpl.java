@@ -37,7 +37,6 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepository {
             .from(orderEntity).join(storeEntity).on(orderEntity.storeId.eq(storeEntity.id))
             .where(
                 orderEntity.orderStatus.eq(status),
-                orderEntity.riderId.isNull(),
                 storeEntity.address.city.eq(location.getCity()),
                 storeEntity.address.district.eq(location.getDistrict())
             )

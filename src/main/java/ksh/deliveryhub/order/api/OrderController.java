@@ -52,6 +52,18 @@ public class OrderController {
             .build();
     }
 
+    @PostMapping("/riders/{riderId}/orders/{orderId}")
+    public ResponseEntity<SuccessResponseDto> assignOrderToRider(
+        @PathVariable("riderId") long riderId,
+        @PathVariable("orderId") long orderId
+    ) {
+        orderFacade.assignRiderToOrder(orderId, riderId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
+
     @GetMapping("/orders")
     public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery(
         @Valid OrderQueryRequestDto orderQueryRequestDto,

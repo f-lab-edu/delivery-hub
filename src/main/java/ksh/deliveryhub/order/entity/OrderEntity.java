@@ -38,6 +38,11 @@ public class OrderEntity extends BaseEntity {
         this.orderStatus = OrderStatus;
     }
 
+    public void assignRider(long riderId) {
+        this.riderId = riderId;
+        this.orderStatus = OrderStatus.ASSIGNED;
+    }
+
     @Builder
     private OrderEntity(
         Long id,

@@ -18,4 +18,6 @@ public interface OrderService {
     void acceptOrder(long id, long storeId);
 
     PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto);
+
+    void assignRiderToOrder(long id, long riderId);
 }

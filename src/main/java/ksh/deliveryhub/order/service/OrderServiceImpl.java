@@ -83,4 +83,15 @@ public class OrderServiceImpl implements OrderService {
             )
             .map(OrderWithStoreInfo::from);
     }
+
+    @Override
+    public void assignRiderToOrder(long id, long riderId) {
+        OrderEntity orderEntity = orderRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        if(orderEntity.getRiderId() != null) {
+            throw new CustomException(ErrorCode.ORDER_RIDER_ALREADY_ASSIGNED);
+        }
+        orderEntity.assignRider(riderId);
+    }
 }

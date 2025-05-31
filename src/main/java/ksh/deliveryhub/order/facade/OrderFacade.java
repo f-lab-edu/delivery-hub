@@ -6,6 +6,7 @@ import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
+import ksh.deliveryhub.common.lock.DistributedLockService;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,6 +39,7 @@ public class OrderFacade {
     private final UserCouponService userCouponService;
     private final UserPointService userPointService;
     private final CartService cartService;
+    private final DistributedLockService lockService;
 
     @Transactional
     public Order placeOrder(long userId, Long userCouponId, int pointToUse) {
@@ -67,6 +70,18 @@ public class OrderFacade {
     @Transactional
     public void acceptOrder(long id, long storeId) {
         orderService.acceptOrder(id, storeId);
+    }
+
+    @Transactional
+    public void assignRiderToOrder(long orderId, long riderId) {
+        String lockKey = "order:" + orderId;
+        lockService.acquire(
+            lockKey,
+            1000L,
+            5000L,
+            TimeUnit.MILLISECONDS,
+            () -> orderService.assignRiderToOrder(orderId, riderId)
+        );
     }
 
     @Transactional(readOnly = true)

@@ -25,7 +25,9 @@ public enum ErrorCode {
     USER_POINT_NOT_ENOUGH(400, "user.point.not.enough"),
     CART_EMPTY(400, "cart.empty"),
     ORDER_NOT_FOUND(404, "order.not.found"),
+    ORDER_RIDER_ALREADY_ASSIGNED(400, "order.rider.already.assigned"),
     CART_NOT_FOUND(404, "cart.not.found"),
+    RIDER_NOT_FOUND(404, "rider.not.found"),
 
     LOCK_ACQUIRE_INTERRUPTED(503, "lock.acquire.interrupted"),
     LOCK_ACQUIRE_TIMEOUT(503, "lock.acquire.timeout");

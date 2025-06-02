@@ -21,7 +21,8 @@ public class StoreEntity extends BaseEntity {
 
     private String description;
 
-    private String address;
+    @Embedded
+    private Address address;
 
     private String phone;
 
@@ -36,14 +37,14 @@ public class StoreEntity extends BaseEntity {
     public void update(
         String name,
         String description,
+        Address address,
         StoreStatus status,
-        String address,
         String phone
     ) {
         this.name = name;
         this.description = description;
-        this.status = status;
         this.address = address;
+        this.status = status;
         this.phone = phone;
     }
 
@@ -56,7 +57,7 @@ public class StoreEntity extends BaseEntity {
         Long id,
         String name,
         String description,
-        String address,
+        Address address,
         String phone,
         FoodCategory foodCategory,
         StoreStatus status,

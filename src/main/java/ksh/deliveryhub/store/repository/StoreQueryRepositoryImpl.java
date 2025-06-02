@@ -2,6 +2,8 @@ package ksh.deliveryhub.store.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import ksh.deliveryhub.rider.entity.Location;
+import ksh.deliveryhub.store.entity.Address;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.entity.StoreStatus;
@@ -20,8 +22,9 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<StoreEntity> findOpenStores(String address, FoodCategory foodCategory, Pageable pageable) {
-        BooleanExpression predicate = storeEntity.address.eq(address)
+    public Page<StoreEntity> findOpenStores(Location location, FoodCategory foodCategory, Pageable pageable) {
+        BooleanExpression predicate = storeEntity.address.city.eq(location.getCity())
+            .and(storeEntity.address.district.eq(location.getDistrict()))
             .and(storeEntity.foodCategory.eq(foodCategory))
             .and(storeEntity.status.eq(StoreStatus.OPEN));
 

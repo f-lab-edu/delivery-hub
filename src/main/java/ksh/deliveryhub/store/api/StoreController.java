@@ -27,7 +27,8 @@ public class StoreController {
         @Valid PageRequestDto pageRequestDto
     ) {
         PageResult<StoreResponseDto> storePage = storeService.findOpenStores(
-                storeRequestDto.toModel(),
+                storeRequestDto.getFoodCategory(),
+                storeRequestDto.getLocation(),
                 pageRequestDto
             )
             .map(StoreResponseDto::from);

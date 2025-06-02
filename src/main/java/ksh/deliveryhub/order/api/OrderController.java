@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import ksh.deliveryhub.common.dto.request.PageRequestDto;
 import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
+import ksh.deliveryhub.order.dto.request.AcceptedOrderRequestDto;
 import ksh.deliveryhub.order.dto.request.OrderCreateRequestDto;
-import ksh.deliveryhub.order.dto.request.OrderQueryRequestDto;
 import ksh.deliveryhub.order.dto.response.AcceptedOrderResponseDto;
 import ksh.deliveryhub.order.dto.response.OrderCreateResponseDto;
 import ksh.deliveryhub.order.facade.OrderFacade;
@@ -65,12 +65,12 @@ public class OrderController {
     }
 
     @GetMapping("/orders/paid")
-    public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery(
-        @Valid OrderQueryRequestDto orderQueryRequestDto,
+    public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery2(
+        @Valid AcceptedOrderRequestDto orderRequestDto,
         @Valid PageRequestDto pageRequestDto
     ) {
         PageResult<AcceptedOrderResponseDto> pageResult = orderFacade.findOrdersWaitingForDelivery(
-                orderQueryRequestDto.getCurrentLocation(),
+                orderRequestDto.toQuery(),
                 pageRequestDto
             )
             .map(AcceptedOrderResponseDto::from);

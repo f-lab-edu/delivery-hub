@@ -6,7 +6,9 @@ import ksh.deliveryhub.order.repository.projection.OrderWithStoreInfoProjection;
 import ksh.deliveryhub.rider.entity.Location;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+
 public interface OrderQueryRepository {
 
-    PageResult<OrderWithStoreInfoProjection> findByStatusAndCurrentLocation(OrderStatus status, Location location, Pageable pageable);
+    PageResult<OrderWithStoreInfoProjection> findByStatusAndCurrentLocation(OrderStatus status, Location location, LocalDateTime lastCreatedAt, Pageable pageable);
 }

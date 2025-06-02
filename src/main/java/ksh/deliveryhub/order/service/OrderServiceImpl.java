@@ -5,12 +5,12 @@ import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
+import ksh.deliveryhub.order.dto.query.AcceptedOrderQuery;
 import ksh.deliveryhub.order.entity.OrderEntity;
 import ksh.deliveryhub.order.entity.OrderStatus;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.model.OrderWithStoreInfo;
 import ksh.deliveryhub.order.repository.OrderRepository;
-import ksh.deliveryhub.rider.entity.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,7 +71,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto) {
+    public PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery(
+        AcceptedOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
         Pageable pageable = PageRequest.of(
             pageRequestDto.getPage(),
             pageRequestDto.getSize()
@@ -79,7 +82,8 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findByStatusAndCurrentLocation(
                 OrderStatus.ACCEPTED,
-                location,
+                query.getLocation(),
+                query.getLastCreatedAt(),
                 pageable
             )
             .map(OrderWithStoreInfo::from);

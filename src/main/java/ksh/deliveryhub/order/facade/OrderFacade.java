@@ -10,6 +10,7 @@ import ksh.deliveryhub.common.lock.DistributedLockService;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
+import ksh.deliveryhub.order.dto.query.AcceptedOrderQuery;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.model.OrderDetailForDelivery;
 import ksh.deliveryhub.order.model.OrderItemWithMenu;
@@ -17,7 +18,6 @@ import ksh.deliveryhub.order.model.OrderWithStoreInfo;
 import ksh.deliveryhub.order.service.OrderItemService;
 import ksh.deliveryhub.order.service.OrderService;
 import ksh.deliveryhub.point.service.UserPointService;
-import ksh.deliveryhub.rider.entity.Location;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -85,8 +85,14 @@ public class OrderFacade {
     }
 
     @Transactional(readOnly = true)
-    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto) {
-        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery(location, pageRequestDto);
+    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery(
+        AcceptedOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
+        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery(
+            query,
+            pageRequestDto
+        );
         List<Long> orderIds = pageResult.getContent()
             .stream()
             .map(OrderWithStoreInfo::getOrder)

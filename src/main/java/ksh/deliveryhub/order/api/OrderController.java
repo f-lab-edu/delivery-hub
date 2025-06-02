@@ -64,7 +64,7 @@ public class OrderController {
             .build();
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/orders/paid")
     public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery(
         @Valid OrderQueryRequestDto orderQueryRequestDto,
         @Valid PageRequestDto pageRequestDto

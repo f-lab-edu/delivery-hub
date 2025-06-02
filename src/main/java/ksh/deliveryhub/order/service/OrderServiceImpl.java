@@ -69,6 +69,7 @@ public class OrderServiceImpl implements OrderService {
             .updateStatus(OrderStatus.ACCEPTED);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery(Location location, PageRequestDto pageRequestDto) {
         Pageable pageable = PageRequest.of(
@@ -89,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = orderRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
-        if(orderEntity.getRiderId() != null) {
+        if (orderEntity.getRiderId() != null) {
             throw new CustomException(ErrorCode.ORDER_RIDER_ALREADY_ASSIGNED);
         }
         orderEntity.assignRider(riderId);

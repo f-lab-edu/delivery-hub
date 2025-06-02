@@ -2,9 +2,11 @@ package ksh.deliveryhub.order.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import ksh.deliveryhub.rider.entity.Location;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class OrderQueryRequestDto {
 
     @NotBlank(message = "라이더가 현재 위치한 시는 필수입니다. ")

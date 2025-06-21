@@ -1,17 +1,21 @@
 package ksh.deliveryhub.order.api;
 
+import jakarta.validation.Valid;
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
+import ksh.deliveryhub.common.dto.response.PageResult;
 import ksh.deliveryhub.common.dto.response.SuccessResponseDto;
+import ksh.deliveryhub.order.dto.query.WaitingForRiderOrderQuery;
+import ksh.deliveryhub.order.dto.request.AcceptedOrderRequestDto;
 import ksh.deliveryhub.order.dto.request.OrderCreateRequestDto;
+import ksh.deliveryhub.order.dto.request.WaitingForRiderOrderRequestDto;
+import ksh.deliveryhub.order.dto.response.AcceptedOrderResponseDto;
 import ksh.deliveryhub.order.dto.response.OrderCreateResponseDto;
 import ksh.deliveryhub.order.facade.OrderFacade;
 import ksh.deliveryhub.order.model.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +39,66 @@ public class OrderController {
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
+            .body(response);
+    }
+
+    @PostMapping("/store/{storeId}/orders/{orderId}")
+    public ResponseEntity<SuccessResponseDto> accpetOrder(
+        @PathVariable("storeId") long storeId,
+        @PathVariable("orderId") long orderId
+    ) {
+        orderFacade.acceptOrder(orderId, storeId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
+
+    @PostMapping("/riders/{riderId}/orders/{orderId}")
+    public ResponseEntity<SuccessResponseDto> assignOrderToRider(
+        @PathVariable("riderId") long riderId,
+        @PathVariable("orderId") long orderId
+    ) {
+        orderFacade.assignRiderToOrder(orderId, riderId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
+
+    @GetMapping("/orders/paid")
+    public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery(
+        @Valid AcceptedOrderRequestDto orderRequestDto,
+        @Valid PageRequestDto pageRequestDto
+    ) {
+        PageResult<AcceptedOrderResponseDto> pageResult = orderFacade.findOrdersWaitingForDelivery(
+                orderRequestDto.toQuery(),
+                pageRequestDto
+            )
+            .map(AcceptedOrderResponseDto::from);
+
+        SuccessResponseDto<PageResult<AcceptedOrderResponseDto>> response = SuccessResponseDto.of(pageResult);
+
+        return  ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @GetMapping("/orders/accepted")
+    public ResponseEntity<SuccessResponseDto> findOrdersWaitingForDelivery2(
+        @Valid WaitingForRiderOrderRequestDto orderRequestDto,
+        @Valid PageRequestDto pageRequestDto
+    ) {
+        PageResult<AcceptedOrderResponseDto> pageResult = orderFacade.findOrdersWaitingForDelivery2(
+                orderRequestDto.toQuery(),
+                pageRequestDto
+            )
+            .map(AcceptedOrderResponseDto::from);
+
+        SuccessResponseDto<PageResult<AcceptedOrderResponseDto>> response = SuccessResponseDto.of(pageResult);
+
+        return  ResponseEntity
+            .status(HttpStatus.OK)
             .body(response);
     }
 }

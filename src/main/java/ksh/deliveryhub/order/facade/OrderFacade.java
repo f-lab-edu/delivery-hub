@@ -4,10 +4,18 @@ import ksh.deliveryhub.cart.model.Cart;
 import ksh.deliveryhub.cart.model.CartMenuDetail;
 import ksh.deliveryhub.cart.service.CartMenuService;
 import ksh.deliveryhub.cart.service.CartService;
+import ksh.deliveryhub.common.dto.request.PageRequestDto;
+import ksh.deliveryhub.common.dto.response.PageResult;
+import ksh.deliveryhub.common.lock.DistributedLockService;
 import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
+import ksh.deliveryhub.order.dto.query.AcceptedOrderQuery;
+import ksh.deliveryhub.order.dto.query.WaitingForRiderOrderQuery;
 import ksh.deliveryhub.order.model.Order;
+import ksh.deliveryhub.order.model.OrderDetailForDelivery;
+import ksh.deliveryhub.order.model.OrderItemWithMenu;
+import ksh.deliveryhub.order.model.OrderWithStoreInfo;
 import ksh.deliveryhub.order.service.OrderItemService;
 import ksh.deliveryhub.order.service.OrderService;
 import ksh.deliveryhub.point.service.UserPointService;
@@ -16,7 +24,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +40,7 @@ public class OrderFacade {
     private final UserCouponService userCouponService;
     private final UserPointService userPointService;
     private final CartService cartService;
+    private final DistributedLockService lockService;
 
     @Transactional
     public Order placeOrder(long userId, Long userCouponId, int pointToUse) {
@@ -53,5 +66,78 @@ public class OrderFacade {
         orderItemService.createOrderItems(order.getId(), cartMenuDetails);
 
         return order;
+    }
+
+    @Transactional
+    public void acceptOrder(long id, long storeId) {
+        orderService.acceptOrder(id, storeId);
+    }
+
+    @Transactional
+    public void assignRiderToOrder(long orderId, long riderId) {
+        String lockKey = "order:" + orderId;
+        lockService.acquire(
+            lockKey,
+            1000L,
+            5000L,
+            TimeUnit.MILLISECONDS,
+            () -> orderService.assignRiderToOrder(orderId, riderId)
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery(
+        AcceptedOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
+        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery(
+            query,
+            pageRequestDto
+        );
+        List<Long> orderIds = pageResult.getContent()
+            .stream()
+            .map(OrderWithStoreInfo::getOrder)
+            .map(Order::getId)
+            .toList();
+
+        Map<Long, List<OrderItemWithMenu>> orderItemMap = orderItemService.getOrderItemsIn(orderIds).stream()
+            .collect(Collectors.groupingBy(
+                orderItem -> orderItem.getOrderItem().getOrderId()
+            ));
+
+        return pageResult.map(ows -> {
+            Long orderId = ows.getOrder().getId();
+            List<OrderItemWithMenu> items =
+                orderItemMap.getOrDefault(orderId, Collections.emptyList());
+            return OrderDetailForDelivery.of(ows, items);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery2(
+        WaitingForRiderOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
+        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery2(
+            query,
+            pageRequestDto
+        );
+        List<Long> orderIds = pageResult.getContent()
+            .stream()
+            .map(OrderWithStoreInfo::getOrder)
+            .map(Order::getId)
+            .toList();
+
+        Map<Long, List<OrderItemWithMenu>> orderItemMap = orderItemService.getOrderItemsIn(orderIds).stream()
+            .collect(Collectors.groupingBy(
+                orderItem -> orderItem.getOrderItem().getOrderId()
+            ));
+
+        return pageResult.map(ows -> {
+            Long orderId = ows.getOrder().getId();
+            List<OrderItemWithMenu> items =
+                orderItemMap.getOrDefault(orderId, Collections.emptyList());
+            return OrderDetailForDelivery.of(ows, items);
+        });
     }
 }

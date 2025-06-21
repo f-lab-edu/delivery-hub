@@ -59,4 +59,18 @@ public class GlobalControllerAdvice {
             .status(errorCode.getStatus())
             .body(response);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleException(Exception ex) {
+        log.error("예외 발생: {}", ex.getMessage());
+        ErrorResponseDto response = ErrorResponseDto.of(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            HttpStatus.INTERNAL_SERVER_ERROR.name(),
+            "Internal Server Error"
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(response);
+    }
 }

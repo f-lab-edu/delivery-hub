@@ -1,10 +1,9 @@
 package ksh.deliveryhub.store.model;
 
-import ksh.deliveryhub.store.entity.FoodCategory;
-import ksh.deliveryhub.store.entity.StoreEntity;
-import ksh.deliveryhub.store.entity.StoreStatus;
+import ksh.deliveryhub.store.entity.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.locationtech.jts.geom.Point;
 
 @Getter
 @Builder
@@ -13,7 +12,8 @@ public class Store {
     private Long id;
     private String name;
     private String description;
-    private String address;
+    private Address address;
+    private Point coordinate;
     private String phone;
     private FoodCategory foodCategory;
     private StoreStatus status;
@@ -25,6 +25,7 @@ public class Store {
             .name(storeEntity.getName())
             .description(storeEntity.getDescription())
             .address(storeEntity.getAddress())
+            .coordinate(storeEntity.getCoordinate())
             .phone(storeEntity.getPhone())
             .foodCategory(storeEntity.getFoodCategory())
             .status(storeEntity.getStatus())
@@ -38,9 +39,11 @@ public class Store {
             .name(getName())
             .description(getDescription())
             .address(getAddress())
+            .coordinate(getCoordinate())
             .phone(getPhone())
             .foodCategory(getFoodCategory())
             .status(getStatus())
+            .ownerId(getOwnerId())
             .build();
     }
 }

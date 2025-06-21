@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.store.dto.request.StoreCreateRequestDto;
 import ksh.deliveryhub.store.dto.request.StoreUpdateRequestDto;
+import ksh.deliveryhub.store.entity.Address;
 import ksh.deliveryhub.store.entity.FoodCategory;
 import ksh.deliveryhub.store.entity.StoreEntity;
 import ksh.deliveryhub.store.entity.StoreStatus;
@@ -18,7 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static ksh.deliveryhub.store.entity.StoreStatus.*;
+import static ksh.deliveryhub.store.entity.StoreStatus.CLOSED;
+import static ksh.deliveryhub.store.entity.StoreStatus.OPEN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,20 +48,25 @@ class StoreControllerTest {
     @Test
     public void 주문_가능한_가게_리스트를_조회하고_성공하면_200_응답을_받는다() throws Exception {
         //given
-        StoreEntity targetStore1 = createStoreEntity("가게1", "서울시 강서구", FoodCategory.PIZZA, OPEN);
-        StoreEntity targetStore2 = createStoreEntity("가게2", "서울시 강서구", FoodCategory.PIZZA, OPEN);
-        StoreEntity targetStore3 = createStoreEntity("가게3", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        Address address1 = Address.of("서울시", "강서구", "방화동", "1로", "1동");
+        Address address2 = Address.of("고양시", "덕양구", "예시동", "1로", "1동");
 
-        StoreEntity wrongAddressStore = createStoreEntity("가게4", "고양시 덕양구", FoodCategory.PIZZA, OPEN);
-        StoreEntity wrongCategoryStore = createStoreEntity("가게5", "서울시 강서구", FoodCategory.CHICKEN, OPEN);
-        StoreEntity closedStore = createStoreEntity("가게6", "서울시 강서구", FoodCategory.PIZZA, OPEN);
+        StoreEntity targetStore1 = createStoreEntity("가게1", address1, FoodCategory.PIZZA, OPEN);
+        StoreEntity targetStore2 = createStoreEntity("가게2", address1, FoodCategory.PIZZA, OPEN);
+        StoreEntity targetStore3 = createStoreEntity("가게3", address1, FoodCategory.PIZZA, OPEN);
+
+        StoreEntity wrongAddressStore = createStoreEntity("가게4", address2, FoodCategory.PIZZA, OPEN);
+        StoreEntity wrongCategoryStore = createStoreEntity("가게5", address1, FoodCategory.CHICKEN, OPEN);
+        StoreEntity closedStore = createStoreEntity("가게6", address1, FoodCategory.PIZZA, OPEN);
         storeRepository.saveAll(List.of(targetStore1, targetStore2, targetStore3, wrongAddressStore, wrongCategoryStore, closedStore));
 
         //when //then
         mockMvc.perform(
                 get("/stores")
                     .param("foodCategory", "PIZZA")
-                    .param("address", "서울시 강서구")
+                    .param("city", "서울시")
+                    .param("district", "강서구")
+                    .param("subdistrict", "방화동")
                     .param("page", "0")
                     .param("size", "3")
             ).andDo(print())
@@ -74,10 +81,11 @@ class StoreControllerTest {
     @Test
     public void 새로운_가게를_등록하고_성공하면_201_응답을_받는다() throws Exception {
         //given
+        Address address = Address.of("서울시", "강서구", "방화동", "금낭화로", "1동");
         StoreCreateRequestDto request = StoreCreateRequestDto.builder()
             .name("음식점")
             .description("맛있는 음식점")
-            .address("서울시")
+            .address(address)
             .phone("010-1234-5678")
             .foodCategory(FoodCategory.PIZZA)
             .ownerId(1L)
@@ -91,17 +99,19 @@ class StoreControllerTest {
             ).andDo(print())
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data.name").value(request.getName()))
-            .andExpect(jsonPath("$.data.address").value(request.getAddress()))
+            .andExpect(jsonPath("$.data.address.city").value(request.getAddress().getCity()))
+            .andExpect(jsonPath("$.data.address.district").value(request.getAddress().getDistrict()))
             .andExpect(jsonPath("$.data.foodCategory").value(request.getFoodCategory().name()));
     }
 
     @Test
     public void 새로운_가게를_등록할_때_전화번호_형식이_올바르지_않으면_400_응답을_받는다() throws Exception {
         //given
+        Address address = Address.of("서울시", "강서구", "방화동", "금낭화로", "1동");
         StoreCreateRequestDto request = StoreCreateRequestDto.builder()
             .name("음식점")
             .description("맛있는 음식점")
-            .address("서울시")
+            .address(address)
             .phone("010-1234-5678485")
             .foodCategory(FoodCategory.PIZZA)
             .ownerId(1L)
@@ -121,15 +131,17 @@ class StoreControllerTest {
     @Test
     public void 가게_정보를_업데이트_하고_성공하면_200_응답을_받는다() throws Exception {
         //given
-        StoreEntity storeEntity = createStoreEntity("변경 전 이름", "변경 전 주소", FoodCategory.PIZZA, OPEN);
+        Address beforeAddress = Address.of("서울시", "강서구", "방화동", "1로", "1동");
+        StoreEntity storeEntity = createStoreEntity("변경 전 이름", beforeAddress, FoodCategory.PIZZA, OPEN);
         storeRepository.save(storeEntity);
 
+        Address afterAddress = Address.of("서울시", "강서구", "방화동", "1로", "1동");
         StoreUpdateRequestDto request = StoreUpdateRequestDto.builder()
             .id(storeEntity.getId())
             .name("변경 후 이름")
             .description("맛있는 음식점")
             .status(CLOSED)
-            .address("변경 후 주소")
+            .address(afterAddress)
             .phone("010-9876-5432")
             .build();
 
@@ -143,19 +155,21 @@ class StoreControllerTest {
             .andExpect(jsonPath("$.data.name").value(request.getName()))
             .andExpect(jsonPath("$.data.description").value(request.getDescription()))
             .andExpect(jsonPath("$.data.status").value(request.getStatus().name()))
-            .andExpect(jsonPath("$.data.address").value(request.getAddress()))
+            .andExpect(jsonPath("$.data.address.city").value(request.getAddress().getCity()))
+            .andExpect(jsonPath("$.data.address.district").value(request.getAddress().getDistrict()))
             .andExpect(jsonPath("$.data.phone").value("01098765432"));
     }
 
     @Test
     public void 존재하지_않는_가게_정보를_업데이트_하면_404_응답을_받는다() throws Exception {
         //given
+        Address afterAddress = Address.of("서울시", "강서구", "방화동", "1로", "1동");
         StoreUpdateRequestDto request = StoreUpdateRequestDto.builder()
             .id(4685415L)
             .name("변경 후 이름")
             .description("맛있는 음식점")
             .status(CLOSED)
-            .address("변경 후 주소")
+            .address(afterAddress)
             .phone("010-9876-5432")
             .build();
 
@@ -173,15 +187,17 @@ class StoreControllerTest {
     @Test
     public void 가게_정보를_업데이트_시_전화번호_형식이_맞지_않으면_400_응답을_받는다() throws Exception {
         //given
-        StoreEntity storeEntity = createStoreEntity("변경 전 이름", "변경 전 주소", FoodCategory.PIZZA, OPEN);
+        Address beforeAddress = Address.of("서울시", "강서구", "방화동", "1로", "1동");
+        StoreEntity storeEntity = createStoreEntity("변경 전 이름", beforeAddress, FoodCategory.PIZZA, OPEN);
         storeRepository.save(storeEntity);
 
+        Address afterAddress = Address.of("서울시", "강서구", "방화동", "1로", "1동");
         StoreUpdateRequestDto request = StoreUpdateRequestDto.builder()
             .id(storeEntity.getId())
             .name("변경 후 이름")
             .description("맛있는 음식점")
             .status(CLOSED)
-            .address("변경 후 주소")
+            .address(afterAddress)
             .phone("010-9876-54328484")
             .build();
 
@@ -196,7 +212,7 @@ class StoreControllerTest {
             .andExpect(jsonPath("$.code").value(ErrorCode.STORE_INVALID_PHONE.name()));
     }
 
-    private static StoreEntity createStoreEntity(String name, String address, FoodCategory foodCategory, StoreStatus status) {
+    private static StoreEntity createStoreEntity(String name, Address address, FoodCategory foodCategory, StoreStatus status) {
         return StoreEntity.builder()
             .name(name)
             .description("음식점")

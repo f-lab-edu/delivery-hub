@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Getter
@@ -21,7 +22,11 @@ public class StoreEntity extends BaseEntity {
 
     private String description;
 
-    private String address;
+    @Embedded
+    private Address address;
+
+    @Column(columnDefinition = "point not null srid 4326")
+    private Point coordinate;
 
     private String phone;
 
@@ -36,14 +41,14 @@ public class StoreEntity extends BaseEntity {
     public void update(
         String name,
         String description,
+        Address address,
         StoreStatus status,
-        String address,
         String phone
     ) {
         this.name = name;
         this.description = description;
-        this.status = status;
         this.address = address;
+        this.status = status;
         this.phone = phone;
     }
 
@@ -56,7 +61,8 @@ public class StoreEntity extends BaseEntity {
         Long id,
         String name,
         String description,
-        String address,
+        Address address,
+        Point coordinate,
         String phone,
         FoodCategory foodCategory,
         StoreStatus status,
@@ -66,6 +72,7 @@ public class StoreEntity extends BaseEntity {
         this.name = name;
         this.description = description;
         this.address = address;
+        this.coordinate = coordinate;
         this.phone = phone;
         this.foodCategory = foodCategory;
         this.status = status;

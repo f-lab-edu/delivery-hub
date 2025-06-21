@@ -41,6 +41,8 @@ dependencies {
 
     //QueryDSL
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
+    implementation "com.querydsl:querydsl-sql-spatial:${querydslVersion}"
+    implementation "com.querydsl:querydsl-spatial:${querydslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
 
     //H2
@@ -60,6 +62,10 @@ dependencies {
 
     //MySQL
     implementation 'com.mysql:mysql-connector-j'
+
+    //JPA
+    implementation 'org.hibernate.orm:hibernate-spatial:6.6.13.Final'
+    implementation "org.locationtech.jts:jts-core:1.19.0"
 }
 
 tasks.named('test') {

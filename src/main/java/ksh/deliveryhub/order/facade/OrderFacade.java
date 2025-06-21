@@ -11,6 +11,7 @@ import ksh.deliveryhub.coupon.model.UserCouponDetail;
 import ksh.deliveryhub.coupon.service.UserCouponService;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.dto.query.AcceptedOrderQuery;
+import ksh.deliveryhub.order.dto.query.WaitingForRiderOrderQuery;
 import ksh.deliveryhub.order.model.Order;
 import ksh.deliveryhub.order.model.OrderDetailForDelivery;
 import ksh.deliveryhub.order.model.OrderItemWithMenu;
@@ -90,6 +91,34 @@ public class OrderFacade {
         PageRequestDto pageRequestDto
     ) {
         PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery(
+            query,
+            pageRequestDto
+        );
+        List<Long> orderIds = pageResult.getContent()
+            .stream()
+            .map(OrderWithStoreInfo::getOrder)
+            .map(Order::getId)
+            .toList();
+
+        Map<Long, List<OrderItemWithMenu>> orderItemMap = orderItemService.getOrderItemsIn(orderIds).stream()
+            .collect(Collectors.groupingBy(
+                orderItem -> orderItem.getOrderItem().getOrderId()
+            ));
+
+        return pageResult.map(ows -> {
+            Long orderId = ows.getOrder().getId();
+            List<OrderItemWithMenu> items =
+                orderItemMap.getOrDefault(orderId, Collections.emptyList());
+            return OrderDetailForDelivery.of(ows, items);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public PageResult<OrderDetailForDelivery> findOrdersWaitingForDelivery2(
+        WaitingForRiderOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
+        PageResult<OrderWithStoreInfo> pageResult = orderService.findOrdersWaitingForDelivery2(
             query,
             pageRequestDto
         );

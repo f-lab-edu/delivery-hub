@@ -6,6 +6,7 @@ import ksh.deliveryhub.common.exception.CustomException;
 import ksh.deliveryhub.common.exception.ErrorCode;
 import ksh.deliveryhub.order.dto.command.OrderCreateCommand;
 import ksh.deliveryhub.order.dto.query.AcceptedOrderQuery;
+import ksh.deliveryhub.order.dto.query.WaitingForRiderOrderQuery;
 import ksh.deliveryhub.order.entity.OrderEntity;
 import ksh.deliveryhub.order.entity.OrderStatus;
 import ksh.deliveryhub.order.model.Order;
@@ -84,6 +85,26 @@ public class OrderServiceImpl implements OrderService {
                 OrderStatus.ACCEPTED,
                 query.getLocation(),
                 query.getLastCreatedAt(),
+                pageable
+            )
+            .map(OrderWithStoreInfo::from);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PageResult<OrderWithStoreInfo> findOrdersWaitingForDelivery2(
+        WaitingForRiderOrderQuery query,
+        PageRequestDto pageRequestDto
+    ) {
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage(),
+            pageRequestDto.getSize()
+        );
+
+        return orderRepository.findByStatusAndWithinRadius(
+                OrderStatus.ACCEPTED,
+                query.getCoordinate(),
+                query.getRadius(),
                 pageable
             )
             .map(OrderWithStoreInfo::from);
